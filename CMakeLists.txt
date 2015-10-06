@@ -5,9 +5,14 @@ if(${CMAKE_VERSION} VERSION_GREATER 3.0.0)
     cmake_policy(SET CMP0042 NEW)
 endif()
 
-add_subdirectory(chemharp)
+include(FortanCompilerFlags)
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'release' as none was specified.")
+  set(CMAKE_BUILD_TYPE "release" CACHE STRING "Choose the type of build." FORCE)
+endif()
 
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-integer-8")
+add_subdirectory(chemharp)
 
 file(GLOB sources src/*.f90)
 add_library(chemharpf ${sources})

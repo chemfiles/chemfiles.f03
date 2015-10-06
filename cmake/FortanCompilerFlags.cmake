@@ -1,0 +1,23 @@
+include(CheckFortranCompilerFlag)
+include(CheckFortranCompilerFlag)
+macro(set_fortran_flag_if_possible _flag_)
+    CHECK_Fortran_COMPILER_FLAG("${_flag_}" FC_SUPPORTS${_flag_})
+    if(FC_SUPPORTS${_flag_})
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${_flag_}")
+    endif()
+endmacro()
+
+macro(set_fortran_debug_flag_if_possible _flag_)
+    CHECK_Fortran_COMPILER_FLAG("${_flag_}" FC_SUPPORTS${_flag_})
+    if(FC_SUPPORTS${_flag_})
+        set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} ${_flag_}")
+    endif()
+endmacro()
+
+set_fortran_debug_flag_if_possible("-Wall")
+set_fortran_debug_flag_if_possible("-Wextra")
+set_fortran_debug_flag_if_possible("-Wconversion")
+set_fortran_debug_flag_if_possible("-Wsign-conversion")
+set_fortran_debug_flag_if_possible("-Wsign-promo")
+
+set_fortran_flag_if_possible("-fdefault-integer-8")
