@@ -1,15 +1,15 @@
 program atom_test
     use iso_fortran_env, only: real32, real64, int32
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_atom) :: atom
+    type(chfl_atom) :: atom
     real(kind=real32) :: mass = 0, charge = 0
     real(kind=real64) :: radius = 0
     integer :: status
     integer(kind=int32) :: number
-    integer(kind=kind(CHRP_ATOM_TYPES)) :: atom_type
+    integer(kind=kind(CHFL_ATOM_TYPES)) :: atom_type
     character(len=32) :: name
 
     call atom%init("He", status=status)
@@ -63,13 +63,13 @@ program atom_test
 
     call atom%type(atom_type, status=status)
     call check((status == 0), "atom%type")
-    call check((atom_type == CHRP_ATOM_ELEMENT), "atom%atomic_number")
+    call check((atom_type == CHFL_ATOM_ELEMENT), "atom%atomic_number")
 
-    call atom%set_type(CHRP_ATOM_DUMMY, status=status)
+    call atom%set_type(CHFL_ATOM_DUMMY, status=status)
     call check((status == 0), "atom%set_type")
     call atom%type(atom_type, status=status)
     call check((status == 0), "atom%type")
-    call check((atom_type == CHRP_ATOM_DUMMY), "atom%atomic_number")
+    call check((atom_type == CHFL_ATOM_DUMMY), "atom%atomic_number")
 
     call atom%free(status=status)
     call check((status == 0), "atom%free")

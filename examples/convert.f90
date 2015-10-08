@@ -1,16 +1,16 @@
-!* File convert.f90, example for the Chemharp library
+!* File convert.f90, example for the chemfiles library
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program convert
     use iso_fortran_env, only: int64
-    use chemharp
+    use chemfiles
     implicit none
 
-    type(chrp_trajectory) :: input, ouput_file
-    type(chrp_frame) :: frame
-    type(chrp_cell) :: cell
-    type(chrp_topology) :: water_topology
-    type(chrp_atom) :: O, H
+    type(chfl_trajectory) :: input, ouput_file
+    type(chfl_frame) :: frame
+    type(chfl_cell) :: cell
+    type(chfl_topology) :: water_topology
+    type(chfl_atom) :: O, H
 
     integer(int64) :: nsteps, i, status
 

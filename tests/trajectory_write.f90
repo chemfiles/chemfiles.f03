@@ -1,13 +1,13 @@
-program trajectory_read
+PROGRAM trajectory_read
     use iso_fortran_env, only: real32, real64, int32
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_trajectory) :: file
-    type(chrp_topology) :: topology
-    type(chrp_atom) :: atom
-    type(chrp_frame) :: frame
+    type(chfl_trajectory) :: file
+    type(chfl_topology) :: topology
+    type(chfl_atom) :: atom
+    type(chfl_frame) :: frame
 
     real(kind=real32) :: pos(3, 4), pos_2(3, 6)
     character(len=2048) :: expected_content, content
@@ -15,13 +15,13 @@ program trajectory_read
     integer :: status, i, j
 
     expected_content = "4" // EOL // &
-                       "Written by Chemharp" // EOL // &
+                       "Written by the chemfiles library" // EOL // &
                        "He 1 2 3" // EOL // &
                        "He 1 2 3" // EOL // &
                        "He 1 2 3" // EOL // &
                        "He 1 2 3" // EOL // &
                        "6" // EOL // &
-                       "Written by Chemharp" // EOL // &
+                       "Written by the chemfiles library" // EOL // &
                        "He 4 5 6" // EOL // &
                        "He 4 5 6" // EOL // &
                        "He 4 5 6" // EOL // &

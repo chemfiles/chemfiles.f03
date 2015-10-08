@@ -1,13 +1,13 @@
-!* File rmsd.f90, example for the Chemharp library
+!* File rmsd.f90, example for the chemfiles library
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program rmsd_
     use iso_fortran_env, only: real32, int64, real64
-    use chemharp
+    use chemfiles
     implicit none
 
-    type(chrp_trajectory) :: traj
-    type(chrp_frame)      :: frame
+    type(chfl_trajectory) :: traj
+    type(chfl_frame)      :: frame
     real(kind=real32), dimension(:, :), allocatable :: positions
     real(kind=real64), dimension(:),    allocatable :: distances
     integer(kind=int64) :: nsteps = 0, natoms=0, i, status

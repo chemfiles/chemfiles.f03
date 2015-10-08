@@ -1,33 +1,36 @@
-# Fortran binding for the Chemharp library
+# Fortran binding for the chemfiles library
 
-This repository contains the fortran 2003 binding to the [Chemharp](https://github.com/Luthaf/Chemharp) library.
+This repository contains the fortran 2003 binding to the [chemfiles](https://github.com/chemfiles/chemfiles) library.
 
 It is known to compile with gfortran 4.9.2 and ifort 14. If you manage to build this code
 with any other compiler, please let me know so that I can add it here.
 
 ## Getting started
 
-You will need to install all the dependencies of the main C++ lib, as [documented here](http://chemharp.readthedocs.org/en/latest/installation.html). Then run
+You will need to install all the dependencies of the main C++ lib, as [documented here](http://chemfiles.readthedocs.org/en/latest/installation.html). Then run
 
 ```bash
 mkdir build
 cd build
-cmake ..  # you can use any of the Chemharp C++ options here
+cmake ..  # you can use any of the chemfiles C++ options here
 make install
 ```
 
 ## Usage example
 
+In order to use chemfiles, you need to link your code against `libchemfiles_f` and
+`libchemfiles`, using the flags `-lchemfiles -lchemfiles_f`.
+
 Here is a simple example of how the usage feels in Fortran:
 
 ```fortran
 program example
-    use chemharp
+    use chemfiles
     use iso_fortran_env, only: int64, real32
 
     implicit none
-    type(chrp_trajectory) :: trajectory
-    type(chrp_frame) :: frame
+    type(chfl_trajectory) :: trajectory
+    type(chfl_frame) :: frame
     integer(int64) :: natoms
     real(real32), dimension(:, :), allocatable :: positions
     integer :: status
@@ -50,6 +53,7 @@ program example
 
     call frame%free()
     call trajectory%close()
+    deallocate(positions)
 }
 ```
 
@@ -57,4 +61,4 @@ You can find other examples in the `examples` directory.
 
 ## Bug reports, feature requests
 
-Please report any bug you find and any feature you may want as a [github issue](https://github.com/Luthaf/Chemharp.f03/issues/new).
+Please report any bug you find and any feature you may want as a [github issue](https://github.com/chemfiles/chemfiles.f03/issues/new).

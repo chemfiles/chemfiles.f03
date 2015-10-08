@@ -1,14 +1,14 @@
 program trajectory_read
     use iso_fortran_env, only: real32, real64, int64
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_frame) :: frame
-    type(chrp_trajectory) :: file
-    type(chrp_topology) :: topology
-    type(chrp_atom) :: atom
-    type(chrp_cell) :: cell
+    type(chfl_frame) :: frame
+    type(chfl_trajectory) :: file
+    type(chfl_topology) :: topology
+    type(chfl_atom) :: atom
+    type(chfl_cell) :: cell
 
     character(len=2048) :: DATADIR
     character(len=32) :: name

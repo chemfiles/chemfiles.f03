@@ -1,4 +1,4 @@
-! Chemharp, an efficient IO library for chemistry file formats
+! Chemfiles, an efficient IO library for chemistry file formats
 ! Copyright (C) 2015 Guillaume Fraux
 !
 ! This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,7 +6,8 @@
 ! file, You can obtain one at http://mozilla.org/MPL/2.0/
 !
 ! =========================================================================== !
-! !!!! AUTO-GENERATED FILE !!!! Do not edit. See scripts/generate for the code.
+! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
+! generating code (https://github.com/chemfiles/bindgen).
 ! This file contains Fortran 2003 ISO C Binding interface to the C API
 !
 ! This file is not compilable on his own, but should be 'include'd in another
@@ -14,102 +15,102 @@
 ! =========================================================================== !
 
 
-type chrp_topology
+type chfl_topology
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: init => chrp_topology_init_
-    procedure :: from_frame => chrp_topology_from_frame_init_
-    procedure :: atoms_count => chrp_topology_atoms_count
-    procedure :: append => chrp_topology_append
-    procedure :: remove => chrp_topology_remove
-    procedure :: isbond => chrp_topology_isbond
-    procedure :: isangle => chrp_topology_isangle
-    procedure :: isdihedral => chrp_topology_isdihedral
-    procedure :: bonds_count => chrp_topology_bonds_count
-    procedure :: angles_count => chrp_topology_angles_count
-    procedure :: dihedrals_count => chrp_topology_dihedrals_count
-    procedure :: bonds => chrp_topology_bonds
-    procedure :: angles => chrp_topology_angles
-    procedure :: dihedrals => chrp_topology_dihedrals
-    procedure :: add_bond => chrp_topology_add_bond
-    procedure :: remove_bond => chrp_topology_remove_bond
-    procedure :: free => chrp_topology_free
+    procedure :: init => chfl_topology_init_
+    procedure :: from_frame => chfl_topology_from_frame_init_
+    procedure :: atoms_count => chfl_topology_atoms_count
+    procedure :: append => chfl_topology_append
+    procedure :: remove => chfl_topology_remove
+    procedure :: isbond => chfl_topology_isbond
+    procedure :: isangle => chfl_topology_isangle
+    procedure :: isdihedral => chfl_topology_isdihedral
+    procedure :: bonds_count => chfl_topology_bonds_count
+    procedure :: angles_count => chfl_topology_angles_count
+    procedure :: dihedrals_count => chfl_topology_dihedrals_count
+    procedure :: bonds => chfl_topology_bonds
+    procedure :: angles => chfl_topology_angles
+    procedure :: dihedrals => chfl_topology_dihedrals
+    procedure :: add_bond => chfl_topology_add_bond
+    procedure :: remove_bond => chfl_topology_remove_bond
+    procedure :: free => chfl_topology_free
 end type
 
-type chrp_trajectory
+type chfl_trajectory
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: open => chrp_trajectory_open_init_
-    procedure :: with_format => chrp_trajectory_with_format_init_
-    procedure :: read => chrp_trajectory_read
-    procedure :: read_step => chrp_trajectory_read_step
-    procedure :: write => chrp_trajectory_write
-    procedure :: set_topology => chrp_trajectory_set_topology
-    procedure :: set_topology_file => chrp_trajectory_set_topology_file
-    procedure :: set_cell => chrp_trajectory_set_cell
-    procedure :: nsteps => chrp_trajectory_nsteps
-    procedure :: close => chrp_trajectory_close
+    procedure :: open => chfl_trajectory_open_init_
+    procedure :: with_format => chfl_trajectory_with_format_init_
+    procedure :: read => chfl_trajectory_read
+    procedure :: read_step => chfl_trajectory_read_step
+    procedure :: write => chfl_trajectory_write
+    procedure :: set_topology => chfl_trajectory_set_topology
+    procedure :: set_topology_file => chfl_trajectory_set_topology_file
+    procedure :: set_cell => chfl_trajectory_set_cell
+    procedure :: nsteps => chfl_trajectory_nsteps
+    procedure :: close => chfl_trajectory_close
 end type
 
-type chrp_frame
+type chfl_frame
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: init => chrp_frame_init_
-    procedure :: atoms_count => chrp_frame_atoms_count
-    procedure :: positions => chrp_frame_positions
-    procedure :: set_positions => chrp_frame_set_positions
-    procedure :: velocities => chrp_frame_velocities
-    procedure :: set_velocities => chrp_frame_set_velocities
-    procedure :: has_velocities => chrp_frame_has_velocities
-    procedure :: set_cell => chrp_frame_set_cell
-    procedure :: set_topology => chrp_frame_set_topology
-    procedure :: step => chrp_frame_step
-    procedure :: set_step => chrp_frame_set_step
-    procedure :: guess_topology => chrp_frame_guess_topology
-    procedure :: free => chrp_frame_free
+    procedure :: init => chfl_frame_init_
+    procedure :: atoms_count => chfl_frame_atoms_count
+    procedure :: positions => chfl_frame_positions
+    procedure :: set_positions => chfl_frame_set_positions
+    procedure :: velocities => chfl_frame_velocities
+    procedure :: set_velocities => chfl_frame_set_velocities
+    procedure :: has_velocities => chfl_frame_has_velocities
+    procedure :: set_cell => chfl_frame_set_cell
+    procedure :: set_topology => chfl_frame_set_topology
+    procedure :: step => chfl_frame_step
+    procedure :: set_step => chfl_frame_set_step
+    procedure :: guess_topology => chfl_frame_guess_topology
+    procedure :: free => chfl_frame_free
 end type
 
-type chrp_atom
+type chfl_atom
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: init => chrp_atom_init_
-    procedure :: from_frame => chrp_atom_from_frame_init_
-    procedure :: from_topology => chrp_atom_from_topology_init_
-    procedure :: mass => chrp_atom_mass
-    procedure :: set_mass => chrp_atom_set_mass
-    procedure :: charge => chrp_atom_charge
-    procedure :: set_charge => chrp_atom_set_charge
-    procedure :: name => chrp_atom_name
-    procedure :: set_name => chrp_atom_set_name
-    procedure :: full_name => chrp_atom_full_name
-    procedure :: vdw_radius => chrp_atom_vdw_radius
-    procedure :: covalent_radius => chrp_atom_covalent_radius
-    procedure :: atomic_number => chrp_atom_atomic_number
-    procedure :: type => chrp_atom_type
-    procedure :: set_type => chrp_atom_set_type
-    procedure :: free => chrp_atom_free
+    procedure :: init => chfl_atom_init_
+    procedure :: from_frame => chfl_atom_from_frame_init_
+    procedure :: from_topology => chfl_atom_from_topology_init_
+    procedure :: mass => chfl_atom_mass
+    procedure :: set_mass => chfl_atom_set_mass
+    procedure :: charge => chfl_atom_charge
+    procedure :: set_charge => chfl_atom_set_charge
+    procedure :: name => chfl_atom_name
+    procedure :: set_name => chfl_atom_set_name
+    procedure :: full_name => chfl_atom_full_name
+    procedure :: vdw_radius => chfl_atom_vdw_radius
+    procedure :: covalent_radius => chfl_atom_covalent_radius
+    procedure :: atomic_number => chfl_atom_atomic_number
+    procedure :: type => chfl_atom_type
+    procedure :: set_type => chfl_atom_set_type
+    procedure :: free => chfl_atom_free
 end type
 
-type chrp_cell
+type chfl_cell
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: init => chrp_cell_init_
-    procedure :: triclinic => chrp_cell_triclinic_init_
-    procedure :: from_frame => chrp_cell_from_frame_init_
-    procedure :: volume => chrp_cell_volume
-    procedure :: lengths => chrp_cell_lengths
-    procedure :: set_lengths => chrp_cell_set_lengths
-    procedure :: angles => chrp_cell_angles
-    procedure :: set_angles => chrp_cell_set_angles
-    procedure :: matrix => chrp_cell_matrix
-    procedure :: type => chrp_cell_type
-    procedure :: set_type => chrp_cell_set_type
-    procedure :: periodicity => chrp_cell_periodicity
-    procedure :: set_periodicity => chrp_cell_set_periodicity
-    procedure :: free => chrp_cell_free
+    procedure :: init => chfl_cell_init_
+    procedure :: triclinic => chfl_cell_triclinic_init_
+    procedure :: from_frame => chfl_cell_from_frame_init_
+    procedure :: volume => chfl_cell_volume
+    procedure :: lengths => chfl_cell_lengths
+    procedure :: set_lengths => chfl_cell_set_lengths
+    procedure :: angles => chfl_cell_angles
+    procedure :: set_angles => chfl_cell_set_angles
+    procedure :: matrix => chfl_cell_matrix
+    procedure :: type => chfl_cell_type
+    procedure :: set_type => chfl_cell_set_type
+    procedure :: periodicity => chfl_cell_periodicity
+    procedure :: set_periodicity => chfl_cell_set_periodicity
+    procedure :: free => chfl_cell_free
 end type

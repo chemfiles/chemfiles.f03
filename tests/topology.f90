@@ -1,11 +1,11 @@
 program topology_test
     use iso_fortran_env, only: real32, real64, int64
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_topology) :: topology
-    type(chrp_atom) :: O, H
+    type(chfl_topology) :: topology
+    type(chfl_atom) :: O, H
     integer :: status, i, j
     integer(kind=int64) :: natoms=100, n=100
     integer(kind=int64), dimension(2, 3) :: bonds, top_bonds

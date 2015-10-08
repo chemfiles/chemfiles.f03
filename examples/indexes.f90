@@ -1,13 +1,13 @@
-!* File indexes.f90, example for the Chemharp library
+!* File indexes.f90, example for the chemfiles library
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program indexes_
     use iso_fortran_env, only: real32, int64
-    use chemharp
+    use chemfiles
     implicit none
-    ! Chemharp types declaration uses the "chrp_" prefix
-    type(chrp_trajectory) :: traj
-    type(chrp_frame) :: frame
+    ! Chemfiles types declaration uses the "chfl_" prefix
+    type(chfl_trajectory) :: traj
+    type(chfl_frame) :: frame
 
     real(real32), dimension(:, :), allocatable :: positions
     integer, dimension(:), allocatable :: indexes

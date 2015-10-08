@@ -1,14 +1,14 @@
 program cell_test
     use iso_fortran_env, only: real64
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_cell) :: cell
+    type(chfl_cell) :: cell
     real(kind=real64) :: a, b, c, V
     real(kind=real64), dimension(3, 3) :: expected_mat, mat
     integer :: status, i, j
-    integer(kind=kind(CHRP_CELL_TYPES)) :: cell_type
+    integer(kind=kind(CHFL_CELL_TYPES)) :: cell_type
     logical(1) :: x, y, z, F = .false., T = .true.
 
     call cell%init(2d0, 3d0, 4d0, status=status)
@@ -55,13 +55,13 @@ program cell_test
 
     call cell%type(cell_type, status=status)
     call check((status == 0), "cell%type")
-    call check((cell_type == CHRP_CELL_ORTHOROMBIC), "cell%type")
+    call check((cell_type == CHFL_CELL_ORTHOROMBIC), "cell%type")
 
-    call cell%set_type(CHRP_CELL_TRICLINIC, status=status)
+    call cell%set_type(CHFL_CELL_TRICLINIC, status=status)
     call check((status == 0), "cell%set_type")
     call cell%type(cell_type, status=status)
     call check((status == 0), "cell%type")
-    call check((cell_type == CHRP_CELL_TRICLINIC), "cell%type")
+    call check((cell_type == CHFL_CELL_TRICLINIC), "cell%type")
 
     call cell%set_angles(80d0, 89d0, 100d0, status=status)
     call check((status == 0), "cell%set_angles")

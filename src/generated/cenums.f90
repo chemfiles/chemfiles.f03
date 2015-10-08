@@ -1,4 +1,4 @@
-! Chemharp, an efficient IO library for chemistry file formats
+! Chemfiles, an efficient IO library for chemistry file formats
 ! Copyright (C) 2015 Guillaume Fraux
 !
 ! This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,7 +6,8 @@
 ! file, You can obtain one at http://mozilla.org/MPL/2.0/
 !
 ! =========================================================================== !
-! !!!! AUTO-GENERATED FILE !!!! Do not edit. See scripts/generate for the code.
+! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
+! generating code (https://github.com/chemfiles/bindgen).
 ! This file contains Fortran 2003 ISO C Binding interface to the C API
 !
 ! This file is not compilable on his own, but should be 'include'd in another
@@ -15,28 +16,28 @@
 
 
 enum, bind(C)
-    enumerator :: CHRP_LOG_NONE = 0
-    enumerator :: CHRP_LOG_ERROR = 1
-    enumerator :: CHRP_LOG_WARNING = 2
-    enumerator :: CHRP_LOG_INFO = 3
-    enumerator :: CHRP_LOG_DEBUG = 4
+    enumerator :: CHFL_LOG_NONE = 0
+    enumerator :: CHFL_LOG_ERROR = 1
+    enumerator :: CHFL_LOG_WARNING = 2
+    enumerator :: CHFL_LOG_INFO = 3
+    enumerator :: CHFL_LOG_DEBUG = 4
     ! Enumeration name:
-    enumerator :: CHRP_LOG_LEVEL
+    enumerator :: CHFL_LOG_LEVEL
 end enum
 
 enum, bind(C)
-    enumerator :: CHRP_CELL_ORTHOROMBIC = 0
-    enumerator :: CHRP_CELL_TRICLINIC = 1
-    enumerator :: CHRP_CELL_INFINITE = 2
+    enumerator :: CHFL_CELL_ORTHOROMBIC = 0
+    enumerator :: CHFL_CELL_TRICLINIC = 1
+    enumerator :: CHFL_CELL_INFINITE = 2
     ! Enumeration name:
-    enumerator :: CHRP_CELL_TYPES
+    enumerator :: CHFL_CELL_TYPES
 end enum
 
 enum, bind(C)
-    enumerator :: CHRP_ATOM_ELEMENT = 0
-    enumerator :: CHRP_ATOM_CORSE_GRAIN = 1
-    enumerator :: CHRP_ATOM_DUMMY = 2
-    enumerator :: CHRP_ATOM_UNDEFINED = 3
+    enumerator :: CHFL_ATOM_ELEMENT = 0
+    enumerator :: CHFL_ATOM_CORSE_GRAIN = 1
+    enumerator :: CHFL_ATOM_DUMMY = 2
+    enumerator :: CHFL_ATOM_UNDEFINED = 3
     ! Enumeration name:
-    enumerator :: CHRP_ATOM_TYPES
+    enumerator :: CHFL_ATOM_TYPES
 end enum

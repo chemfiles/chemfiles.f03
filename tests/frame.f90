@@ -1,13 +1,13 @@
 program frame_test
     use iso_fortran_env, only: real32, real64, int64
-    use chemharp
+    use chemfiles
     use testing
 
     implicit none
-    type(chrp_frame) :: frame
-    type(chrp_cell) :: cell
-    type(chrp_topology) :: topology
-    type(chrp_atom) :: Zn, Ar, atom
+    type(chfl_frame) :: frame
+    type(chfl_cell) :: cell
+    type(chfl_topology) :: topology
+    type(chfl_atom) :: Zn, Ar, atom
     integer :: status, i, j
     integer(kind=int64) :: natoms, step
     real(kind=real32), dimension(3, 4) :: pos, new_data, vel
