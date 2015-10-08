@@ -5,8 +5,8 @@ program atom_test
 
     implicit none
     type(chfl_atom) :: atom
-    real(kind=real32) :: mass = 0, charge = 0
-    real(kind=real64) :: radius = 0
+    real(kind=real32) :: mass = 0.0, charge = 0.0
+    real(kind=real64) :: radius = 0.0
     integer :: status
     integer(kind=int32) :: number
     integer(kind=kind(CHFL_ATOM_TYPES)) :: atom_type

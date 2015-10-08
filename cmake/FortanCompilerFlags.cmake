@@ -16,8 +16,8 @@ endmacro()
 
 set_fortran_debug_flag_if_possible("-Wall")
 set_fortran_debug_flag_if_possible("-Wextra")
-set_fortran_debug_flag_if_possible("-Wconversion")
-set_fortran_debug_flag_if_possible("-Wsign-conversion")
-set_fortran_debug_flag_if_possible("-Wsign-promo")
+set_fortran_debug_flag_if_possible("-pedantic")
+set_fortran_debug_flag_if_possible("-Wimplicit-interface")
+set_fortran_debug_flag_if_possible("-Wimplicit-procedure")
 
 set_fortran_flag_if_possible("-fdefault-integer-8")

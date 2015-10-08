@@ -37,7 +37,6 @@ end function
 
 subroutine chfl_loglevel(level, status)
     implicit none
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_LOG_LEVEL)) :: level
     integer, optional :: status
     integer :: status_tmp_
@@ -50,7 +49,6 @@ end subroutine
 
 subroutine chfl_set_loglevel(level, status)
     implicit none
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_LOG_LEVEL)), value :: level
     integer, optional :: status
     integer :: status_tmp_
@@ -567,7 +565,6 @@ end subroutine
 subroutine chfl_cell_type(this, type, status)
     implicit none
     class(chfl_cell), intent(in) :: this
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_CELL_TYPES)) :: type
     integer, optional :: status
     integer :: status_tmp_
@@ -581,7 +578,6 @@ end subroutine
 subroutine chfl_cell_set_type(this, type, status)
     implicit none
     class(chfl_cell) :: this
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_CELL_TYPES)), value :: type
     integer, optional :: status
     integer :: status_tmp_
@@ -1080,7 +1076,6 @@ end subroutine
 subroutine chfl_atom_type(this, type, status)
     implicit none
     class(chfl_atom), intent(in) :: this
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_ATOM_TYPES)) :: type
     integer, optional :: status
     integer :: status_tmp_
@@ -1094,7 +1089,6 @@ end subroutine
 subroutine chfl_atom_set_type(this, type, status)
     implicit none
     class(chfl_atom) :: this
-    include "generated/cenums.f90"
     integer(kind=kind(CHFL_ATOM_TYPES)), value :: type
     integer, optional :: status
     integer :: status_tmp_

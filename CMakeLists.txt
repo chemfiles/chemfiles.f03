@@ -23,12 +23,17 @@ set_property(TARGET chemfiles_f PROPERTY SOVERSION ${CHRP_VERSION})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chemfiles.mod DESTINATION include)
 install(TARGETS chemfiles_f DESTINATION lib)
 
+CHECK_Fortran_COMPILER_FLAG("-Wno-compare-reals" FC_SUPPORTS_NO_COMPARE_REAL)
 function(chrp_fortran_test _file_)
     get_filename_component(_name_ ${_file_} NAME_WE)
     set(_name_ "fortran-${_name_}")
     add_executable(${_name_} ${_file_})
     target_link_libraries(${_name_} chemfiles_f fortran-testing)
     add_test(NAME ${_name_} COMMAND ${_name_} "${PROJECT_SOURCE_DIR}/chemfiles/tests/data")
+    if(FC_SUPPORTS_NO_COMPARE_REAL)
+        # We are comparing reals in the tests
+        set_target_properties(${_name_} PROPERTIES COMPILE_FLAGS "-Wno-compare-reals")
+    endif()
 endfunction()
 
 function(chrp_fortran_example _file_)
