@@ -1,5 +1,8 @@
 # Fortran binding for the chemfiles library
 
+[![Build Status](https://travis-ci.org/chemfiles/chemfiles.f03.svg?branch=master)](https://travis-ci.org/chemfiles/chemfiles.f03)
+[![codecov.io](http://codecov.io/github/chemfiles/chemfiles.f03/coverage.svg?branch=master)](http://codecov.io/github/chemfiles/chemfiles.f03?branch=master)
+
 This repository contains the fortran 2003 binding to the [chemfiles](https://github.com/chemfiles/chemfiles) library.
 
 It is known to compile with gfortran 4.9.2 and ifort 14. If you manage to build this code
