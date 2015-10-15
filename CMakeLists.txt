@@ -42,7 +42,15 @@ function(chrp_fortran_example _file_)
     target_link_libraries(example-f90-${_name_} chemfiles_f)
 endfunction()
 
-if(${BUILD_TESTS})
+if(CODE_COVERAGE)
+    if(NOT CMAKE_COMPILER_IS_GNUCXX)
+        # Code coverage should use gcc
+        message(FATAL_ERROR "Code coverage can only be used with GCC")
+    endif()
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fprofile-arcs -ftest-coverage -O0")
+endif()
+
+if(BUILD_TESTS)
     enable_testing()
     file(GLOB f_test_files ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.f90)
     add_library(fortran-testing STATIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/mod/testing.f90)
