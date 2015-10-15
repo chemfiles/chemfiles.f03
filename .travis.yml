@@ -43,6 +43,7 @@ before_install:
     fi
 
 install:
+  - cd ${TRAVIS_BUILD_DIR}/chemfiles && git submodule update --init
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir -p build
   - cd build
