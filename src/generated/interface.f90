@@ -218,6 +218,18 @@ subroutine chfl_trajectory_nsteps(this, nsteps, status)
     end if
 end subroutine
 
+subroutine chfl_trajectory_sync(this, status)
+    implicit none
+    class(chfl_trajectory) :: this
+    integer, optional :: status
+    integer :: status_tmp_
+
+    status_tmp_ = chfl_trajectory_sync_c(this%ptr)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
 subroutine chfl_trajectory_close(this, status)
     implicit none
     class(chfl_trajectory) :: this

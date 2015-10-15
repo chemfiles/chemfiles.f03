@@ -80,8 +80,8 @@ PROGRAM trajectory_read
 
     call file%write(frame, status=status)
     call check((status == 0), "file%write")
-    call file%close(status=status)
-    call check((status == 0), "file%close")
+    call file%sync(status=status)
+    call check((status == 0), "file%sync")
 
 
     content = read_whole_file("test-tmp.xyz")

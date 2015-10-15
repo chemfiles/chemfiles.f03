@@ -51,6 +51,7 @@ contains
     procedure :: set_topology_file => chfl_trajectory_set_topology_file
     procedure :: set_cell => chfl_trajectory_set_cell
     procedure :: nsteps => chfl_trajectory_nsteps
+    procedure :: sync => chfl_trajectory_sync
     procedure :: close => chfl_trajectory_close
 end type
 

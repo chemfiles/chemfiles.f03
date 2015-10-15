@@ -146,7 +146,15 @@ function chfl_trajectory_nsteps_c(file, nsteps) bind(C, name="chfl_trajectory_ns
     integer(kind=c_size_t) :: nsteps
 end function
 
-! Function "chfl_trajectory_close", at chemfiles.h:194
+! Function "chfl_trajectory_sync", at chemfiles.h:193
+function chfl_trajectory_sync_c(file) bind(C, name="chfl_trajectory_sync")
+    use iso_c_binding
+    implicit none
+    integer(c_int) :: chfl_trajectory_sync_c
+    type(c_ptr), value :: file
+end function
+
+! Function "chfl_trajectory_close", at chemfiles.h:200
 function chfl_trajectory_close_c(file) bind(C, name="chfl_trajectory_close")
     use iso_c_binding
     implicit none
@@ -154,7 +162,7 @@ function chfl_trajectory_close_c(file) bind(C, name="chfl_trajectory_close")
     type(c_ptr), value :: file
 end function
 
-! Function "chfl_frame", at chemfiles.h:203
+! Function "chfl_frame", at chemfiles.h:209
 function chfl_frame_c(natoms) bind(C, name="chfl_frame")
     use iso_c_binding
     implicit none
@@ -162,7 +170,7 @@ function chfl_frame_c(natoms) bind(C, name="chfl_frame")
     integer(kind=c_size_t), value :: natoms
 end function
 
-! Function "chfl_frame_atoms_count", at chemfiles.h:211
+! Function "chfl_frame_atoms_count", at chemfiles.h:217
 function chfl_frame_atoms_count_c(frame, natoms) bind(C, name="chfl_frame_atoms_count")
     use iso_c_binding
     implicit none
@@ -171,7 +179,7 @@ function chfl_frame_atoms_count_c(frame, natoms) bind(C, name="chfl_frame_atoms_
     integer(kind=c_size_t) :: natoms
 end function
 
-! Function "chfl_frame_positions", at chemfiles.h:220
+! Function "chfl_frame_positions", at chemfiles.h:226
 function chfl_frame_positions_c(frame, data, size) bind(C, name="chfl_frame_positions")
     use iso_c_binding
     implicit none
@@ -181,7 +189,7 @@ function chfl_frame_positions_c(frame, data, size) bind(C, name="chfl_frame_posi
     integer(kind=c_size_t), value :: size
 end function
 
-! Function "chfl_frame_set_positions", at chemfiles.h:229
+! Function "chfl_frame_set_positions", at chemfiles.h:235
 function chfl_frame_set_positions_c(frame, data, size) bind(C, name="chfl_frame_set_positions")
     use iso_c_binding
     implicit none
@@ -191,7 +199,7 @@ function chfl_frame_set_positions_c(frame, data, size) bind(C, name="chfl_frame_
     integer(kind=c_size_t), value :: size
 end function
 
-! Function "chfl_frame_velocities", at chemfiles.h:238
+! Function "chfl_frame_velocities", at chemfiles.h:244
 function chfl_frame_velocities_c(frame, data, size) bind(C, name="chfl_frame_velocities")
     use iso_c_binding
     implicit none
@@ -201,7 +209,7 @@ function chfl_frame_velocities_c(frame, data, size) bind(C, name="chfl_frame_vel
     integer(kind=c_size_t), value :: size
 end function
 
-! Function "chfl_frame_set_velocities", at chemfiles.h:247
+! Function "chfl_frame_set_velocities", at chemfiles.h:253
 function chfl_frame_set_velocities_c(frame, data, size) bind(C, name="chfl_frame_set_velocities")
     use iso_c_binding
     implicit none
@@ -211,7 +219,7 @@ function chfl_frame_set_velocities_c(frame, data, size) bind(C, name="chfl_frame
     integer(kind=c_size_t), value :: size
 end function
 
-! Function "chfl_frame_has_velocities", at chemfiles.h:255
+! Function "chfl_frame_has_velocities", at chemfiles.h:261
 function chfl_frame_has_velocities_c(frame, has_vel) bind(C, name="chfl_frame_has_velocities")
     use iso_c_binding
     implicit none
@@ -220,7 +228,7 @@ function chfl_frame_has_velocities_c(frame, has_vel) bind(C, name="chfl_frame_ha
     logical(kind=c_bool) :: has_vel
 end function
 
-! Function "chfl_frame_set_cell", at chemfiles.h:263
+! Function "chfl_frame_set_cell", at chemfiles.h:269
 function chfl_frame_set_cell_c(frame, cell) bind(C, name="chfl_frame_set_cell")
     use iso_c_binding
     implicit none
@@ -229,7 +237,7 @@ function chfl_frame_set_cell_c(frame, cell) bind(C, name="chfl_frame_set_cell")
     type(c_ptr), value, intent(in) :: cell
 end function
 
-! Function "chfl_frame_set_topology", at chemfiles.h:271
+! Function "chfl_frame_set_topology", at chemfiles.h:277
 function chfl_frame_set_topology_c(frame, topology) bind(C, name="chfl_frame_set_topology")
     use iso_c_binding
     implicit none
@@ -238,7 +246,7 @@ function chfl_frame_set_topology_c(frame, topology) bind(C, name="chfl_frame_set
     type(c_ptr), value, intent(in) :: topology
 end function
 
-! Function "chfl_frame_step", at chemfiles.h:279
+! Function "chfl_frame_step", at chemfiles.h:285
 function chfl_frame_step_c(frame, step) bind(C, name="chfl_frame_step")
     use iso_c_binding
     implicit none
@@ -247,7 +255,7 @@ function chfl_frame_step_c(frame, step) bind(C, name="chfl_frame_step")
     integer(kind=c_size_t) :: step
 end function
 
-! Function "chfl_frame_set_step", at chemfiles.h:287
+! Function "chfl_frame_set_step", at chemfiles.h:293
 function chfl_frame_set_step_c(frame, step) bind(C, name="chfl_frame_set_step")
     use iso_c_binding
     implicit none
@@ -256,7 +264,7 @@ function chfl_frame_set_step_c(frame, step) bind(C, name="chfl_frame_set_step")
     integer(kind=c_size_t), value :: step
 end function
 
-! Function "chfl_frame_guess_topology", at chemfiles.h:297
+! Function "chfl_frame_guess_topology", at chemfiles.h:303
 function chfl_frame_guess_topology_c(frame, bonds) bind(C, name="chfl_frame_guess_topology")
     use iso_c_binding
     implicit none
@@ -265,7 +273,7 @@ function chfl_frame_guess_topology_c(frame, bonds) bind(C, name="chfl_frame_gues
     logical(kind=c_bool), value :: bonds
 end function
 
-! Function "chfl_frame_free", at chemfiles.h:304
+! Function "chfl_frame_free", at chemfiles.h:310
 function chfl_frame_free_c(frame) bind(C, name="chfl_frame_free")
     use iso_c_binding
     implicit none
@@ -273,7 +281,7 @@ function chfl_frame_free_c(frame) bind(C, name="chfl_frame_free")
     type(c_ptr), value :: frame
 end function
 
-! Function "chfl_cell", at chemfiles.h:312
+! Function "chfl_cell", at chemfiles.h:318
 function chfl_cell_c(a, b, c) bind(C, name="chfl_cell")
     use iso_c_binding
     implicit none
@@ -283,7 +291,7 @@ function chfl_cell_c(a, b, c) bind(C, name="chfl_cell")
     real(kind=c_double), value :: c
 end function
 
-! Function "chfl_cell_triclinic", at chemfiles.h:320
+! Function "chfl_cell_triclinic", at chemfiles.h:326
 function chfl_cell_triclinic_c(a, b, c, alpha, beta, gamma) bind(C, name="chfl_cell_triclinic")
     use iso_c_binding
     implicit none
@@ -296,7 +304,7 @@ function chfl_cell_triclinic_c(a, b, c, alpha, beta, gamma) bind(C, name="chfl_c
     real(kind=c_double), value :: gamma
 end function
 
-! Function "chfl_cell_from_frame", at chemfiles.h:327
+! Function "chfl_cell_from_frame", at chemfiles.h:333
 function chfl_cell_from_frame_c(frame) bind(C, name="chfl_cell_from_frame")
     use iso_c_binding
     implicit none
@@ -304,7 +312,7 @@ function chfl_cell_from_frame_c(frame) bind(C, name="chfl_cell_from_frame")
     type(c_ptr), value :: frame
 end function
 
-! Function "chfl_cell_volume", at chemfiles.h:335
+! Function "chfl_cell_volume", at chemfiles.h:341
 function chfl_cell_volume_c(cell, V) bind(C, name="chfl_cell_volume")
     use iso_c_binding
     implicit none
@@ -313,7 +321,7 @@ function chfl_cell_volume_c(cell, V) bind(C, name="chfl_cell_volume")
     real(kind=c_double) :: V
 end function
 
-! Function "chfl_cell_lengths", at chemfiles.h:343
+! Function "chfl_cell_lengths", at chemfiles.h:349
 function chfl_cell_lengths_c(cell, a, b, c) bind(C, name="chfl_cell_lengths")
     use iso_c_binding
     implicit none
@@ -324,7 +332,7 @@ function chfl_cell_lengths_c(cell, a, b, c) bind(C, name="chfl_cell_lengths")
     real(kind=c_double) :: c
 end function
 
-! Function "chfl_cell_set_lengths", at chemfiles.h:351
+! Function "chfl_cell_set_lengths", at chemfiles.h:357
 function chfl_cell_set_lengths_c(cell, a, b, c) bind(C, name="chfl_cell_set_lengths")
     use iso_c_binding
     implicit none
@@ -335,7 +343,7 @@ function chfl_cell_set_lengths_c(cell, a, b, c) bind(C, name="chfl_cell_set_leng
     real(kind=c_double), value :: c
 end function
 
-! Function "chfl_cell_angles", at chemfiles.h:359
+! Function "chfl_cell_angles", at chemfiles.h:365
 function chfl_cell_angles_c(cell, alpha, beta, gamma) bind(C, name="chfl_cell_angles")
     use iso_c_binding
     implicit none
@@ -346,7 +354,7 @@ function chfl_cell_angles_c(cell, alpha, beta, gamma) bind(C, name="chfl_cell_an
     real(kind=c_double) :: gamma
 end function
 
-! Function "chfl_cell_set_angles", at chemfiles.h:367
+! Function "chfl_cell_set_angles", at chemfiles.h:373
 function chfl_cell_set_angles_c(cell, alpha, beta, gamma) bind(C, name="chfl_cell_set_angles")
     use iso_c_binding
     implicit none
@@ -357,7 +365,7 @@ function chfl_cell_set_angles_c(cell, alpha, beta, gamma) bind(C, name="chfl_cel
     real(kind=c_double), value :: gamma
 end function
 
-! Function "chfl_cell_matrix", at chemfiles.h:375
+! Function "chfl_cell_matrix", at chemfiles.h:381
 function chfl_cell_matrix_c(cell, mat) bind(C, name="chfl_cell_matrix")
     use iso_c_binding
     implicit none
@@ -366,7 +374,7 @@ function chfl_cell_matrix_c(cell, mat) bind(C, name="chfl_cell_matrix")
     type(c_ptr), value :: mat
 end function
 
-! Function "chfl_cell_type", at chemfiles.h:393
+! Function "chfl_cell_type", at chemfiles.h:399
 function chfl_cell_type_c(cell, type) bind(C, name="chfl_cell_type")
     use iso_c_binding
     implicit none
@@ -375,7 +383,7 @@ function chfl_cell_type_c(cell, type) bind(C, name="chfl_cell_type")
     integer(kind=c_int) :: type
 end function
 
-! Function "chfl_cell_set_type", at chemfiles.h:401
+! Function "chfl_cell_set_type", at chemfiles.h:407
 function chfl_cell_set_type_c(cell, type) bind(C, name="chfl_cell_set_type")
     use iso_c_binding
     implicit none
@@ -384,7 +392,7 @@ function chfl_cell_set_type_c(cell, type) bind(C, name="chfl_cell_set_type")
     integer(kind=c_int), value :: type
 end function
 
-! Function "chfl_cell_periodicity", at chemfiles.h:409
+! Function "chfl_cell_periodicity", at chemfiles.h:415
 function chfl_cell_periodicity_c(cell, x, y, z) bind(C, name="chfl_cell_periodicity")
     use iso_c_binding
     implicit none
@@ -395,7 +403,7 @@ function chfl_cell_periodicity_c(cell, x, y, z) bind(C, name="chfl_cell_periodic
     logical(kind=c_bool) :: z
 end function
 
-! Function "chfl_cell_set_periodicity", at chemfiles.h:417
+! Function "chfl_cell_set_periodicity", at chemfiles.h:423
 function chfl_cell_set_periodicity_c(cell, x, y, z) bind(C, name="chfl_cell_set_periodicity")
     use iso_c_binding
     implicit none
@@ -406,7 +414,7 @@ function chfl_cell_set_periodicity_c(cell, x, y, z) bind(C, name="chfl_cell_set_
     logical(kind=c_bool), value :: z
 end function
 
-! Function "chfl_cell_free", at chemfiles.h:424
+! Function "chfl_cell_free", at chemfiles.h:430
 function chfl_cell_free_c(cell) bind(C, name="chfl_cell_free")
     use iso_c_binding
     implicit none
@@ -414,7 +422,7 @@ function chfl_cell_free_c(cell) bind(C, name="chfl_cell_free")
     type(c_ptr), value :: cell
 end function
 
-! Function "chfl_topology", at chemfiles.h:432
+! Function "chfl_topology", at chemfiles.h:438
 function chfl_topology_c() bind(C, name="chfl_topology")
     use iso_c_binding
     implicit none
@@ -422,7 +430,7 @@ function chfl_topology_c() bind(C, name="chfl_topology")
 
 end function
 
-! Function "chfl_topology_from_frame", at chemfiles.h:439
+! Function "chfl_topology_from_frame", at chemfiles.h:445
 function chfl_topology_from_frame_c(frame) bind(C, name="chfl_topology_from_frame")
     use iso_c_binding
     implicit none
@@ -430,7 +438,7 @@ function chfl_topology_from_frame_c(frame) bind(C, name="chfl_topology_from_fram
     type(c_ptr), value :: frame
 end function
 
-! Function "chfl_topology_atoms_count", at chemfiles.h:447
+! Function "chfl_topology_atoms_count", at chemfiles.h:453
 function chfl_topology_atoms_count_c(topology, natoms) bind(C, name="chfl_topology_atoms_count")
     use iso_c_binding
     implicit none
@@ -439,7 +447,7 @@ function chfl_topology_atoms_count_c(topology, natoms) bind(C, name="chfl_topolo
     integer(kind=c_size_t) :: natoms
 end function
 
-! Function "chfl_topology_append", at chemfiles.h:455
+! Function "chfl_topology_append", at chemfiles.h:461
 function chfl_topology_append_c(topology, atom) bind(C, name="chfl_topology_append")
     use iso_c_binding
     implicit none
@@ -448,7 +456,7 @@ function chfl_topology_append_c(topology, atom) bind(C, name="chfl_topology_appe
     type(c_ptr), value, intent(in) :: atom
 end function
 
-! Function "chfl_topology_remove", at chemfiles.h:463
+! Function "chfl_topology_remove", at chemfiles.h:469
 function chfl_topology_remove_c(topology, i) bind(C, name="chfl_topology_remove")
     use iso_c_binding
     implicit none
@@ -457,7 +465,7 @@ function chfl_topology_remove_c(topology, i) bind(C, name="chfl_topology_remove"
     integer(kind=c_size_t), value :: i
 end function
 
-! Function "chfl_topology_isbond", at chemfiles.h:472
+! Function "chfl_topology_isbond", at chemfiles.h:478
 function chfl_topology_isbond_c(topology, i, j, result) bind(C, name="chfl_topology_isbond")
     use iso_c_binding
     implicit none
@@ -468,7 +476,7 @@ function chfl_topology_isbond_c(topology, i, j, result) bind(C, name="chfl_topol
     logical(kind=c_bool) :: result
 end function
 
-! Function "chfl_topology_isangle", at chemfiles.h:481
+! Function "chfl_topology_isangle", at chemfiles.h:487
 function chfl_topology_isangle_c(topology, i, j, k, result) bind(C, name="chfl_topology_isangle")
     use iso_c_binding
     implicit none
@@ -480,7 +488,7 @@ function chfl_topology_isangle_c(topology, i, j, k, result) bind(C, name="chfl_t
     logical(kind=c_bool) :: result
 end function
 
-! Function "chfl_topology_isdihedral", at chemfiles.h:490
+! Function "chfl_topology_isdihedral", at chemfiles.h:496
 function chfl_topology_isdihedral_c(topology, i, j, k, m, result) bind(C, name="chfl_topology_isdihedral")
     use iso_c_binding
     implicit none
@@ -493,7 +501,7 @@ function chfl_topology_isdihedral_c(topology, i, j, k, m, result) bind(C, name="
     logical(kind=c_bool) :: result
 end function
 
-! Function "chfl_topology_bonds_count", at chemfiles.h:498
+! Function "chfl_topology_bonds_count", at chemfiles.h:504
 function chfl_topology_bonds_count_c(topology, nbonds) bind(C, name="chfl_topology_bonds_count")
     use iso_c_binding
     implicit none
@@ -502,7 +510,7 @@ function chfl_topology_bonds_count_c(topology, nbonds) bind(C, name="chfl_topolo
     integer(kind=c_size_t) :: nbonds
 end function
 
-! Function "chfl_topology_angles_count", at chemfiles.h:506
+! Function "chfl_topology_angles_count", at chemfiles.h:512
 function chfl_topology_angles_count_c(topology, nangles) bind(C, name="chfl_topology_angles_count")
     use iso_c_binding
     implicit none
@@ -511,7 +519,7 @@ function chfl_topology_angles_count_c(topology, nangles) bind(C, name="chfl_topo
     integer(kind=c_size_t) :: nangles
 end function
 
-! Function "chfl_topology_dihedrals_count", at chemfiles.h:514
+! Function "chfl_topology_dihedrals_count", at chemfiles.h:520
 function chfl_topology_dihedrals_count_c(topology, ndihedrals) bind(C, name="chfl_topology_dihedrals_count")
     use iso_c_binding
     implicit none
@@ -520,7 +528,7 @@ function chfl_topology_dihedrals_count_c(topology, ndihedrals) bind(C, name="chf
     integer(kind=c_size_t) :: ndihedrals
 end function
 
-! Function "chfl_topology_bonds", at chemfiles.h:524
+! Function "chfl_topology_bonds", at chemfiles.h:530
 function chfl_topology_bonds_c(topology, data, nbonds) bind(C, name="chfl_topology_bonds")
     use iso_c_binding
     implicit none
@@ -530,7 +538,7 @@ function chfl_topology_bonds_c(topology, data, nbonds) bind(C, name="chfl_topolo
     integer(kind=c_size_t), value :: nbonds
 end function
 
-! Function "chfl_topology_angles", at chemfiles.h:534
+! Function "chfl_topology_angles", at chemfiles.h:540
 function chfl_topology_angles_c(topology, data, nangles) bind(C, name="chfl_topology_angles")
     use iso_c_binding
     implicit none
@@ -540,7 +548,7 @@ function chfl_topology_angles_c(topology, data, nangles) bind(C, name="chfl_topo
     integer(kind=c_size_t), value :: nangles
 end function
 
-! Function "chfl_topology_dihedrals", at chemfiles.h:544
+! Function "chfl_topology_dihedrals", at chemfiles.h:550
 function chfl_topology_dihedrals_c(topology, data, ndihedrals) bind(C, name="chfl_topology_dihedrals")
     use iso_c_binding
     implicit none
@@ -550,7 +558,7 @@ function chfl_topology_dihedrals_c(topology, data, ndihedrals) bind(C, name="chf
     integer(kind=c_size_t), value :: ndihedrals
 end function
 
-! Function "chfl_topology_add_bond", at chemfiles.h:552
+! Function "chfl_topology_add_bond", at chemfiles.h:558
 function chfl_topology_add_bond_c(topology, i, j) bind(C, name="chfl_topology_add_bond")
     use iso_c_binding
     implicit none
@@ -560,7 +568,7 @@ function chfl_topology_add_bond_c(topology, i, j) bind(C, name="chfl_topology_ad
     integer(kind=c_size_t), value :: j
 end function
 
-! Function "chfl_topology_remove_bond", at chemfiles.h:560
+! Function "chfl_topology_remove_bond", at chemfiles.h:566
 function chfl_topology_remove_bond_c(topology, i, j) bind(C, name="chfl_topology_remove_bond")
     use iso_c_binding
     implicit none
@@ -570,7 +578,7 @@ function chfl_topology_remove_bond_c(topology, i, j) bind(C, name="chfl_topology
     integer(kind=c_size_t), value :: j
 end function
 
-! Function "chfl_topology_free", at chemfiles.h:567
+! Function "chfl_topology_free", at chemfiles.h:573
 function chfl_topology_free_c(topology) bind(C, name="chfl_topology_free")
     use iso_c_binding
     implicit none
@@ -578,7 +586,7 @@ function chfl_topology_free_c(topology) bind(C, name="chfl_topology_free")
     type(c_ptr), value :: topology
 end function
 
-! Function "chfl_atom", at chemfiles.h:576
+! Function "chfl_atom", at chemfiles.h:582
 function chfl_atom_c(name) bind(C, name="chfl_atom")
     use iso_c_binding
     implicit none
@@ -586,7 +594,7 @@ function chfl_atom_c(name) bind(C, name="chfl_atom")
     character(len=1, kind=c_char), dimension(*), intent(in) :: name
 end function
 
-! Function "chfl_atom_from_frame", at chemfiles.h:584
+! Function "chfl_atom_from_frame", at chemfiles.h:590
 function chfl_atom_from_frame_c(frame, idx) bind(C, name="chfl_atom_from_frame")
     use iso_c_binding
     implicit none
@@ -595,7 +603,7 @@ function chfl_atom_from_frame_c(frame, idx) bind(C, name="chfl_atom_from_frame")
     integer(kind=c_size_t), value :: idx
 end function
 
-! Function "chfl_atom_from_topology", at chemfiles.h:592
+! Function "chfl_atom_from_topology", at chemfiles.h:598
 function chfl_atom_from_topology_c(topology, idx) bind(C, name="chfl_atom_from_topology")
     use iso_c_binding
     implicit none
@@ -604,7 +612,7 @@ function chfl_atom_from_topology_c(topology, idx) bind(C, name="chfl_atom_from_t
     integer(kind=c_size_t), value :: idx
 end function
 
-! Function "chfl_atom_mass", at chemfiles.h:600
+! Function "chfl_atom_mass", at chemfiles.h:606
 function chfl_atom_mass_c(atom, mass) bind(C, name="chfl_atom_mass")
     use iso_c_binding
     implicit none
@@ -613,7 +621,7 @@ function chfl_atom_mass_c(atom, mass) bind(C, name="chfl_atom_mass")
     real(kind=c_float) :: mass
 end function
 
-! Function "chfl_atom_set_mass", at chemfiles.h:608
+! Function "chfl_atom_set_mass", at chemfiles.h:614
 function chfl_atom_set_mass_c(atom, mass) bind(C, name="chfl_atom_set_mass")
     use iso_c_binding
     implicit none
@@ -622,7 +630,7 @@ function chfl_atom_set_mass_c(atom, mass) bind(C, name="chfl_atom_set_mass")
     real(kind=c_float), value :: mass
 end function
 
-! Function "chfl_atom_charge", at chemfiles.h:616
+! Function "chfl_atom_charge", at chemfiles.h:622
 function chfl_atom_charge_c(atom, charge) bind(C, name="chfl_atom_charge")
     use iso_c_binding
     implicit none
@@ -631,7 +639,7 @@ function chfl_atom_charge_c(atom, charge) bind(C, name="chfl_atom_charge")
     real(kind=c_float) :: charge
 end function
 
-! Function "chfl_atom_set_charge", at chemfiles.h:624
+! Function "chfl_atom_set_charge", at chemfiles.h:630
 function chfl_atom_set_charge_c(atom, charge) bind(C, name="chfl_atom_set_charge")
     use iso_c_binding
     implicit none
@@ -640,7 +648,7 @@ function chfl_atom_set_charge_c(atom, charge) bind(C, name="chfl_atom_set_charge
     real(kind=c_float), value :: charge
 end function
 
-! Function "chfl_atom_name", at chemfiles.h:633
+! Function "chfl_atom_name", at chemfiles.h:639
 function chfl_atom_name_c(atom, name, buffsize) bind(C, name="chfl_atom_name")
     use iso_c_binding
     implicit none
@@ -650,7 +658,7 @@ function chfl_atom_name_c(atom, name, buffsize) bind(C, name="chfl_atom_name")
     integer(kind=c_size_t), value :: buffsize
 end function
 
-! Function "chfl_atom_set_name", at chemfiles.h:641
+! Function "chfl_atom_set_name", at chemfiles.h:647
 function chfl_atom_set_name_c(atom, name) bind(C, name="chfl_atom_set_name")
     use iso_c_binding
     implicit none
@@ -659,7 +667,7 @@ function chfl_atom_set_name_c(atom, name) bind(C, name="chfl_atom_set_name")
     character(len=1, kind=c_char), dimension(*), intent(in) :: name
 end function
 
-! Function "chfl_atom_full_name", at chemfiles.h:650
+! Function "chfl_atom_full_name", at chemfiles.h:656
 function chfl_atom_full_name_c(atom, name, buffsize) bind(C, name="chfl_atom_full_name")
     use iso_c_binding
     implicit none
@@ -669,7 +677,7 @@ function chfl_atom_full_name_c(atom, name, buffsize) bind(C, name="chfl_atom_ful
     integer(kind=c_size_t), value :: buffsize
 end function
 
-! Function "chfl_atom_vdw_radius", at chemfiles.h:658
+! Function "chfl_atom_vdw_radius", at chemfiles.h:664
 function chfl_atom_vdw_radius_c(atom, radius) bind(C, name="chfl_atom_vdw_radius")
     use iso_c_binding
     implicit none
@@ -678,7 +686,7 @@ function chfl_atom_vdw_radius_c(atom, radius) bind(C, name="chfl_atom_vdw_radius
     real(kind=c_double) :: radius
 end function
 
-! Function "chfl_atom_covalent_radius", at chemfiles.h:666
+! Function "chfl_atom_covalent_radius", at chemfiles.h:672
 function chfl_atom_covalent_radius_c(atom, radius) bind(C, name="chfl_atom_covalent_radius")
     use iso_c_binding
     implicit none
@@ -687,7 +695,7 @@ function chfl_atom_covalent_radius_c(atom, radius) bind(C, name="chfl_atom_coval
     real(kind=c_double) :: radius
 end function
 
-! Function "chfl_atom_atomic_number", at chemfiles.h:674
+! Function "chfl_atom_atomic_number", at chemfiles.h:680
 function chfl_atom_atomic_number_c(atom, number) bind(C, name="chfl_atom_atomic_number")
     use iso_c_binding
     implicit none
@@ -696,7 +704,7 @@ function chfl_atom_atomic_number_c(atom, number) bind(C, name="chfl_atom_atomic_
     integer(kind=c_int) :: number
 end function
 
-! Function "chfl_atom_type", at chemfiles.h:695
+! Function "chfl_atom_type", at chemfiles.h:701
 function chfl_atom_type_c(atom, type) bind(C, name="chfl_atom_type")
     use iso_c_binding
     implicit none
@@ -705,7 +713,7 @@ function chfl_atom_type_c(atom, type) bind(C, name="chfl_atom_type")
     integer(kind=c_int) :: type
 end function
 
-! Function "chfl_atom_set_type", at chemfiles.h:703
+! Function "chfl_atom_set_type", at chemfiles.h:709
 function chfl_atom_set_type_c(atom, type) bind(C, name="chfl_atom_set_type")
     use iso_c_binding
     implicit none
@@ -714,7 +722,7 @@ function chfl_atom_set_type_c(atom, type) bind(C, name="chfl_atom_set_type")
     integer(kind=c_int), value :: type
 end function
 
-! Function "chfl_atom_free", at chemfiles.h:710
+! Function "chfl_atom_free", at chemfiles.h:716
 function chfl_atom_free_c(atom) bind(C, name="chfl_atom_free")
     use iso_c_binding
     implicit none
