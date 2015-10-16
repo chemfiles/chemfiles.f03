@@ -122,6 +122,7 @@ Error and logging functions
     :field subroutine set_topology_file:
     :field subroutine cell:
     :field subroutine nstep:
+    :field subroutine sync:
     :field subroutine close:
 
     The initialization routine are ``open`` and ``with_format``, and the memory
@@ -199,10 +200,16 @@ Error and logging functions
     :parameter integer nsteps: This will contain the number of steps
     :optional integer status [optional]: The status code
 
+.. f:subroutine:: sync(status)
+
+    Flush any buffered content to the hard drive.
+
+    :optional integer status [optional]: The status code
+
+
 .. f:subroutine:: close(status)
 
-    Close a trajectory file, flush any buffer content to the hard drive, and
-    free the associated memory
+    Close a trajectory file, and free the associated memory
 
     :optional integer status [optional]: The status code
 
