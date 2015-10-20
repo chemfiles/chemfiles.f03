@@ -47,4 +47,12 @@ program convert
         if (status /= 0) stop "Error while writing ouput file"
     end do
 
+    ! Cleanup the allocated memory
+    call input%close()
+    call ouput_file%close()
+    call frame%free()
+    call cell%free()
+    call water_topology%free()
+    call O%free()
+    call H%free()
 end program

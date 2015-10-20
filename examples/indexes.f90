@@ -43,4 +43,8 @@ program indexes_
         write(*,*) "  - ", indexes(i)
     end do
 
+    ! Cleanup the allocated memory
+    deallocate(indexes, positions)
+    call traj%close()
+    call frame%free()
 end program

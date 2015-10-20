@@ -55,7 +55,7 @@ program rmsd_
 
     write(*, *) "Root-mean square displacement is: ", rmsd
 
-    ! Free the memory
+    ! Cleanup the allocated memory
     call traj%close()
     call frame%free()
     deallocate(distances, positions)
