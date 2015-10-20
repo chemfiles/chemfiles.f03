@@ -3,26 +3,12 @@
 [![Build Status](https://travis-ci.org/chemfiles/chemfiles.f03.svg?branch=master)](https://travis-ci.org/chemfiles/chemfiles.f03)
 [![codecov.io](http://codecov.io/github/chemfiles/chemfiles.f03/coverage.svg?branch=master)](http://codecov.io/github/chemfiles/chemfiles.f03?branch=master)
 
-This repository contains the fortran 2003 binding to the [chemfiles](https://github.com/chemfiles/chemfiles) library.
-
-It is known to compile with gfortran 4.9.2 and ifort 14. If you manage to build this code
-with any other compiler, please let me know so that I can add it here.
-
-## Getting started
-
-You will need to install all the dependencies of the main C++ lib, as [documented here](http://chemfiles.readthedocs.org/en/latest/installation.html). Then run
-
-```bash
-mkdir build
-cd build
-cmake ..  # you can use any of the chemfiles C++ options here
-make install
-```
+This repository contains the fortran 2003 binding to the
+[chemfiles](https://github.com/chemfiles/chemfiles) library. The
+[documentation](http://chemfiles.readthedocs.org/projects/chemfiles-fortran/) contains
+the installation instructions.
 
 ## Usage example
-
-In order to use chemfiles, you need to link your code against `libchemfiles_f` and
-`libchemfiles`, using the flags `-lchemfiles -lchemfiles_f`.
 
 Here is a simple example of how the usage feels in Fortran:
 
@@ -60,7 +46,7 @@ program example
 }
 ```
 
-You can find other examples in the `examples` directory.
+You can find more examples in the `examples` directory.
 
 ## Bug reports, feature requests
 
