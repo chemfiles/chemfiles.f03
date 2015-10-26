@@ -7,6 +7,14 @@ The ``chemfiles`` module is built around the 5 main types of chemfiles: ``chfl_t
 ``chfl_frame``, ``chfl_cell``, ``chfl_topology``, and ``chfl_atom``. For more
 information about these types, please see the chemfiles `overview`_.
 
+.. warning::
+   All indexing in chemfiles is 0-based! That means that the first atom in a frame
+   have the index 0, not 1. This is because no translation is made from the
+   underlying C library.
+
+   This may change in future release to use 1-based indexing, which is more familiar
+   to Fortran developers.
+
 .. _overview: http://chemfiles.readthedocs.org/en/latest/overview.html
 
 Naming conventions and call conventions
