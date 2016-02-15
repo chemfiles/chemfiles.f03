@@ -44,6 +44,15 @@ be called. After a call the the ``free`` subroutine, the ``init`` subroutine
 can be called again whithout any memory leak risk. Not initializing chemfiles
 variables will lead to segmentations faults.
 
+Miscellaneous functions
+---------------------------
+
+.. f:subroutine:: chfl_log_version(status)
+
+    Get the version of the chemfiles library as a string.
+
+    :optional integer status [optional]: The status code
+
 Error and logging functions
 ---------------------------
 
@@ -62,32 +71,35 @@ Error and logging functions
 
 .. f:subroutine:: chfl_loglevel(level[, status])
 
-    Set the current log level to ``level``.
+    Get the current maximal logging level
+
+    :paramter integer(kind=kind(CHFL_LOG_LEVEL)): A variable that will contain the logging level
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: chfl_set_loglevel(level[, status])
+
+    Set the maximal logging level to ``level``
 
     :paramter integer(kind=kind(CHFL_LOG_LEVEL)): The new logging level
     :optional integer status [optional]: The status code
 
-    The following logging level are available:
+The following logging level are available:
 
-    .. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_NONE
+.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_ERROR
 
-        Do not log anything
+    Only log errors
 
-    .. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_ERROR
+.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_WARNING
 
-        Only log errors
+    Log warnings and erors. This is the default.
 
-    .. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_WARNING
+.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_INFO
 
-        Log warnings and erors. This is the default.
+    Log infos, warnings and errors
 
-    .. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_INFO
+.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_DEBUG
 
-        Log infos, warnings and errors
-
-    .. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_DEBUG
-
-        Log everything
+    Log everything
 
 
 .. f:subroutine:: chfl_logfile(file[, status])
@@ -100,6 +112,18 @@ Error and logging functions
 .. f:subroutine:: chfl_log_stderr(status)
 
     Redirect the logs to the standard error output. This is enabled by default.
+
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: chfl_log_stdout(status)
+
+    Redirect the logs to the standard output.
+
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: chfl_log_silent(status)
+
+    Remove all logging output.
 
     :optional integer status [optional]: The status code
 
@@ -225,15 +249,16 @@ Error and logging functions
 
     :field subroutine init:
     :field subroutine atoms_count:
+    :field subroutine resize:
     :field subroutine positions:
-    :field subroutine set_positions:
     :field subroutine velocities:
-    :field subroutine set_velocities:
+    :field subroutine add_velocities:
     :field subroutine has_velocities:
     :field subroutine set_cell:
     :field subroutine set_topology:
     :field subroutine step:
     :field subroutine set_step:
+    :field subroutine selection:
     :field subroutine free:
 
 .. f:subroutine:: init(natoms[, status])
@@ -251,37 +276,44 @@ Error and logging functions
     :parameter integer natoms: the number of atoms in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: positions(data, size[, status])
+.. f:subroutine:: resize(natoms[, status])
 
-    Get the positions from a frame
+    Resize the positions and the velocities in frame, to make space for ``natoms`` atoms.
+    This function may invalidate any pointer to the positions or the velocities if the new
+    size is bigger than the old one. In all the cases, previous data is conserved. This
+    function conserve the presence of abscence of velocities.
 
-    :parameter real data [dimension(3, N)]: A 3xN float array to be filled with the data
-    :parameter integer size: The array size (N).
+    :parameter integer natoms: the new number of atoms in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_positions(data, size[, status])
+.. f:subroutine:: positions(data, size[, status])
 
-    Set the positions of a frame
+    Get a pointer to the positions array from a frame. The positions are stored as a ``3
+    x N`` array, this function set a pointer to point to the first element of this array,
+    and give the value of N in the ``size`` parameter. If the frame is resized (by writing
+    to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
 
-    :parameter real data [dimension(3, N)]: A 3xN float array containing the positions in column-major order.
-    :parameter integer size: The array size (N).
-
+    :parameter real data [dimension(\:, \:), pointer]: A pointer to a float array containing the positions
+    :parameter integer size: After the call, contains the array size (N).
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: velocities(data, size[, status])
 
-    Get the velocities from a frame, if they exists
+    Get a pointer to the velocities array from a frame. The velocities are stored as a ``3
+    x N`` array, this function set a pointer to point to the first element of this array,
+    and give the value of N in the ``size`` parameter. If the frame is resized (by writing
+    to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
 
-    :parameter real data [dimension(3, N)]: A 3xN float array to be filled with the data
+    :parameter real data [dimension(\:, \:), pointer]: A pointer to a float array containing the velocities
     :parameter integer size: The array size (N).
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_velocities(data, size[, status])
+.. f:subroutine:: add_velocities([status])
 
-    Set the velocities of a frame.
+    Add velocity storage to this frame. The storage is initialized with the result of
+    ``chfl_frame%atoms_count`` as number of atoms. If the frame already have velocities,
+    this does nothing.
 
-    :parameter real data [dimension(3, N)]: A 3xN float array containing the velocities in column-major order.
-    :parameter integer size: The array size (N).
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: has_velocities(has_vel[, status])
@@ -326,6 +358,25 @@ Error and logging functions
     the bond list.
 
     :parameter logical bonds: Should we recompute the bonds from the positions or not ?
+    :optional integer status [optional]: The status code
+
+
+.. f:subroutine:: selection(selection, matched, natoms)
+
+    Select atoms in a frame, from a specific selection string.
+
+    This function select atoms in a frame matching a selection string. For example,
+    ``"name H and x > 4"`` will select all the atoms with name ``"H"`` and ``x``
+    coordinate less than 4. See the C++ documentation for the full selection language.
+
+    Results of this function are used to fill the ``matched`` pre-allocated array
+    containing ``natoms`` logical, where ``natoms`` is the number of atoms in the frame.
+    The array will contain ``.true.`` at position ``i`` if the atom at position ``i``
+    matches the selection string, and false otherwise.
+
+    :parameter integer natoms: The selection string
+    :parameter logical matched [dimension(\:)]: A pre-allocated array of size ``natoms``
+    :parameter integer natoms: The size of the ``matched`` array. This must be the same size as ``chfl_frame%atoms_count``
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: free(status)
@@ -415,7 +466,7 @@ Error and logging functions
     :parameter real gamma: the new gamma angles, in degrees
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: matrix(mat[, status])
+.. f:subroutine:: matrix(matrix[, status])
 
     Get the unit cell matricial representation, i.e. the representation of the three
     base vectors arranged as:
@@ -427,7 +478,7 @@ Error and logging functions
         |  0   0  c_z |
 
 
-    :parameter real mat [dimension(3, 3)]: the matrix to fill.
+    :parameter real matrix [dimension(3, 3)]: the matrix to fill.
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: type(type[, status])
@@ -456,24 +507,6 @@ Error and logging functions
     Set the cell type
 
     :parameter integer type [kind=kind(CHFL_CELL_TYPES)]: the new type of the cell
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: periodicity(x, y, z[, status])
-
-    Get the cell periodic boundary conditions along the three axis
-
-    :parameter logical x: the periodicity of the cell along the x axis.
-    :parameter logical y: the periodicity of the cell along the y axis.
-    :parameter logical z: the periodicity of the cell along the z axis.
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: set_periodicity(x, y, z[, status])
-
-    Set the cell periodic boundary conditions along the three axis
-
-    :parameter logical x: the new periodicity of the cell along the x axis.
-    :parameter logical y: the new periodicity of the cell along the y axis.
-    :parameter logical z: the new periodicity of the cell along the z axis.
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: free(status)
@@ -786,10 +819,10 @@ Error and logging functions
 
         Element from the periodic table of elements.
 
-    .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_CORSE_GRAIN
+    .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_COARSE_GRAINED
 
-        Corse-grained atom are composed of more than one element: CH3 groups,
-        amino-acids are corse-grained atoms.
+        Coarse-grained atom are composed of more than one element: CH3 groups,
+        amino-acids are coarse-grained atoms.
 
     .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_DUMMY
 
