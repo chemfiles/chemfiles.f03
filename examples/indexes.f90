@@ -9,7 +9,7 @@ program indexes_
     type(chfl_trajectory) :: traj
     type(chfl_frame) :: frame
 
-    real(real32), dimension(:, :), allocatable :: positions
+    real(real32), dimension(:, :), pointer :: positions
     integer, dimension(:), allocatable :: indexes
     integer(int64) :: natoms, i, j, status
 
@@ -20,11 +20,8 @@ program indexes_
         stop "Error"
     end if
 
-    ! Read the number of atoms
-    call frame%atoms_count(natoms)
-
-    allocate(indexes(natoms), positions(3, natoms))
     call frame%positions(positions, natoms)
+    allocate(indexes(natoms))
 
     indexes = -1
     j = 1

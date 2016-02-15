@@ -8,7 +8,7 @@ program rmsd_
 
     type(chfl_trajectory) :: traj
     type(chfl_frame)      :: frame
-    real(kind=real32), dimension(:, :), allocatable :: positions
+    real(kind=real32), dimension(:, :), pointer :: positions
     real(kind=real64), dimension(:),    allocatable :: distances
     integer(kind=int64) :: nsteps = 0, natoms=0, i, status
     real(kind=real64) :: distance = 0, mean = 0, rmsd = 0

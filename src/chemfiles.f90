@@ -15,11 +15,13 @@ module chemfiles
     ! Export types
     public :: chfl_trajectory, chfl_frame, chfl_cell, chfl_topology, chfl_atom
     ! Export enums
-    public:: CHFL_LOG_LEVEL, CHFL_LOG_NONE, CHFL_LOG_ERROR, CHFL_LOG_WARNING, CHFL_LOG_INFO, CHFL_LOG_DEBUG
+    public:: CHFL_LOG_LEVEL, CHFL_LOG_ERROR, CHFL_LOG_WARNING, CHFL_LOG_INFO, CHFL_LOG_DEBUG
     public:: CHFL_CELL_TYPES, CHFL_CELL_ORTHOROMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
-    public:: CHFL_ATOM_TYPES, CHFL_ATOM_ELEMENT, CHFL_ATOM_CORSE_GRAIN, CHFL_ATOM_DUMMY, CHFL_ATOM_UNDEFINED
+    public:: CHFL_ATOM_TYPES, CHFL_ATOM_ELEMENT, CHFL_ATOM_COARSE_GRAINED, CHFL_ATOM_DUMMY, CHFL_ATOM_UNDEFINED
     ! Export free functions
-    public :: chfl_log_stderr, chfl_logfile, chfl_loglevel, chfl_set_loglevel, chfl_last_error, chfl_strerror
+    public :: chfl_version, chfl_log_stderr, chfl_log_stdout, chfl_log_silent
+    public :: chfl_logfile, chfl_loglevel, chfl_set_loglevel
+    public :: chfl_last_error, chfl_strerror
 
     include "generated/cenums.f90"
     include "generated/cdef.f90"

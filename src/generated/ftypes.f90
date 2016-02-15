@@ -55,25 +55,6 @@ contains
     procedure :: close => chfl_trajectory_close
 end type
 
-type chfl_frame
-    private
-    type(c_ptr) :: ptr
-contains
-    procedure :: init => chfl_frame_init_
-    procedure :: atoms_count => chfl_frame_atoms_count
-    procedure :: positions => chfl_frame_positions
-    procedure :: set_positions => chfl_frame_set_positions
-    procedure :: velocities => chfl_frame_velocities
-    procedure :: set_velocities => chfl_frame_set_velocities
-    procedure :: has_velocities => chfl_frame_has_velocities
-    procedure :: set_cell => chfl_frame_set_cell
-    procedure :: set_topology => chfl_frame_set_topology
-    procedure :: step => chfl_frame_step
-    procedure :: set_step => chfl_frame_set_step
-    procedure :: guess_topology => chfl_frame_guess_topology
-    procedure :: free => chfl_frame_free
-end type
-
 type chfl_atom
     private
     type(c_ptr) :: ptr
@@ -111,7 +92,25 @@ contains
     procedure :: matrix => chfl_cell_matrix
     procedure :: type => chfl_cell_type
     procedure :: set_type => chfl_cell_set_type
-    procedure :: periodicity => chfl_cell_periodicity
-    procedure :: set_periodicity => chfl_cell_set_periodicity
     procedure :: free => chfl_cell_free
+end type
+
+type chfl_frame
+    private
+    type(c_ptr) :: ptr
+contains
+    procedure :: init => chfl_frame_init_
+    procedure :: atoms_count => chfl_frame_atoms_count
+    procedure :: positions => chfl_frame_positions
+    procedure :: velocities => chfl_frame_velocities
+    procedure :: resize => chfl_frame_resize
+    procedure :: add_velocities => chfl_frame_add_velocities
+    procedure :: has_velocities => chfl_frame_has_velocities
+    procedure :: set_cell => chfl_frame_set_cell
+    procedure :: set_topology => chfl_frame_set_topology
+    procedure :: step => chfl_frame_step
+    procedure :: set_step => chfl_frame_set_step
+    procedure :: guess_topology => chfl_frame_guess_topology
+    procedure :: selection => chfl_frame_selection
+    procedure :: free => chfl_frame_free
 end type

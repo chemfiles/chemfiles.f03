@@ -18,12 +18,12 @@ program cell_test
     call check((status == 0), "chfl_loglevel")
     call check((level == CHFL_LOG_WARNING), "chfl_loglevel")
 
-    call chfl_set_loglevel(CHFL_LOG_NONE, status=status)
+    call chfl_set_loglevel(CHFL_LOG_DEBUG, status=status)
     call check((status == 0), "chfl_set_loglevel")
 
     call chfl_loglevel(level, status=status)
     call check((status == 0), "chfl_loglevel")
-    call check((level == CHFL_LOG_NONE), "chfl_loglevel")
+    call check((level == CHFL_LOG_DEBUG), "chfl_loglevel")
 
     call chfl_logfile("test.log", status=status)
     call check((status == 0), "chfl_logfile")

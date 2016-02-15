@@ -16,11 +16,10 @@
 
 
 enum, bind(C)
-    enumerator :: CHFL_LOG_NONE = 0
-    enumerator :: CHFL_LOG_ERROR = 1
-    enumerator :: CHFL_LOG_WARNING = 2
-    enumerator :: CHFL_LOG_INFO = 3
-    enumerator :: CHFL_LOG_DEBUG = 4
+    enumerator :: CHFL_LOG_ERROR = 0
+    enumerator :: CHFL_LOG_WARNING = 1
+    enumerator :: CHFL_LOG_INFO = 2
+    enumerator :: CHFL_LOG_DEBUG = 3
     ! Enumeration name:
     enumerator :: CHFL_LOG_LEVEL
 end enum
@@ -35,7 +34,7 @@ end enum
 
 enum, bind(C)
     enumerator :: CHFL_ATOM_ELEMENT = 0
-    enumerator :: CHFL_ATOM_CORSE_GRAIN = 1
+    enumerator :: CHFL_ATOM_COARSE_GRAINED = 1
     enumerator :: CHFL_ATOM_DUMMY = 2
     enumerator :: CHFL_ATOM_UNDEFINED = 3
     ! Enumeration name:

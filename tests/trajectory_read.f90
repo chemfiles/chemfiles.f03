@@ -14,7 +14,8 @@ program trajectory_read
     character(len=32) :: name
     integer :: status, i
     integer(kind=int64) :: natoms, n
-    real(kind=real32) :: pos_1(3), pos_125(3), pos(3, 297)
+    real(kind=real32) :: pos_1(3), pos_125(3)
+    real(kind=real32), pointer :: positions(:, :)
     real(kind=real64) :: a, b, c
 
     ! ================================================================================== !
@@ -39,19 +40,16 @@ program trajectory_read
     call file%read(frame, status=status)
     call check((status == 0), "file%read")
 
-    call frame%atoms_count(natoms, status=status)
-    call check((status == 0), "frame%atoms_count")
-    call check((natoms == 297), "frame%atoms_count")
-
     ! Check positions in the first frame
     pos_1 = [0.417219, 8.303366, 11.737172]
     pos_125 = [5.099554, -0.045104, 14.153846]
-    call frame%positions(pos, natoms, status=status)
+    call frame%positions(positions, natoms, status=status)
     call check((status == 0), "frame%positions")
+    call check((natoms == 297), "frame%positions")
 
     do i=1,3
-        call check((pos_1(i) == pos(i, 1)), "frame%positions")
-        call check((pos_125(i) == pos(i, 125)), "frame%positions")
+        call check((pos_1(i) == positions(i, 1)), "frame%positions")
+        call check((pos_125(i) == positions(i, 125)), "frame%positions")
     end do
 
     ! Check topology in the first frame
@@ -108,12 +106,12 @@ program trajectory_read
     pos_1(1) = 0.761277;  pos_1(2) = 8.106125;   pos_1(3) = 10.622949;
     pos_125(1) = 5.13242; pos_125(2) = 0.079862; pos_125(3) = 14.194161;
 
-    call frame%positions(pos, natoms, status=status)
+    call frame%positions(positions, natoms, status=status)
     call check((status == 0), "frame%positions")
 
     do i=1,3
-        call check((pos_1(i) == pos(i, 1)), "frame%positions")
-        call check((pos_125(i) == pos(i, 125)), "frame%positions")
+        call check((pos_1(i) == positions(i, 1)), "frame%positions")
+        call check((pos_125(i) == positions(i, 125)), "frame%positions")
     end do
 
     ! Get the atom from a frame

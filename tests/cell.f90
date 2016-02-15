@@ -9,7 +9,6 @@ program cell_test
     real(kind=real64), dimension(3, 3) :: expected_mat, mat
     integer :: status, i, j
     integer(kind=kind(CHFL_CELL_TYPES)) :: cell_type
-    logical(1) :: x, y, z, F = .false., T = .true.
 
     call cell%init(2d0, 3d0, 4d0, status=status)
     call check((status == 0), "cell%init")
@@ -70,20 +69,6 @@ program cell_test
     call check((a == 80.0), "cell%angles")
     call check((b == 89.0), "cell%angles")
     call check((c == 100.0), "cell%angles")
-
-    call cell%periodicity(x, y, z, status=status)
-    call check((status == 0), "cell%periodicity")
-    call check((x .eqv. .true.), "cell%periodicity")
-    call check((y .eqv. .true.), "cell%periodicity")
-    call check((z .eqv. .true.), "cell%periodicity")
-
-    call cell%set_periodicity(F, T, F, status=status)
-    call check((status == 0), "cell%set_periodicity")
-    call cell%periodicity(x, y, z, status=status)
-    call check((status == 0), "cell%periodicity")
-    call check((x .eqv. .false.), "cell%periodicity")
-    call check((y .eqv. .true.), "cell%periodicity")
-    call check((z .eqv. .false.), "cell%periodicity")
 
     call cell%free(status=status)
     call check((status == 0), "cell%free")

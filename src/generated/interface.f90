@@ -15,6 +15,16 @@
 ! =========================================================================== !
 
 
+function chfl_version() result(string)
+    implicit none
+
+    character(len=1024) :: string
+    type(c_ptr) :: c_string
+
+    c_string = chfl_version_c()
+    string = c_to_f_str(c_string)
+end function
+
 function chfl_strerror(status) result(string)
     implicit none
     integer(kind=c_int), value :: status
@@ -71,6 +81,18 @@ subroutine chfl_logfile(file, status)
     end if
 end subroutine
 
+subroutine chfl_log_stdout(status)
+    implicit none
+
+    integer, optional :: status
+    integer :: status_tmp_
+
+    status_tmp_ = chfl_log_stdout_c()
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
 subroutine chfl_log_stderr(status)
     implicit none
 
@@ -78,6 +100,18 @@ subroutine chfl_log_stderr(status)
     integer :: status_tmp_
 
     status_tmp_ = chfl_log_stderr_c()
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_log_silent(status)
+    implicit none
+
+    integer, optional :: status
+    integer :: status_tmp_
+
+    status_tmp_ = chfl_log_silent_c()
     if (present(status)) then
         status = status_tmp_
     end if
@@ -277,27 +311,15 @@ end subroutine
 
 subroutine chfl_frame_positions(this, data, size, status)
     implicit none
-    class(chfl_frame), intent(in) :: this
-    real(kind=c_float), dimension(:, :), target :: data
-    integer(kind=c_size_t), value :: size
-    integer, optional :: status
-    integer :: status_tmp_
-
-    status_tmp_ = chfl_frame_positions_c(this%ptr, c_loc(data), size)
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_frame_set_positions(this, data, size, status)
-    implicit none
     class(chfl_frame) :: this
-    real(kind=c_float), intent(in), dimension(:, :), target :: data
-    integer(kind=c_size_t), value :: size
+    real(kind=c_float), dimension(:, :), pointer :: data
+    integer(kind=c_size_t) :: size
     integer, optional :: status
     integer :: status_tmp_
+    type(c_ptr), target :: c_data_
 
-    status_tmp_ = chfl_frame_set_positions_c(this%ptr, c_loc(data), size)
+    status_tmp_ = chfl_frame_positions_c(this%ptr, c_loc(c_data_), size)
+    call c_f_pointer(c_data_, data, shape=[3, size])
     if (present(status)) then
         status = status_tmp_
     end if
@@ -305,40 +327,53 @@ end subroutine
 
 subroutine chfl_frame_velocities(this, data, size, status)
     implicit none
-    class(chfl_frame), intent(in) :: this
-    real(kind=c_float), dimension(:, :), target :: data
-    integer(kind=c_size_t), value :: size
+    class(chfl_frame) :: this
+    real(kind=c_float), dimension(:, :), pointer :: data
+    integer(kind=c_size_t) :: size
     integer, optional :: status
     integer :: status_tmp_
+    type(c_ptr), target :: c_data_
 
-    status_tmp_ = chfl_frame_velocities_c(this%ptr, c_loc(data), size)
+    status_tmp_ = chfl_frame_velocities_c(this%ptr, c_loc(c_data_), size)
+    call c_f_pointer(c_data_, data, shape=[3, size])
     if (present(status)) then
         status = status_tmp_
     end if
 end subroutine
 
-subroutine chfl_frame_set_velocities(this, data, size, status)
+subroutine chfl_frame_resize(this, natoms, status)
     implicit none
     class(chfl_frame) :: this
-    real(kind=c_float), intent(in), dimension(:, :), target :: data
-    integer(kind=c_size_t), value :: size
+    integer(kind=c_size_t), value :: natoms
     integer, optional :: status
     integer :: status_tmp_
 
-    status_tmp_ = chfl_frame_set_velocities_c(this%ptr, c_loc(data), size)
+    status_tmp_ = chfl_frame_resize_c(this%ptr, natoms)
     if (present(status)) then
         status = status_tmp_
     end if
 end subroutine
 
-subroutine chfl_frame_has_velocities(this, has_vel, status)
+subroutine chfl_frame_add_velocities(this, status)
     implicit none
-    class(chfl_frame), intent(in) :: this
-    logical(kind=c_bool) :: has_vel
+    class(chfl_frame) :: this
     integer, optional :: status
     integer :: status_tmp_
 
-    status_tmp_ = chfl_frame_has_velocities_c(this%ptr, has_vel)
+    status_tmp_ = chfl_frame_add_velocities_c(this%ptr)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_has_velocities(this, has_velocities, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    logical(kind=c_bool) :: has_velocities
+    integer, optional :: status
+    integer :: status_tmp_
+
+    status_tmp_ = chfl_frame_has_velocities_c(this%ptr, has_velocities)
     if (present(status)) then
         status = status_tmp_
     end if
@@ -404,6 +439,21 @@ subroutine chfl_frame_guess_topology(this, bonds, status)
     integer :: status_tmp_
 
     status_tmp_ = chfl_frame_guess_topology_c(this%ptr, bonds)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_selection(this, selection, matched, natoms, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    character(len=*), intent(in) :: selection
+    logical(kind=c_bool), dimension(:), target :: matched
+    integer(kind=c_size_t), value :: natoms
+    integer, optional :: status
+    integer :: status_tmp_
+
+    status_tmp_ = chfl_frame_selection_c(this%ptr, f_to_c_str(selection), c_loc(matched), natoms)
     if (present(status)) then
         status = status_tmp_
     end if
@@ -561,14 +611,14 @@ subroutine chfl_cell_set_angles(this, alpha, beta, gamma, status)
     end if
 end subroutine
 
-subroutine chfl_cell_matrix(this, mat, status)
+subroutine chfl_cell_matrix(this, matrix, status)
     implicit none
     class(chfl_cell), intent(in) :: this
-    real(kind=c_double), dimension(3, 3), target :: mat
+    real(kind=c_double), dimension(3, 3), target :: matrix
     integer, optional :: status
     integer :: status_tmp_
 
-    status_tmp_ = chfl_cell_matrix_c(this%ptr, c_loc(mat))
+    status_tmp_ = chfl_cell_matrix_c(this%ptr, c_loc(matrix))
     if (present(status)) then
         status = status_tmp_
     end if
@@ -595,36 +645,6 @@ subroutine chfl_cell_set_type(this, type, status)
     integer :: status_tmp_
 
     status_tmp_ = chfl_cell_set_type_c(this%ptr, type)
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_cell_periodicity(this, x, y, z, status)
-    implicit none
-    class(chfl_cell), intent(in) :: this
-    logical(kind=c_bool) :: x
-    logical(kind=c_bool) :: y
-    logical(kind=c_bool) :: z
-    integer, optional :: status
-    integer :: status_tmp_
-
-    status_tmp_ = chfl_cell_periodicity_c(this%ptr, x, y, z)
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_cell_set_periodicity(this, x, y, z, status)
-    implicit none
-    class(chfl_cell) :: this
-    logical(kind=c_bool), value :: x
-    logical(kind=c_bool), value :: y
-    logical(kind=c_bool), value :: z
-    integer, optional :: status
-    integer :: status_tmp_
-
-    status_tmp_ = chfl_cell_set_periodicity_c(this%ptr, x, y, z)
     if (present(status)) then
         status = status_tmp_
     end if

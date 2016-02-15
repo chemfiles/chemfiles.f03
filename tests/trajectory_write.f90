@@ -1,5 +1,5 @@
 PROGRAM trajectory_read
-    use iso_fortran_env, only: real32, real64, int32
+    use iso_fortran_env, only: real32, real64, int64
     use chemfiles
     use testing
 
@@ -9,7 +9,8 @@ PROGRAM trajectory_read
     type(chfl_atom) :: atom
     type(chfl_frame) :: frame
 
-    real(kind=real32) :: pos(3, 4), pos_2(3, 6)
+    real(kind=real32), dimension(:, :), pointer :: positions
+    integer(kind=int64) :: natoms
     character(len=2048) :: expected_content, content
     character :: EOL = char(10)
     integer :: status, i, j
@@ -29,12 +30,6 @@ PROGRAM trajectory_read
                        "He 4 5 6" // EOL // &
                        "He 4 5 6" // EOL
 
-    do i=1,3
-        do j=1,4
-            pos(i, j) = real(i)
-        end do
-    end do
-
     call topology%init(status=status)
     call check((status == 0), "topology%init")
     call atom%init("He", status=status)
@@ -47,8 +42,17 @@ PROGRAM trajectory_read
 
     call frame%init(0, status=status)
     call check((status == 0), "frame%init")
-    call frame%set_positions(pos, 4, status=status)
-    call check((status == 0), "frame%set_positions")
+    call frame%resize(4, status=status)
+    call check((status == 0), "frame%resize")
+    call frame%positions(positions, natoms, status=status)
+    call check((status == 0), "frame%positions")
+    call check((natoms == 4), "frame%positions")
+    do i=1,3
+        do j=1,4
+            positions(i, j) = real(i)
+        end do
+    end do
+
     call frame%set_topology(topology, status=status)
     call check((status == 0), "frame%set_topology")
 
@@ -57,19 +61,23 @@ PROGRAM trajectory_read
     call file%write(frame, status=status)
     call check((status == 0), "file%write")
 
+    call topology%append(atom, status=status)
+    call check((status == 0), "topology%append")
+    call topology%append(atom, status=status)
+    call check((status == 0), "topology%append")
+
+    call frame%resize(6, status=status)
+    call check((status == 0), "frame%resize")
+    call frame%positions(positions, natoms, status=status)
+    call check((status == 0), "frame%positions")
+    call check((natoms == 6), "frame%positions")
+
     do i=1,3
         do j=1,6
-            pos_2(i, j) = real(i + 3)
+            positions(i, j) = real(i + 3)
         end do
     end do
 
-    call topology%append(atom, status=status)
-    call check((status == 0), "topology%append")
-    call topology%append(atom, status=status)
-    call check((status == 0), "topology%append")
-
-    call frame%set_positions(pos_2, 6, status=status)
-    call check((status == 0), "frame%set_positions")
     call frame%set_topology(topology, status=status)
     call check((status == 0), "frame%set_topology")
 
