@@ -127,6 +127,25 @@ The following logging level are available:
 
     :optional integer status [optional]: The status code
 
+.. f:subroutine:: chfl_log_callback(callback, [status])
+
+    Redirect all logging to user-provided logging. The ``callback`` subroutine will
+    be called at each logging operation with the level of the message, and the the
+    message itself.
+
+    :parameter procedure(chfl_logging_callback) callback: The callback procedure
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: chfl_logging_callback(level, message)
+
+    This is the interface for callback functions in the logging system. At every log
+    event, this function will be called with the level and the message of the log
+    event.
+
+    :parameter integer level [intent(in)]: The level of the log event
+    :parameter string message [intent(in)]: The message of the log event
+
+
 ``chfl_trajectory`` type
 ------------------------
 
