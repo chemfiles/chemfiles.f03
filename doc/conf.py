@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-import sys
 import os
 import sphinx_bootstrap_theme
 
-DOC_ROOT = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(DOC_ROOT)
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # -- General configuration ------------------------------------------------
 
@@ -12,7 +10,7 @@ sys.path.append(DOC_ROOT)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'fortran_domain',
+    'sphinxfortran.fortran_domain',
 ]
 
 # The suffix of source filenames.
@@ -27,7 +25,7 @@ copyright = u'2015, Guillaume Fraux — MPLv2 licence'
 
 
 def version():
-    with open(os.path.join(DOC_ROOT, "..", "chemfiles", "VERSION")) as f:
+    with open(os.path.join(ROOT, "..", "chemfiles", "VERSION")) as f:
         full_version = f.read().split('-')
     release = full_version[0]
     version = '.'.join(release.split('.')[0:2])
