@@ -3,7 +3,7 @@ module strings
     implicit none
 
 contains
-    !** Convert a C string to a Fortran string
+    !** Convert a C pointer (char*) to a Fortran string
     function c_to_f_str(c_string) result(f_string)
         implicit none
         type(c_ptr), target, intent(in) :: c_string

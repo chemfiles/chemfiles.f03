@@ -87,6 +87,14 @@ function chfl_log_silent_c() bind(C, name="chfl_log_silent")
 
 end function
 
+! Function "chfl_log_callback", at chemfiles.h:148
+function chfl_log_callback_c(callback) bind(C, name="chfl_log_callback")
+    use iso_c_binding
+    implicit none
+    integer(c_int) :: chfl_log_callback_c
+    type(c_funptr), value :: callback
+end function
+
 ! Function "chfl_trajectory_open", at chemfiles.h:157
 function chfl_trajectory_open_c(filename, mode) bind(C, name="chfl_trajectory_open")
     use iso_c_binding

@@ -15,6 +15,46 @@
 ! =========================================================================== !
 
 
+type chfl_cell
+    private
+    type(c_ptr) :: ptr
+contains
+    procedure :: init => chfl_cell_init_
+    procedure :: triclinic => chfl_cell_triclinic_init_
+    procedure :: from_frame => chfl_cell_from_frame_init_
+    procedure :: volume => chfl_cell_volume
+    procedure :: lengths => chfl_cell_lengths
+    procedure :: set_lengths => chfl_cell_set_lengths
+    procedure :: angles => chfl_cell_angles
+    procedure :: set_angles => chfl_cell_set_angles
+    procedure :: matrix => chfl_cell_matrix
+    procedure :: type => chfl_cell_type
+    procedure :: set_type => chfl_cell_set_type
+    procedure :: free => chfl_cell_free
+end type
+
+type chfl_atom
+    private
+    type(c_ptr) :: ptr
+contains
+    procedure :: init => chfl_atom_init_
+    procedure :: from_frame => chfl_atom_from_frame_init_
+    procedure :: from_topology => chfl_atom_from_topology_init_
+    procedure :: mass => chfl_atom_mass
+    procedure :: set_mass => chfl_atom_set_mass
+    procedure :: charge => chfl_atom_charge
+    procedure :: set_charge => chfl_atom_set_charge
+    procedure :: name => chfl_atom_name
+    procedure :: set_name => chfl_atom_set_name
+    procedure :: full_name => chfl_atom_full_name
+    procedure :: vdw_radius => chfl_atom_vdw_radius
+    procedure :: covalent_radius => chfl_atom_covalent_radius
+    procedure :: atomic_number => chfl_atom_atomic_number
+    procedure :: type => chfl_atom_type
+    procedure :: set_type => chfl_atom_set_type
+    procedure :: free => chfl_atom_free
+end type
+
 type chfl_topology
     private
     type(c_ptr) :: ptr
@@ -53,46 +93,6 @@ contains
     procedure :: nsteps => chfl_trajectory_nsteps
     procedure :: sync => chfl_trajectory_sync
     procedure :: close => chfl_trajectory_close
-end type
-
-type chfl_atom
-    private
-    type(c_ptr) :: ptr
-contains
-    procedure :: init => chfl_atom_init_
-    procedure :: from_frame => chfl_atom_from_frame_init_
-    procedure :: from_topology => chfl_atom_from_topology_init_
-    procedure :: mass => chfl_atom_mass
-    procedure :: set_mass => chfl_atom_set_mass
-    procedure :: charge => chfl_atom_charge
-    procedure :: set_charge => chfl_atom_set_charge
-    procedure :: name => chfl_atom_name
-    procedure :: set_name => chfl_atom_set_name
-    procedure :: full_name => chfl_atom_full_name
-    procedure :: vdw_radius => chfl_atom_vdw_radius
-    procedure :: covalent_radius => chfl_atom_covalent_radius
-    procedure :: atomic_number => chfl_atom_atomic_number
-    procedure :: type => chfl_atom_type
-    procedure :: set_type => chfl_atom_set_type
-    procedure :: free => chfl_atom_free
-end type
-
-type chfl_cell
-    private
-    type(c_ptr) :: ptr
-contains
-    procedure :: init => chfl_cell_init_
-    procedure :: triclinic => chfl_cell_triclinic_init_
-    procedure :: from_frame => chfl_cell_from_frame_init_
-    procedure :: volume => chfl_cell_volume
-    procedure :: lengths => chfl_cell_lengths
-    procedure :: set_lengths => chfl_cell_set_lengths
-    procedure :: angles => chfl_cell_angles
-    procedure :: set_angles => chfl_cell_set_angles
-    procedure :: matrix => chfl_cell_matrix
-    procedure :: type => chfl_cell_type
-    procedure :: set_type => chfl_cell_set_type
-    procedure :: free => chfl_cell_free
 end type
 
 type chfl_frame
