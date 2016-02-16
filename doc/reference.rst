@@ -21,7 +21,7 @@ Naming conventions and call conventions
 ---------------------------------------
 
 All the functions and types have the ``chfl_`` prefix. Except for the ``chfl_strerror``
-and ``chfl_last_error`` functions, all the functions take a ``status`` parameter,
+and ``chfl_last_error`` functions, all the functions take a ``status`` argument,
 which will indicate the status of the operation. It should be 0 if everything
 was OK, and can be any other number in case of error.
 
@@ -47,7 +47,7 @@ variables will lead to segmentations faults.
 Miscellaneous functions
 ---------------------------
 
-.. f:subroutine:: chfl_log_version(status)
+.. f:function:: string chfl_version([status])
 
     Get the version of the chemfiles library as a string.
 
@@ -56,72 +56,72 @@ Miscellaneous functions
 Error and logging functions
 ---------------------------
 
-.. f:function:: chfl_strerror(status)
+.. f:function:: string chfl_strerror(status)
 
     Get the error message corresponding to an error code.
 
     :argument integer status: The status code
     :return string strerror: The error message corresponding to the status code
 
-.. f:function:: chfl_last_error()
+.. f:function:: string chfl_last_error()
 
     Get the last error message.
 
     :return string strerror: The error message corresponding to the status code
 
-.. f:subroutine:: chfl_loglevel(level[, status])
+.. f:subroutine:: chfl_loglevel(level, [status])
 
     Get the current maximal logging level
 
-    :paramter integer(kind=kind(CHFL_LOG_LEVEL)): A variable that will contain the logging level
+    :argument integer level [kind=kind(CHFL_LOG_LEVEL)]: A variable that will contain the logging level
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: chfl_set_loglevel(level[, status])
+.. f:subroutine:: chfl_set_loglevel(level, [status])
 
     Set the maximal logging level to ``level``
 
-    :paramter integer(kind=kind(CHFL_LOG_LEVEL)): The new logging level
+    :argument integer level [kind=kind(CHFL_LOG_LEVEL)]: The new logging level
     :optional integer status [optional]: The status code
 
 The following logging level are available:
 
-.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_ERROR
+.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_ERROR
 
     Only log errors
 
-.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_WARNING
+.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_WARNING
 
     Log warnings and erors. This is the default.
 
-.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_INFO
+.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_INFO
 
     Log infos, warnings and errors
 
-.. f:variable:: integer(kind=CHFL_LOG_LEVEL) CHFL_LOG_DEBUG
+.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_DEBUG
 
     Log everything
 
 
-.. f:subroutine:: chfl_logfile(file[, status])
+.. f:subroutine:: chfl_logfile(file, [status])
 
     Redirect the logs to ``file``, overwriting the file if it exists.
 
-    :parameter string file: The path to the log file
+    :argument string file: The path to the log file
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: chfl_log_stderr(status)
+.. f:subroutine:: chfl_log_stderr([status])
 
     Redirect the logs to the standard error output. This is enabled by default.
 
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: chfl_log_stdout(status)
+.. f:subroutine:: chfl_log_stdout([status])
 
     Redirect the logs to the standard output.
 
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: chfl_log_silent(status)
+.. f:subroutine:: chfl_log_silent([status])
 
     Remove all logging output.
 
@@ -152,86 +152,86 @@ The following logging level are available:
     The initialization routine are ``open`` and ``with_format``, and the memory
     liberation routine is ``close``.
 
-.. f:subroutine:: open(filename, mode, [, status])
+.. f:subroutine:: open(filename, mode, , [status])
 
     Open a trajectory file.
 
-    :parameter string filename: The path to the trajectory file
-    :parameter string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
+    :argument string filename: The path to the trajectory file
+    :argument string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: with_format(filename, mode, [, status])
+.. f:subroutine:: with_format(filename, mode, , [status])
 
     Open a trajectory file using a given format to read the file.
 
-    :parameter string filename: The path to the trajectory file
-    :parameter string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
-    :parameter string format: The format to use
+    :argument string filename: The path to the trajectory file
+    :argument string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
+    :argument string format: The format to use
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: read(frame[, status])
+.. f:subroutine:: read(frame, [status])
 
     Read the next step of the trajectory into a frame
 
-    :parameter chfl_frame frame: A frame to fill with the data
+    :argument chfl_frame frame: A frame to fill with the data
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: read_step(step, frame[, status])
+.. f:subroutine:: read_step(step, frame, [status])
 
     Read a specific step of the trajectory in a frame
 
-    :parameter integer step: The step to read
-    :parameter chfl_frame frame: A frame to fill with the data
+    :argument integer step: The step to read
+    :argument chfl_frame frame: A frame to fill with the data
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: write(frame[, status])
+.. f:subroutine:: write(frame, [status])
 
     Write a frame to the trajectory.
 
-    :parameter chfl_frame frame: the frame which will be writen to the file
+    :argument chfl_frame frame: the frame which will be writen to the file
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_topology(topology[, status])
+.. f:subroutine:: set_topology(topology, [status])
 
     Set the topology associated with a trajectory. This topology will be
     used when reading and writing the files, replacing any topology in the
     frames or files.
 
-    :parameter chfl_topology topology: The new topology to use
+    :argument chfl_topology topology: The new topology to use
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_topology_file(filename[, status])
+.. f:subroutine:: set_topology_file(filename, [status])
 
     Set the topology associated with a trajectory by reading the first
     frame of ``filename``; and extracting the topology of this frame.
 
-    :parameter string filename: The file to read in order to get the new topology
+    :argument string filename: The file to read in order to get the new topology
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: cell(cell[, status])
+.. f:subroutine:: cell(cell, [status])
 
     Set the unit cell associated with a trajectory. This cell will be
     used when reading and writing the files, replacing any unit cell in the
     frames or files.
 
-    :parameter chfl_cell cell: The new cell to use
+    :argument chfl_cell cell: The new cell to use
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: nsteps(nsteps[, status])
+.. f:subroutine:: nsteps(nsteps, [status])
 
     Get the number of steps (the number of frames) in a trajectory.
 
-    :parameter integer nsteps: This will contain the number of steps
+    :argument integer nsteps: This will contain the number of steps
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: sync(status)
+.. f:subroutine:: sync([status])
 
     Flush any buffered content to the hard drive.
 
     :optional integer status [optional]: The status code
 
 
-.. f:subroutine:: close(status)
+.. f:subroutine:: close([status])
 
     Close a trajectory file, and free the associated memory
 
@@ -261,51 +261,51 @@ The following logging level are available:
     :field subroutine selection:
     :field subroutine free:
 
-.. f:subroutine:: init(natoms[, status])
+.. f:subroutine:: init(natoms, [status])
 
     Create an empty frame with initial capacity of ``natoms``. It will be
     resized by the library as needed.
 
-    :parameter integer natoms: the size of the wanted frame
+    :argument integer natoms: the size of the wanted frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: atoms_count(natoms[, status])
+.. f:subroutine:: atoms_count(natoms, [status])
 
     Get the current number of atoms in the frame
 
-    :parameter integer natoms: the number of atoms in the frame
+    :argument integer natoms: the number of atoms in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: resize(natoms[, status])
+.. f:subroutine:: resize(natoms, [status])
 
     Resize the positions and the velocities in frame, to make space for ``natoms`` atoms.
     This function may invalidate any pointer to the positions or the velocities if the new
     size is bigger than the old one. In all the cases, previous data is conserved. This
     function conserve the presence of abscence of velocities.
 
-    :parameter integer natoms: the new number of atoms in the frame
+    :argument integer natoms: the new number of atoms in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: positions(data, size[, status])
+.. f:subroutine:: positions(data, size, [status])
 
     Get a pointer to the positions array from a frame. The positions are stored as a ``3
     x N`` array, this function set a pointer to point to the first element of this array,
-    and give the value of N in the ``size`` parameter. If the frame is resized (by writing
+    and give the value of N in the ``size`` argument. If the frame is resized (by writing
     to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
 
-    :parameter real data [dimension(\:, \:), pointer]: A pointer to a float array containing the positions
-    :parameter integer size: After the call, contains the array size (N).
+    :argument real data [dimension(\:, \:), pointer]: A pointer to a float array containing the positions
+    :argument integer size: After the call, contains the array size (N).
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: velocities(data, size[, status])
+.. f:subroutine:: velocities(data, size, [status])
 
     Get a pointer to the velocities array from a frame. The velocities are stored as a ``3
     x N`` array, this function set a pointer to point to the first element of this array,
-    and give the value of N in the ``size`` parameter. If the frame is resized (by writing
+    and give the value of N in the ``size`` argument. If the frame is resized (by writing
     to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
 
-    :parameter real data [dimension(\:, \:), pointer]: A pointer to a float array containing the velocities
-    :parameter integer size: The array size (N).
+    :argument real data [dimension(\:, \:), pointer]: A pointer to a float array containing the velocities
+    :argument integer size: The array size (N).
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: add_velocities([status])
@@ -316,48 +316,48 @@ The following logging level are available:
 
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: has_velocities(has_vel[, status])
+.. f:subroutine:: has_velocities(has_vel, [status])
 
     Check if a frame has velocity information.
 
-    :parameter logical has_vel: ``.true.`` if the frame has velocities, ``.false.`` otherwise.
+    :argument logical has_vel: ``.true.`` if the frame has velocities, ``.false.`` otherwise.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_cell(cell[, status])
+.. f:subroutine:: set_cell(cell, [status])
 
     Set the UnitCell of a Frame.
 
-    :parameter chfl_cell cell: The new unit cell
+    :argument chfl_cell cell: The new unit cell
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_topology(topology[, status])
+.. f:subroutine:: set_topology(topology, [status])
 
     Set the Topology of a Frame.
 
-    :parameter chfl_topology topology: The new topology
+    :argument chfl_topology topology: The new topology
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: step(step[, status])
+.. f:subroutine:: step(step, [status])
 
     Get the Frame step, i.e. the frame number in the trajectory
 
-    :parameter integer step: This will contains the step number
+    :argument integer step: This will contains the step number
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_step(step[, status])
+.. f:subroutine:: set_step(step, [status])
 
     Set the Frame step.
 
-    :parameter integer step: The new frame step
+    :argument integer step: The new frame step
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: guess_topology(bonds[, status])
+.. f:subroutine:: guess_topology(bonds, [status])
 
     Try to guess the bonds, angles and dihedrals in the system. If ``bonds``
     is ``.true.``, guess everything; else only guess the angles and dihedrals from
     the bond list.
 
-    :parameter logical bonds: Should we recompute the bonds from the positions or not ?
+    :argument logical bonds: Should we recompute the bonds from the positions or not ?
     :optional integer status [optional]: The status code
 
 
@@ -374,12 +374,12 @@ The following logging level are available:
     The array will contain ``.true.`` at position ``i`` if the atom at position ``i``
     matches the selection string, and false otherwise.
 
-    :parameter integer natoms: The selection string
-    :parameter logical matched [dimension(\:)]: A pre-allocated array of size ``natoms``
-    :parameter integer natoms: The size of the ``matched`` array. This must be the same size as ``chfl_frame%atoms_count``
+    :argument integer natoms: The selection string
+    :argument logical matched [dimension(\:)]: A pre-allocated array of size ``natoms``
+    :argument integer natoms: The size of the ``matched`` array. This must be the same size as ``chfl_frame%atoms_count``
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: free(status)
+.. f:subroutine:: free([status])
 
     Destroy a frame, and free the associated memory
 
@@ -411,62 +411,62 @@ The following logging level are available:
     The initialization routine are ``init`` and ``from_frame``.
 
 
-.. f:subroutine:: init(a, b, c, alpha, beta, gamma[, status])
+.. f:subroutine:: init(a, b, c, alpha, beta, gamma, [status])
 
     Create an ``chfl_cell`` from the three lenghts and the three angles.
 
-    :parameter real a: the a cell length, in angstroms
-    :parameter real b: the b cell length, in angstroms
-    :parameter real c: the c cell length, in angstroms
-    :parameter real alpha: the alpha angles, in degrees
-    :parameter real beta: the beta angles, in degrees
-    :parameter real gamma: the gamma angles, in degrees
+    :argument real a: the a cell length, in angstroms
+    :argument real b: the b cell length, in angstroms
+    :argument real c: the c cell length, in angstroms
+    :argument real alpha: the alpha angles, in degrees
+    :argument real beta: the beta angles, in degrees
+    :argument real gamma: the gamma angles, in degrees
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: from_frame_init_(frame[, status])
+.. f:subroutine:: from_frame_init_(frame, [status])
 
     Get a copy of the ``chfl_cell`` of a frame.
 
-    :parameter chfl_frame frame: the frame
+    :argument chfl_frame frame: the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: lengths(a, b, c[, status])
+.. f:subroutine:: lengths(a, b, c, [status])
 
     Get the cell lenghts.
 
-    :parameter real a: the a cell length, in angstroms
-    :parameter real b: the b cell length, in angstroms
-    :parameter real c: the c cell length, in angstroms
+    :argument real a: the a cell length, in angstroms
+    :argument real b: the b cell length, in angstroms
+    :argument real c: the c cell length, in angstroms
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_lengths(a, b, c[, status])
+.. f:subroutine:: set_lengths(a, b, c, [status])
 
     Set the unit cell lenghts.
 
-    :parameter real a: the new a cell length, in angstroms
-    :parameter real b: the new b cell length, in angstroms
-    :parameter real c: the new c cell length, in angstroms
+    :argument real a: the new a cell length, in angstroms
+    :argument real b: the new b cell length, in angstroms
+    :argument real c: the new c cell length, in angstroms
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: angles(alpha, beta, gamma[, status])
+.. f:subroutine:: angles(alpha, beta, gamma, [status])
 
     Get the cell angles, in degrees.
 
-    :parameter real alpha: the alpha angles, in degrees
-    :parameter real beta: the beta angles, in degrees
-    :parameter real gamma: the gamma angles, in degrees
+    :argument real alpha: the alpha angles, in degrees
+    :argument real beta: the beta angles, in degrees
+    :argument real gamma: the gamma angles, in degrees
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_angles(alpha, beta, gamma[, status])
+.. f:subroutine:: set_angles(alpha, beta, gamma, [status])
 
     Set the cell angles, in degrees
 
-    :parameter real alpha: the new alpha angles, in degrees
-    :parameter real beta: the new beta angles, in degrees
-    :parameter real gamma: the new gamma angles, in degrees
+    :argument real alpha: the new alpha angles, in degrees
+    :argument real beta: the new beta angles, in degrees
+    :argument real gamma: the new gamma angles, in degrees
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: matrix(matrix[, status])
+.. f:subroutine:: matrix(matrix, [status])
 
     Get the unit cell matricial representation, i.e. the representation of the three
     base vectors arranged as:
@@ -478,38 +478,38 @@ The following logging level are available:
         |  0   0  c_z |
 
 
-    :parameter real matrix [dimension(3, 3)]: the matrix to fill.
+    :argument real matrix [dimension(3, 3)]: the matrix to fill.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: type(type[, status])
+.. f:subroutine:: type(type, [status])
 
     Get the cell type
 
-    :parameter integer type [kind=kind(CHFL_CELL_TYPES)]: the type of the cell
+    :argument integer type [kind=kind(CHFL_CELL_TYPES)]: the type of the cell
     :optional integer status [optional]: The status code
 
     Available cell types are:
 
-    .. f:variable:: integer(kind=CHFL_CELL_TYPES) CHFL_CELL_ORTHOROMBIC
+    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_ORTHOROMBIC
 
         The three angles are 90°
 
-    .. f:variable:: integer(kind=CHFL_CELL_TYPES) CHFL_CELL_TRICLINIC
+    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_TRICLINIC
 
         The three angles may not be 90°
 
-    .. f:variable:: integer(kind=CHFL_CELL_TYPES) CHFL_CELL_INFINITE
+    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_INFINITE
 
         Cell type when there is no periodic boundary conditions
 
-.. f:subroutine:: set_type(type[, status])
+.. f:subroutine:: set_type(type, [status])
 
     Set the cell type
 
-    :parameter integer type [kind=kind(CHFL_CELL_TYPES)]: the new type of the cell
+    :argument integer type [kind=kind(CHFL_CELL_TYPES)]: the new type of the cell
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: free(status)
+.. f:subroutine:: free([status])
 
     Destroy an unit cell, and free the associated memory
 
@@ -546,139 +546,139 @@ The following logging level are available:
 
     The initialization routine are ``init`` and ``from_frame``.
 
-.. f:subroutine:: init(status)
+.. f:subroutine:: init([status])
 
     Create a new empty topology
 
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: from_frame(frame[, status])
+.. f:subroutine:: from_frame(frame, [status])
 
     Extract the topology from a frame.
 
-    :parameter chfl_frame frame: The frame
+    :argument chfl_frame frame: The frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: atoms_count(natoms[, status])
+.. f:subroutine:: atoms_count(natoms, [status])
 
     Get the current number of atoms in the topology.
 
-    :parameter integer natoms: Will contain the number of atoms in the frame
+    :argument integer natoms: Will contain the number of atoms in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: append(atom[, status])
+.. f:subroutine:: append(atom, [status])
 
     Add an atom at the end of a topology.
 
-    :parameter chfl_atom atom: The atom to be added
+    :argument chfl_atom atom: The atom to be added
     :optional integer status [optional]: The status code
 
 
-.. f:subroutine:: remove(i[, status])
+.. f:subroutine:: remove(i, [status])
 
     Remove an atom from a topology by index.
 
-    :parameter integer i: The atomic index
+    :argument integer i: The atomic index
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: isbond(i, j, result[, status])
+.. f:subroutine:: isbond(i, j, result, [status])
 
     Tell if the atoms ``i`` and ``j`` are bonded together
 
-    :parameter integer i: The atomic index of the first atom
-    :parameter integer j: The atomic index of the second atom
-    :parameter logical result: ``.true.`` if the atoms are bonded, ``.false.`` otherwise
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
+    :argument logical result: ``.true.`` if the atoms are bonded, ``.false.`` otherwise
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: isangle(i, j, k, result[, status])
+.. f:subroutine:: isangle(i, j, k, result, [status])
 
     Tell if the atoms ``i``, ``j`` and ``k`` constitues an angle
 
-    :parameter integer i: The atomic index of the first atom
-    :parameter integer j: The atomic index of the second atom
-    :parameter integer k: The atomic index of the third atom
-    :parameter logical result: ``.true.`` if the atoms constitues an angle, ``.false.`` otherwise
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
+    :argument integer k: The atomic index of the third atom
+    :argument logical result: ``.true.`` if the atoms constitues an angle, ``.false.`` otherwise
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: isdihedral(i, j, k, m, result[, status])
+.. f:subroutine:: isdihedral(i, j, k, m, result, [status])
 
     Tell if the atoms ``i``, ``j``, ``k`` and ``m`` constitues a dihedral angle
 
-    :parameter integer i: The atomic index of the first atom
-    :parameter integer j: The atomic index of the second atom
-    :parameter integer k: The atomic index of the third atom
-    :parameter integer m: The atomic index of the fourth atom
-    :parameter logical result: ``.true.`` if the atoms constitues a dihedral angle, ``.false.`` otherwise
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
+    :argument integer k: The atomic index of the third atom
+    :argument integer m: The atomic index of the fourth atom
+    :argument logical result: ``.true.`` if the atoms constitues a dihedral angle, ``.false.`` otherwise
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: bonds_count(nbonds[, status])
+.. f:subroutine:: bonds_count(nbonds, [status])
 
     Get the number of bonds in the system
 
-    :parameter integer nbonds: After the call, contains the number of bond
+    :argument integer nbonds: After the call, contains the number of bond
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: angles_count(nangles[, status])
+.. f:subroutine:: angles_count(nangles, [status])
 
     Get the number of angles in the system
 
-    :parameter integer nangles: After the call, contains the number of angles
+    :argument integer nangles: After the call, contains the number of angles
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: dihedrals_count(ndihedrals[, status])
+.. f:subroutine:: dihedrals_count(ndihedrals, [status])
 
     Get the number of dihedral angles in the system
 
-    :parameter integer ndihedrals: After the call, contains the number of dihedral angles
+    :argument integer ndihedrals: After the call, contains the number of dihedral angles
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: bonds(data, nbonds[, status])
+.. f:subroutine:: bonds(data, nbonds, [status])
 
     Get the bonds in the system
 
-    :parameter integer data [dimension(2, nbonds)]: A 2x ``nbonds`` array to be
+    :argument integer data [dimension(2, nbonds)]: A 2x ``nbonds`` array to be
                                             filled with the bonds in the system
-    :parameter integer nbonds: The size of the array. This should equal the value
+    :argument integer nbonds: The size of the array. This should equal the value
                                 given by the ``chfl_topology%bonds_count`` function
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: angles(data, nangles[, status])
+.. f:subroutine:: angles(data, nangles, [status])
 
     Get the angles in the system
 
-    :parameter integer data [dimension(3, nangles)]: A 3x ``nangles`` array to be
+    :argument integer data [dimension(3, nangles)]: A 3x ``nangles`` array to be
                                             filled with the angles in the system
-    :parameter integer nangles: The size of the array. This should equal the
+    :argument integer nangles: The size of the array. This should equal the
                         value give by the ``chfl_topology%angles_count`` function
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: dihedrals(data, ndihedrals[, status])
+.. f:subroutine:: dihedrals(data, ndihedrals, [status])
 
     Get the dihedral angles in the system
 
-    :parameter integer data [dimension(4, ndihedrals)]: A 4x ``ndihedrals`` array
+    :argument integer data [dimension(4, ndihedrals)]: A 4x ``ndihedrals`` array
                             to be filled with the dihedral angles in the system
-    :parameter integer ndihedrals: The size of the array. This should equal the
+    :argument integer ndihedrals: The size of the array. This should equal the
                     value give by the ``chfl_topology%dihedrals_count`` function
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: add_bond(i, j[, status])
+.. f:subroutine:: add_bond(i, j, [status])
 
     Add a bond between the atoms ``i`` and ``j`` in the system
 
-    :parameter integer i: The atomic index of the first atom
-    :parameter integer j: The atomic index of the second atom
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: remove_bond(i, j[, status])
+.. f:subroutine:: remove_bond(i, j, [status])
 
     Remove any existing bond between the atoms ``i`` and ``j`` in the system
 
-    :parameter integer i: The atomic index of the first atom
-    :parameter integer j: The atomic index of the second atom
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: free(status)
+.. f:subroutine:: free([status])
 
     Destroy a topology, and free the associated memory
 
@@ -711,135 +711,135 @@ The following logging level are available:
 
     The initialization routine are ``init``, ``from_frame`` and ``from_topology``.
 
-.. f:subroutine:: init(name[, status])
+.. f:subroutine:: init(name, [status])
 
     Create an atom from an atomic name
 
-    :parameter string name: The new atom name
+    :argument string name: The new atom name
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: from_frame(frame, idx[, status])
+.. f:subroutine:: from_frame(frame, idx, [status])
 
     Get a specific atom from a frame
 
-    :parameter chfl_frame frame: The frame
-    :parameter integer idx: The atom index in the frame
+    :argument chfl_frame frame: The frame
+    :argument integer idx: The atom index in the frame
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: from_topology(topology, idx[, status])
+.. f:subroutine:: from_topology(topology, idx, [status])
 
     Get a specific atom from a topology
 
-    :parameter chfl_topology topology: The topology
-    :parameter integer idx: The atom index in the topology
+    :argument chfl_topology topology: The topology
+    :argument integer idx: The atom index in the topology
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: mass(mass[, status])
+.. f:subroutine:: mass(mass, [status])
 
     Get the mass of an atom, in atomic mass units
 
-    :parameter real mass: The atom mass
+    :argument real mass: The atom mass
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_mass(mass[, status])
+.. f:subroutine:: set_mass(mass, [status])
 
     Set the mass of an atom, in atomic mass units
 
-    :parameter real mass: The new atom mass
+    :argument real mass: The new atom mass
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: charge(charge[, status])
+.. f:subroutine:: charge(charge, [status])
 
     Get the charge of an atom, in number of the electron charge e
 
-    :parameter real charge: The atom charge
+    :argument real charge: The atom charge
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_charge(charge[, status])
+.. f:subroutine:: set_charge(charge, [status])
 
     Set the charge of an atom, in number of the electron charge e
 
-    :parameter real charge: The new atom charge
+    :argument real charge: The new atom charge
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: name(name, buffsize[, status])
+.. f:subroutine:: name(name, buffsize, [status])
 
     Get the name of an atom
 
-    :parameter string name: A string buffer to be filled with the name
-    :parameter buffsize: The lenght of the string ``name``
+    :argument string name: A string buffer to be filled with the name
+    :argument buffsize: The lenght of the string ``name``
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: set_name(name[, status])
+.. f:subroutine:: set_name(name, [status])
 
     Set the name of an atom
 
-    :parameter string name: A string containing the new name
+    :argument string name: A string containing the new name
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: full_name(name, buffsize[, status])
+.. f:subroutine:: full_name(name, buffsize, [status])
 
     Try to get the full name of an atom from the short name
 
-    :parameter string name: A string buffer to be filled with the name
-    :parameter buffsize: The lenght of the string ``name``
+    :argument string name: A string buffer to be filled with the name
+    :argument buffsize: The lenght of the string ``name``
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: vdw_radius(radius[, status])
+.. f:subroutine:: vdw_radius(radius, [status])
 
     Try to get the Van der Waals radius of an atom from the short name
 
-    :parameter real radius: The Van der Waals radius of the atom or -1 if no value could be found.
+    :argument real radius: The Van der Waals radius of the atom or -1 if no value could be found.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: covalent_radius(radius[, status])
+.. f:subroutine:: covalent_radius(radius, [status])
 
     Try to get the covalent radius of an atom from the short name
 
-    :parameter real radius: The covalent radius of the atom or -1 if no value could be found.
+    :argument real radius: The covalent radius of the atom or -1 if no value could be found.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: atomic_number(number[, status])
+.. f:subroutine:: atomic_number(number, [status])
 
     Try to get the atomic number of an atom from the short name
 
-    :parameter integer number: The atomic number, or -1 if no value could be found.
+    :argument integer number: The atomic number, or -1 if no value could be found.
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: type(type[, status])
+.. f:subroutine:: type(type, [status])
 
     Get the atom type
 
-    :parameter integer type [kind=kind(CHFL_ATOM_TYPES)]: the type of the atom
+    :argument integer type [kind=kind(CHFL_ATOM_TYPES)]: the type of the atom
     :optional integer status [optional]: The status code
 
     Available atoms types are:
 
-    .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_ELEMENT
+    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_ELEMENT
 
         Element from the periodic table of elements.
 
-    .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_COARSE_GRAINED
+    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_COARSE_GRAINED
 
         Coarse-grained atom are composed of more than one element: CH3 groups,
         amino-acids are coarse-grained atoms.
 
-    .. f:variable:: integer(kind=CHFL_ATOM_TYPES) CHFL_ATOM_DUMMY
+    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_DUMMY
 
         Dummy site, with no physical reality.
 
-    .. f:variable:: integer(kind=CHFL_ATOM_TYPES)  CHFL_ATOM_UNDEFINED
+    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES))  CHFL_ATOM_UNDEFINED
 
         Undefined atom type.
 
-.. f:subroutine:: set_type(type[, status])
+.. f:subroutine:: set_type(type, [status])
 
     Set the atom type
 
-    :parameter integer type [kind=kind(CHFL_ATOM_TYPES)]: the new type of the atom
+    :argument integer type [kind=kind(CHFL_ATOM_TYPES)]: the new type of the atom
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: free(status)
+.. f:subroutine:: free([status])
 
     Destroy an atom, and free the associated memory
 
