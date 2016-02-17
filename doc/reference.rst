@@ -8,12 +8,36 @@ The ``chemfiles`` module is built around the 5 main types of chemfiles: ``chfl_t
 information about these types, please see the chemfiles `overview`_.
 
 .. warning::
-   All indexing in chemfiles is 0-based! That means that the first atom in a frame
-   have the index 0, not 1. This is because no translation is made from the
-   underlying C library.
 
-   This may change in future release to use 1-based indexing, which is more familiar
-   to Fortran developers.
+    Atomic indexes in chemfiles starts at 0, not 1. That means that the first atom in
+    a frame have the index 0, not 1. This should be taken in account when using
+    chemfiles function. Fortran arrays returned by function still have indexes
+    starting at 1.
+
+    .. code-block :: fortran
+
+        program indexing
+            use iso_fortran_env, only: real32, int64
+            use chemfiles
+            implicit none
+            type(chfl_frame)      :: frame
+            type(chfl_atom)       :: atom
+            real(real32), pointer :: positions(:, :)
+            integer(int64)        :: natoms
+
+            ! Read the frame here
+
+            ! Get the first atom in the frame
+            call atom%from_frame(frame, 0)
+            ! Get the second atom in the frame
+            ! call atom%from_frame(frame, 1)
+
+            call frame%poositions(positions, natoms)
+            ! position(1, :) now contains the positions of the first atom
+        end program
+
+    This may change in future release to make all atomic number starting at 1, which
+    is more familiar to Fortran developers and would be less confusing.
 
 .. _overview: http://chemfiles.readthedocs.org/en/latest/overview.html
 
