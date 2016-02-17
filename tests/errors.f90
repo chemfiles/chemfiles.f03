@@ -49,6 +49,9 @@ program cell_test
     inquire(file="test.log", exist=fexist)
     call check(fexist, "File created by chfl_logfile")
 
+    call chfl_log_stdout(status=status)
+    call check((status == 0), "chfl_log_stdout")
+
     call chfl_log_callback(my_callback, status=status)
     call check((status == 0), "chfl_log_callback")
     ! Generating an error message

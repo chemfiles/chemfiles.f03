@@ -10,6 +10,23 @@ program cell_test
     integer :: status, i, j
     integer(CHFL_CELL_TYPES) :: cell_type
 
+    call cell%triclinic(12d0, 30d0, 24d0, 90d0, 90d0, 120d0, status=status)
+    call check((status == 0), "cell%triclinic")
+    call cell%lengths(a, b, c, status=status)
+    call check((status == 0), "cell%lengths")
+    call check((a == 12.0), "cell%lengths")
+    call check((b == 30.0), "cell%lengths")
+    call check((c == 24.0), "cell%lengths")
+
+    call cell%angles(a, b, c, status=status)
+    call check((status == 0), "cell%angles")
+    call check((a == 90.0), "cell%angles")
+    call check((b == 90.0), "cell%angles")
+    call check((c == 120.0), "cell%angles")
+
+    call cell%free(status=status)
+    call check((status == 0), "cell%free")
+
     call cell%init(2d0, 3d0, 4d0, status=status)
     call check((status == 0), "cell%init")
 
@@ -37,9 +54,12 @@ program cell_test
     call check((b == 20.0), "cell%lengths")
     call check((c == 30.0), "cell%lengths")
 
-    ! This should be an error
+    call chfl_log_silent(status=status)
+    call check((status == 0), "chfl_log_silent")
     call cell%set_angles(80d0, 89d0, 100d0, status=status)
     call check((status /= 0), "cell%set_angles")
+    call chfl_log_stderr(status=status)
+    call check((status == 0), "chfl_log_stderr")
 
     expected_mat = reshape([10, 0, 0, &
                             0, 20, 0, &

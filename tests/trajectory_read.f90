@@ -13,7 +13,7 @@ program trajectory_read
     character(len=2048) :: DATADIR
     character(len=32) :: name
     integer :: status
-    integer(int64) :: natoms, n, i
+    integer(int64) :: natoms, n, i, nsteps
     real(real32) :: pos_1(3), pos_125(3)
     real(real32), pointer :: positions(:, :)
     real(real64) :: a, b, c
@@ -32,6 +32,10 @@ program trajectory_read
 
     call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
     call check((status == 0), "file%open")
+
+    call file%nsteps(nsteps, status=status)
+    call check((status == 0), "file%nsteps")
+    call check((nsteps == 100), "file%nsteps")
 
     call frame%init(0_int64, status=status)
     call check((status == 0), "frame%init")
