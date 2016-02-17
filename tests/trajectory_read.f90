@@ -12,11 +12,11 @@ program trajectory_read
 
     character(len=2048) :: DATADIR
     character(len=32) :: name
-    integer :: status, i
-    integer(kind=int64) :: natoms, n
-    real(kind=real32) :: pos_1(3), pos_125(3)
-    real(kind=real32), pointer :: positions(:, :)
-    real(kind=real64) :: a, b, c
+    integer :: status
+    integer(int64) :: natoms, n, i
+    real(real32) :: pos_1(3), pos_125(3)
+    real(real32), pointer :: positions(:, :)
+    real(real64) :: a, b, c
 
     ! ================================================================================== !
     if (command_argument_count() >= 1) then
@@ -33,7 +33,7 @@ program trajectory_read
     call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
     call check((status == 0), "file%open")
 
-    call frame%init(0, status=status)
+    call frame%init(0_int64, status=status)
     call check((status == 0), "frame%init")
 
     ! Read the first frame
@@ -64,10 +64,10 @@ program trajectory_read
     call check((status == 0), "topology%bonds_count")
     call check((n == 0), "topology%bonds_count")
 
-    call atom%from_topology(topology, 0, status=status)
+    call atom%from_topology(topology, 0_int64, status=status)
     call check((status == 0), "atom%from_topology")
 
-    call atom%name(name, len(name), status=status)
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "O"), "atom%name")
 
@@ -87,7 +87,7 @@ program trajectory_read
     call check((status == 0), "cell%free")
 
     ! Check reading a specific step
-    call file%read_step(41, frame, status=status)
+    call file%read_step(41_int64, frame, status=status)
     call check((status == 0), "file%read_step")
 
     ! Check that the cell was set
@@ -115,8 +115,8 @@ program trajectory_read
     end do
 
     ! Get the atom from a frame
-    call atom%from_frame(frame, 1);
-    call atom%name(name, len(name), status=status)
+    call atom%from_frame(frame, 1_int64);
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "H"), "atom%name")
 
@@ -156,11 +156,11 @@ program trajectory_read
     call topology%free(status=status)
     call check((status == 0), "topology%free")
 
-    call file%read_step(10, frame, status=status)
+    call file%read_step(10_int64, frame, status=status)
     call check((status == 0), "file%read_step")
 
-    call atom%from_frame(frame, 1);
-    call atom%name(name, len(name), status=status)
+    call atom%from_frame(frame, 1_int64);
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "Cs"), "atom%name")
 
@@ -170,11 +170,11 @@ program trajectory_read
     ! Set the topology associated with a trajectory from a file
     call file%set_topology_file(trim(DATADIR) // "/xyz/topology.xyz", status=status)
     call check((status == 0), "file%set_topology")
-    call file%read_step(10, frame, status=status)
+    call file%read_step(10_int64, frame, status=status)
     call check((status == 0), "file%read_step")
 
-    call atom%from_frame(frame, 0);
-    call atom%name(name, len(name), status=status)
+    call atom%from_frame(frame, 0_int64);
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "Zn"), "atom%name")
 

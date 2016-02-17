@@ -2,7 +2,7 @@
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program indexes_
-    use iso_fortran_env, only: real32, int64
+    use iso_fortran_env, only: real32, int64, int32
     use chemfiles
     implicit none
     ! Chemfiles types declaration uses the "chfl_" prefix
@@ -11,7 +11,8 @@ program indexes_
 
     real(real32), dimension(:, :), pointer :: positions
     integer, dimension(:), allocatable :: indexes
-    integer(int64) :: natoms, i, j, status
+    integer(int64) :: natoms, i, j
+    integer(int32) :: status
 
     call traj%open("filename.xyz", "r")
 

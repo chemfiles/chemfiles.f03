@@ -47,9 +47,9 @@ end function
 
 subroutine chfl_loglevel(level, status)
     implicit none
-    integer(kind=kind(CHFL_LOG_LEVEL)) :: level
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_LOG_LEVEL) :: level
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_loglevel_c(level)
     if (present(status)) then
@@ -59,9 +59,9 @@ end subroutine
 
 subroutine chfl_set_loglevel(level, status)
     implicit none
-    integer(kind=kind(CHFL_LOG_LEVEL)), value :: level
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_LOG_LEVEL), value :: level
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_set_loglevel_c(level)
     if (present(status)) then
@@ -72,8 +72,8 @@ end subroutine
 subroutine chfl_logfile(file, status)
     implicit none
     character(len=*), intent(in) :: file
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_logfile_c(f_to_c_str(file))
     if (present(status)) then
@@ -84,8 +84,8 @@ end subroutine
 subroutine chfl_log_stdout(status)
     implicit none
 
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_log_stdout_c()
     if (present(status)) then
@@ -96,8 +96,8 @@ end subroutine
 subroutine chfl_log_stderr(status)
     implicit none
 
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_log_stderr_c()
     if (present(status)) then
@@ -108,8 +108,8 @@ end subroutine
 subroutine chfl_log_silent(status)
     implicit none
 
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_log_silent_c()
     if (present(status)) then
@@ -122,8 +122,8 @@ subroutine chfl_trajectory_open_init_(this, filename, mode, status)
     class(chfl_trajectory) :: this
     character(len=*), intent(in) :: filename
     character(len=*), intent(in) :: mode
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_trajectory_open_c(f_to_c_str(filename), f_to_c_str(mode))
 
@@ -144,8 +144,8 @@ subroutine chfl_trajectory_with_format_init_(this, filename, mode, format, statu
     character(len=*), intent(in) :: filename
     character(len=*), intent(in) :: mode
     character(len=*), intent(in) :: format
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_trajectory_with_format_c(f_to_c_str(filename), f_to_c_str(mode), f_to_c_str(format))
 
@@ -164,8 +164,8 @@ subroutine chfl_trajectory_read(this, frame, status)
     implicit none
     class(chfl_trajectory) :: this
     class(chfl_frame) :: frame
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_read_c(this%ptr, frame%ptr)
     if (present(status)) then
@@ -178,8 +178,8 @@ subroutine chfl_trajectory_read_step(this, step, frame, status)
     class(chfl_trajectory) :: this
     integer(kind=c_size_t), value :: step
     class(chfl_frame) :: frame
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_read_step_c(this%ptr, step, frame%ptr)
     if (present(status)) then
@@ -191,8 +191,8 @@ subroutine chfl_trajectory_write(this, frame, status)
     implicit none
     class(chfl_trajectory) :: this
     class(chfl_frame), intent(in) :: frame
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_write_c(this%ptr, frame%ptr)
     if (present(status)) then
@@ -204,8 +204,8 @@ subroutine chfl_trajectory_set_topology(this, topology, status)
     implicit none
     class(chfl_trajectory) :: this
     class(chfl_topology), intent(in) :: topology
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_set_topology_c(this%ptr, topology%ptr)
     if (present(status)) then
@@ -217,8 +217,8 @@ subroutine chfl_trajectory_set_topology_file(this, filename, status)
     implicit none
     class(chfl_trajectory) :: this
     character(len=*), intent(in) :: filename
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_set_topology_file_c(this%ptr, f_to_c_str(filename))
     if (present(status)) then
@@ -230,8 +230,8 @@ subroutine chfl_trajectory_set_cell(this, cell, status)
     implicit none
     class(chfl_trajectory) :: this
     class(chfl_cell), intent(in) :: cell
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_set_cell_c(this%ptr, cell%ptr)
     if (present(status)) then
@@ -243,8 +243,8 @@ subroutine chfl_trajectory_nsteps(this, nsteps, status)
     implicit none
     class(chfl_trajectory) :: this
     integer(kind=c_size_t) :: nsteps
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_nsteps_c(this%ptr, nsteps)
     if (present(status)) then
@@ -255,8 +255,8 @@ end subroutine
 subroutine chfl_trajectory_sync(this, status)
     implicit none
     class(chfl_trajectory) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_sync_c(this%ptr)
     if (present(status)) then
@@ -267,8 +267,8 @@ end subroutine
 subroutine chfl_trajectory_close(this, status)
     implicit none
     class(chfl_trajectory) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_close_c(this%ptr)
     if (present(status)) then
@@ -280,8 +280,8 @@ subroutine chfl_frame_init_(this, natoms, status)
     implicit none
     class(chfl_frame) :: this
     integer(kind=c_size_t), value :: natoms
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_frame_c(natoms)
 
@@ -300,8 +300,8 @@ subroutine chfl_frame_atoms_count(this, natoms, status)
     implicit none
     class(chfl_frame), intent(in) :: this
     integer(kind=c_size_t) :: natoms
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_atoms_count_c(this%ptr, natoms)
     if (present(status)) then
@@ -314,12 +314,12 @@ subroutine chfl_frame_positions(this, data, size, status)
     class(chfl_frame) :: this
     real(kind=c_float), dimension(:, :), pointer :: data
     integer(kind=c_size_t) :: size
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
     type(c_ptr), target :: c_data_
 
     status_tmp_ = chfl_frame_positions_c(this%ptr, c_loc(c_data_), size)
-    call c_f_pointer(c_data_, data, shape=[3, size])
+    call c_f_pointer(c_data_, data, shape=[3, int(size, int32)])
     if (present(status)) then
         status = status_tmp_
     end if
@@ -330,12 +330,12 @@ subroutine chfl_frame_velocities(this, data, size, status)
     class(chfl_frame) :: this
     real(kind=c_float), dimension(:, :), pointer :: data
     integer(kind=c_size_t) :: size
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
     type(c_ptr), target :: c_data_
 
     status_tmp_ = chfl_frame_velocities_c(this%ptr, c_loc(c_data_), size)
-    call c_f_pointer(c_data_, data, shape=[3, size])
+    call c_f_pointer(c_data_, data, shape=[3, int(size, int32)])
     if (present(status)) then
         status = status_tmp_
     end if
@@ -345,8 +345,8 @@ subroutine chfl_frame_resize(this, natoms, status)
     implicit none
     class(chfl_frame) :: this
     integer(kind=c_size_t), value :: natoms
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_resize_c(this%ptr, natoms)
     if (present(status)) then
@@ -357,8 +357,8 @@ end subroutine
 subroutine chfl_frame_add_velocities(this, status)
     implicit none
     class(chfl_frame) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_add_velocities_c(this%ptr)
     if (present(status)) then
@@ -370,8 +370,8 @@ subroutine chfl_frame_has_velocities(this, has_velocities, status)
     implicit none
     class(chfl_frame), intent(in) :: this
     logical(kind=c_bool) :: has_velocities
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_has_velocities_c(this%ptr, has_velocities)
     if (present(status)) then
@@ -383,8 +383,8 @@ subroutine chfl_frame_set_cell(this, cell, status)
     implicit none
     class(chfl_frame) :: this
     class(chfl_cell), intent(in) :: cell
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_set_cell_c(this%ptr, cell%ptr)
     if (present(status)) then
@@ -396,8 +396,8 @@ subroutine chfl_frame_set_topology(this, topology, status)
     implicit none
     class(chfl_frame) :: this
     class(chfl_topology), intent(in) :: topology
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_set_topology_c(this%ptr, topology%ptr)
     if (present(status)) then
@@ -409,8 +409,8 @@ subroutine chfl_frame_step(this, step, status)
     implicit none
     class(chfl_frame), intent(in) :: this
     integer(kind=c_size_t) :: step
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_step_c(this%ptr, step)
     if (present(status)) then
@@ -422,8 +422,8 @@ subroutine chfl_frame_set_step(this, step, status)
     implicit none
     class(chfl_frame) :: this
     integer(kind=c_size_t), value :: step
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_set_step_c(this%ptr, step)
     if (present(status)) then
@@ -435,8 +435,8 @@ subroutine chfl_frame_guess_topology(this, bonds, status)
     implicit none
     class(chfl_frame) :: this
     logical(kind=c_bool), value :: bonds
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_guess_topology_c(this%ptr, bonds)
     if (present(status)) then
@@ -450,8 +450,8 @@ subroutine chfl_frame_selection(this, selection, matched, natoms, status)
     character(len=*), intent(in) :: selection
     logical(kind=c_bool), dimension(:), target :: matched
     integer(kind=c_size_t), value :: natoms
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_selection_c(this%ptr, f_to_c_str(selection), c_loc(matched), natoms)
     if (present(status)) then
@@ -462,8 +462,8 @@ end subroutine
 subroutine chfl_frame_free(this, status)
     implicit none
     class(chfl_frame) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_frame_free_c(this%ptr)
     if (present(status)) then
@@ -477,8 +477,8 @@ subroutine chfl_cell_init_(this, a, b, c, status)
     real(kind=c_double), value :: a
     real(kind=c_double), value :: b
     real(kind=c_double), value :: c
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_cell_c(a, b, c)
 
@@ -502,8 +502,8 @@ subroutine chfl_cell_triclinic_init_(this, a, b, c, alpha, beta, gamma, status)
     real(kind=c_double), value :: alpha
     real(kind=c_double), value :: beta
     real(kind=c_double), value :: gamma
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_cell_triclinic_c(a, b, c, alpha, beta, gamma)
 
@@ -522,8 +522,8 @@ subroutine chfl_cell_from_frame_init_(this, frame, status)
     implicit none
     class(chfl_cell) :: this
     class(chfl_frame) :: frame
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_cell_from_frame_c(frame%ptr)
 
@@ -542,8 +542,8 @@ subroutine chfl_cell_volume(this, V, status)
     implicit none
     class(chfl_cell), intent(in) :: this
     real(kind=c_double) :: V
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_volume_c(this%ptr, V)
     if (present(status)) then
@@ -557,8 +557,8 @@ subroutine chfl_cell_lengths(this, a, b, c, status)
     real(kind=c_double) :: a
     real(kind=c_double) :: b
     real(kind=c_double) :: c
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_lengths_c(this%ptr, a, b, c)
     if (present(status)) then
@@ -572,8 +572,8 @@ subroutine chfl_cell_set_lengths(this, a, b, c, status)
     real(kind=c_double), value :: a
     real(kind=c_double), value :: b
     real(kind=c_double), value :: c
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_set_lengths_c(this%ptr, a, b, c)
     if (present(status)) then
@@ -587,8 +587,8 @@ subroutine chfl_cell_angles(this, alpha, beta, gamma, status)
     real(kind=c_double) :: alpha
     real(kind=c_double) :: beta
     real(kind=c_double) :: gamma
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_angles_c(this%ptr, alpha, beta, gamma)
     if (present(status)) then
@@ -602,8 +602,8 @@ subroutine chfl_cell_set_angles(this, alpha, beta, gamma, status)
     real(kind=c_double), value :: alpha
     real(kind=c_double), value :: beta
     real(kind=c_double), value :: gamma
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_set_angles_c(this%ptr, alpha, beta, gamma)
     if (present(status)) then
@@ -615,8 +615,8 @@ subroutine chfl_cell_matrix(this, matrix, status)
     implicit none
     class(chfl_cell), intent(in) :: this
     real(kind=c_double), dimension(3, 3), target :: matrix
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_matrix_c(this%ptr, c_loc(matrix))
     if (present(status)) then
@@ -627,9 +627,9 @@ end subroutine
 subroutine chfl_cell_type(this, type, status)
     implicit none
     class(chfl_cell), intent(in) :: this
-    integer(kind=kind(CHFL_CELL_TYPES)) :: type
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_CELL_TYPES) :: type
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_type_c(this%ptr, type)
     if (present(status)) then
@@ -640,9 +640,9 @@ end subroutine
 subroutine chfl_cell_set_type(this, type, status)
     implicit none
     class(chfl_cell) :: this
-    integer(kind=kind(CHFL_CELL_TYPES)), value :: type
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_CELL_TYPES), value :: type
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_set_type_c(this%ptr, type)
     if (present(status)) then
@@ -653,8 +653,8 @@ end subroutine
 subroutine chfl_cell_free(this, status)
     implicit none
     class(chfl_cell) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_cell_free_c(this%ptr)
     if (present(status)) then
@@ -665,8 +665,8 @@ end subroutine
 subroutine chfl_topology_init_(this, status)
     implicit none
     class(chfl_topology) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_topology_c()
 
@@ -685,8 +685,8 @@ subroutine chfl_topology_from_frame_init_(this, frame, status)
     implicit none
     class(chfl_topology) :: this
     class(chfl_frame) :: frame
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_topology_from_frame_c(frame%ptr)
 
@@ -705,8 +705,8 @@ subroutine chfl_topology_atoms_count(this, natoms, status)
     implicit none
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t) :: natoms
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_atoms_count_c(this%ptr, natoms)
     if (present(status)) then
@@ -718,8 +718,8 @@ subroutine chfl_topology_append(this, atom, status)
     implicit none
     class(chfl_topology) :: this
     class(chfl_atom), intent(in) :: atom
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_append_c(this%ptr, atom%ptr)
     if (present(status)) then
@@ -731,8 +731,8 @@ subroutine chfl_topology_remove(this, i, status)
     implicit none
     class(chfl_topology) :: this
     integer(kind=c_size_t), value :: i
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_remove_c(this%ptr, i)
     if (present(status)) then
@@ -746,8 +746,8 @@ subroutine chfl_topology_isbond(this, i, j, result, status)
     integer(kind=c_size_t), value :: i
     integer(kind=c_size_t), value :: j
     logical(kind=c_bool) :: result
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_isbond_c(this%ptr, i, j, result)
     if (present(status)) then
@@ -762,8 +762,8 @@ subroutine chfl_topology_isangle(this, i, j, k, result, status)
     integer(kind=c_size_t), value :: j
     integer(kind=c_size_t), value :: k
     logical(kind=c_bool) :: result
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_isangle_c(this%ptr, i, j, k, result)
     if (present(status)) then
@@ -779,8 +779,8 @@ subroutine chfl_topology_isdihedral(this, i, j, k, m, result, status)
     integer(kind=c_size_t), value :: k
     integer(kind=c_size_t), value :: m
     logical(kind=c_bool) :: result
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_isdihedral_c(this%ptr, i, j, k, m, result)
     if (present(status)) then
@@ -792,8 +792,8 @@ subroutine chfl_topology_bonds_count(this, nbonds, status)
     implicit none
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t) :: nbonds
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_bonds_count_c(this%ptr, nbonds)
     if (present(status)) then
@@ -805,8 +805,8 @@ subroutine chfl_topology_angles_count(this, nangles, status)
     implicit none
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t) :: nangles
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_angles_count_c(this%ptr, nangles)
     if (present(status)) then
@@ -818,8 +818,8 @@ subroutine chfl_topology_dihedrals_count(this, ndihedrals, status)
     implicit none
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t) :: ndihedrals
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_dihedrals_count_c(this%ptr, ndihedrals)
     if (present(status)) then
@@ -832,8 +832,8 @@ subroutine chfl_topology_bonds(this, data, nbonds, status)
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t), dimension(:, :), target :: data
     integer(kind=c_size_t), value :: nbonds
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_bonds_c(this%ptr, c_loc(data), nbonds)
     if (present(status)) then
@@ -846,8 +846,8 @@ subroutine chfl_topology_angles(this, data, nangles, status)
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t), dimension(:, :), target :: data
     integer(kind=c_size_t), value :: nangles
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_angles_c(this%ptr, c_loc(data), nangles)
     if (present(status)) then
@@ -860,8 +860,8 @@ subroutine chfl_topology_dihedrals(this, data, ndihedrals, status)
     class(chfl_topology), intent(in) :: this
     integer(kind=c_size_t), dimension(:, :), target :: data
     integer(kind=c_size_t), value :: ndihedrals
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_dihedrals_c(this%ptr, c_loc(data), ndihedrals)
     if (present(status)) then
@@ -874,8 +874,8 @@ subroutine chfl_topology_add_bond(this, i, j, status)
     class(chfl_topology) :: this
     integer(kind=c_size_t), value :: i
     integer(kind=c_size_t), value :: j
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_add_bond_c(this%ptr, i, j)
     if (present(status)) then
@@ -888,8 +888,8 @@ subroutine chfl_topology_remove_bond(this, i, j, status)
     class(chfl_topology) :: this
     integer(kind=c_size_t), value :: i
     integer(kind=c_size_t), value :: j
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_remove_bond_c(this%ptr, i, j)
     if (present(status)) then
@@ -900,8 +900,8 @@ end subroutine
 subroutine chfl_topology_free(this, status)
     implicit none
     class(chfl_topology) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_topology_free_c(this%ptr)
     if (present(status)) then
@@ -913,8 +913,8 @@ subroutine chfl_atom_init_(this, name, status)
     implicit none
     class(chfl_atom) :: this
     character(len=*), intent(in) :: name
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_atom_c(f_to_c_str(name))
 
@@ -934,8 +934,8 @@ subroutine chfl_atom_from_frame_init_(this, frame, idx, status)
     class(chfl_atom) :: this
     class(chfl_frame), intent(in) :: frame
     integer(kind=c_size_t), value :: idx
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_atom_from_frame_c(frame%ptr, idx)
 
@@ -955,8 +955,8 @@ subroutine chfl_atom_from_topology_init_(this, topology, idx, status)
     class(chfl_atom) :: this
     class(chfl_topology), intent(in) :: topology
     integer(kind=c_size_t), value :: idx
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     this%ptr = chfl_atom_from_topology_c(topology%ptr, idx)
 
@@ -975,8 +975,8 @@ subroutine chfl_atom_mass(this, mass, status)
     implicit none
     class(chfl_atom), intent(in) :: this
     real(kind=c_float) :: mass
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_mass_c(this%ptr, mass)
     if (present(status)) then
@@ -988,8 +988,8 @@ subroutine chfl_atom_set_mass(this, mass, status)
     implicit none
     class(chfl_atom) :: this
     real(kind=c_float), value :: mass
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_set_mass_c(this%ptr, mass)
     if (present(status)) then
@@ -1001,8 +1001,8 @@ subroutine chfl_atom_charge(this, charge, status)
     implicit none
     class(chfl_atom), intent(in) :: this
     real(kind=c_float) :: charge
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_charge_c(this%ptr, charge)
     if (present(status)) then
@@ -1014,8 +1014,8 @@ subroutine chfl_atom_set_charge(this, charge, status)
     implicit none
     class(chfl_atom) :: this
     real(kind=c_float), value :: charge
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_set_charge_c(this%ptr, charge)
     if (present(status)) then
@@ -1028,8 +1028,8 @@ subroutine chfl_atom_name(this, name, buffsize, status)
     class(chfl_atom), intent(in) :: this
     character(len=*) :: name
     integer(kind=c_size_t), value :: buffsize
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_name_c(this%ptr, name, buffsize)
     if (present(status)) then
@@ -1042,8 +1042,8 @@ subroutine chfl_atom_set_name(this, name, status)
     implicit none
     class(chfl_atom) :: this
     character(len=*), intent(in) :: name
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_set_name_c(this%ptr, f_to_c_str(name))
     if (present(status)) then
@@ -1056,8 +1056,8 @@ subroutine chfl_atom_full_name(this, name, buffsize, status)
     class(chfl_atom), intent(in) :: this
     character(len=*) :: name
     integer(kind=c_size_t), value :: buffsize
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_full_name_c(this%ptr, name, buffsize)
     if (present(status)) then
@@ -1070,8 +1070,8 @@ subroutine chfl_atom_vdw_radius(this, radius, status)
     implicit none
     class(chfl_atom), intent(in) :: this
     real(kind=c_double) :: radius
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_vdw_radius_c(this%ptr, radius)
     if (present(status)) then
@@ -1083,8 +1083,8 @@ subroutine chfl_atom_covalent_radius(this, radius, status)
     implicit none
     class(chfl_atom), intent(in) :: this
     real(kind=c_double) :: radius
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_covalent_radius_c(this%ptr, radius)
     if (present(status)) then
@@ -1096,8 +1096,8 @@ subroutine chfl_atom_atomic_number(this, number, status)
     implicit none
     class(chfl_atom), intent(in) :: this
     integer(kind=c_int) :: number
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_atomic_number_c(this%ptr, number)
     if (present(status)) then
@@ -1108,9 +1108,9 @@ end subroutine
 subroutine chfl_atom_type(this, type, status)
     implicit none
     class(chfl_atom), intent(in) :: this
-    integer(kind=kind(CHFL_ATOM_TYPES)) :: type
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_ATOM_TYPES) :: type
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_type_c(this%ptr, type)
     if (present(status)) then
@@ -1121,9 +1121,9 @@ end subroutine
 subroutine chfl_atom_set_type(this, type, status)
     implicit none
     class(chfl_atom) :: this
-    integer(kind=kind(CHFL_ATOM_TYPES)), value :: type
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(CHFL_ATOM_TYPES), value :: type
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_set_type_c(this%ptr, type)
     if (present(status)) then
@@ -1134,8 +1134,8 @@ end subroutine
 subroutine chfl_atom_free(this, status)
     implicit none
     class(chfl_atom) :: this
-    integer, optional :: status
-    integer :: status_tmp_
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_free_c(this%ptr)
     if (present(status)) then

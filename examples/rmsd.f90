@@ -2,20 +2,21 @@
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program rmsd_
-    use iso_fortran_env, only: real32, int64, real64
+    use iso_fortran_env, only: real32, real64, int32, int64
     use chemfiles
     implicit none
 
     type(chfl_trajectory) :: traj
     type(chfl_frame)      :: frame
-    real(kind=real32), dimension(:, :), pointer :: positions
-    real(kind=real64), dimension(:),    allocatable :: distances
-    integer(kind=int64) :: nsteps = 0, natoms=0, i, status
-    real(kind=real64) :: distance = 0, mean = 0, rmsd = 0
+    real(real32), dimension(:, :), pointer :: positions
+    real(real64), dimension(:),    allocatable :: distances
+    integer(int64) :: nsteps = 0, natoms=0, i
+    integer(int32) :: status
+    real(real64) :: distance = 0, mean = 0, rmsd = 0
 
     call traj%open("filename.nc", "r", status=status)
     if (status /= 0) stop "Error while opening input file"
-    call frame%init(0)
+    call frame%init(0_int64)
 
     call traj%nsteps(nsteps)
     allocate(distances(nsteps))

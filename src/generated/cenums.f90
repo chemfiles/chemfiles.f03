@@ -20,23 +20,23 @@ enum, bind(C)
     enumerator :: CHFL_LOG_WARNING = 1
     enumerator :: CHFL_LOG_INFO = 2
     enumerator :: CHFL_LOG_DEBUG = 3
-    ! Enumeration name:
-    enumerator :: CHFL_LOG_LEVEL
 end enum
+
+integer, parameter :: CHFL_LOG_LEVEL = kind(CHFL_LOG_ERROR)
 
 enum, bind(C)
     enumerator :: CHFL_CELL_ORTHOROMBIC = 0
     enumerator :: CHFL_CELL_TRICLINIC = 1
     enumerator :: CHFL_CELL_INFINITE = 2
-    ! Enumeration name:
-    enumerator :: CHFL_CELL_TYPES
 end enum
+
+integer, parameter :: CHFL_CELL_TYPES = kind(CHFL_CELL_ORTHOROMBIC)
 
 enum, bind(C)
     enumerator :: CHFL_ATOM_ELEMENT = 0
     enumerator :: CHFL_ATOM_COARSE_GRAINED = 1
     enumerator :: CHFL_ATOM_DUMMY = 2
     enumerator :: CHFL_ATOM_UNDEFINED = 3
-    ! Enumeration name:
-    enumerator :: CHFL_ATOM_TYPES
 end enum
+
+integer, parameter :: CHFL_ATOM_TYPES = kind(CHFL_ATOM_ELEMENT)

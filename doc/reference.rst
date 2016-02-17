@@ -73,33 +73,33 @@ Error and logging functions
 
     Get the current maximal logging level
 
-    :argument integer level [kind=kind(CHFL_LOG_LEVEL)]: A variable that will contain the logging level
+    :argument integer level [kind=CHFL_LOG_LEVEL]: A variable that will contain the logging level
     :optional integer status [optional]: The status code
+
+    The logging level are integers which ``kind`` is the parameter ``CHFL_LOG_LEVEL``:
+
+    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_ERROR
+
+        Only log errors
+
+    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_WARNING
+
+        Log warnings and erors. This is the default.
+
+    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_INFO
+
+        Log infos, warnings and errors
+
+    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_DEBUG
+
+        Log everything
 
 .. f:subroutine:: chfl_set_loglevel(level, [status])
 
     Set the maximal logging level to ``level``
 
-    :argument integer level [kind=kind(CHFL_LOG_LEVEL)]: The new logging level
+    :argument integer level [kind=CHFL_LOG_LEVEL]: The new logging level
     :optional integer status [optional]: The status code
-
-The following logging level are available:
-
-.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_ERROR
-
-    Only log errors
-
-.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_WARNING
-
-    Log warnings and erors. This is the default.
-
-.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_INFO
-
-    Log infos, warnings and errors
-
-.. f:variable:: integer(kind=kind(CHFL_LOG_LEVEL)) CHFL_LOG_DEBUG
-
-    Log everything
 
 
 .. f:subroutine:: chfl_logfile(file, [status])
@@ -504,20 +504,20 @@ The following logging level are available:
 
     Get the cell type
 
-    :argument integer type [kind=kind(CHFL_CELL_TYPES)]: the type of the cell
+    :argument integer type [kind=CHFL_CELL_TYPES]: the type of the cell
     :optional integer status [optional]: The status code
 
-    Available cell types are:
+    The cell types are integers which ``kind`` is the parameter ``CHFL_CELL_TYPES``:
 
-    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_ORTHOROMBIC
+    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_ORTHOROMBIC
 
         The three angles are 90°
 
-    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_TRICLINIC
+    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_TRICLINIC
 
         The three angles may not be 90°
 
-    .. f:variable:: integer(kind=kind(CHFL_CELL_TYPES)) CHFL_CELL_INFINITE
+    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_INFINITE
 
         Cell type when there is no periodic boundary conditions
 
@@ -525,7 +525,7 @@ The following logging level are available:
 
     Set the cell type
 
-    :argument integer type [kind=kind(CHFL_CELL_TYPES)]: the new type of the cell
+    :argument integer type [kind=CHFL_CELL_TYPES]: the new type of the cell
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: free([status])
@@ -829,25 +829,25 @@ The following logging level are available:
 
     Get the atom type
 
-    :argument integer type [kind=kind(CHFL_ATOM_TYPES)]: the type of the atom
+    :argument integer type [kind=CHFL_ATOM_TYPES]: the type of the atom
     :optional integer status [optional]: The status code
 
-    Available atoms types are:
+    The atom types are integers which ``kind`` is the parameter ``CHFL_ATOM_TYPES``:
 
-    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_ELEMENT
+    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_ELEMENT
 
         Element from the periodic table of elements.
 
-    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_COARSE_GRAINED
+    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_COARSE_GRAINED
 
         Coarse-grained atom are composed of more than one element: CH3 groups,
         amino-acids are coarse-grained atoms.
 
-    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES)) CHFL_ATOM_DUMMY
+    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_DUMMY
 
         Dummy site, with no physical reality.
 
-    .. f:variable:: integer(kind=kind(CHFL_ATOM_TYPES))  CHFL_ATOM_UNDEFINED
+    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_UNDEFINED
 
         Undefined atom type.
 
@@ -855,7 +855,7 @@ The following logging level are available:
 
     Set the atom type
 
-    :argument integer type [kind=kind(CHFL_ATOM_TYPES)]: the new type of the atom
+    :argument integer type [kind=CHFL_ATOM_TYPES]: the new type of the atom
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: free([status])

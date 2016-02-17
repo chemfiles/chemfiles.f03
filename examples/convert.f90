@@ -2,7 +2,7 @@
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program convert
-    use iso_fortran_env, only: int64
+    use iso_fortran_env, only: int64, int32
     use chemfiles
     implicit none
 
@@ -12,13 +12,14 @@ program convert
     type(chfl_topology) :: water_topology
     type(chfl_atom) :: O, H
 
-    integer(int64) :: nsteps, i, status
+    integer(int64) :: nsteps, i
+    integer(int32) :: status
 
     call input%open("water.xyz", "r", status=status)
     if (status /= 0) stop "Error while opening input file"
     call ouput_file%open("water.pdb", "w")
 
-    call frame%init(0)
+    call frame%init(0_int64)
     call water_topology%init()
     ! Orthorombic UnitCell with lengths of 20, 15 and 35 A
     call cell%init(20d0, 15d0, 35d0)
@@ -31,8 +32,8 @@ program convert
     call water_topology%append(O)
     call water_topology%append(H)
     call water_topology%append(H)
-    call water_topology%add_bond(0, 1)
-    call water_topology%add_bond(0, 2)
+    call water_topology%add_bond(0_int64, 1_int64)
+    call water_topology%add_bond(0_int64, 2_int64)
 
     call input%nsteps(nsteps)
 

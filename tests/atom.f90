@@ -1,15 +1,15 @@
 program atom_test
-    use iso_fortran_env, only: real32, real64, int32
+    use iso_fortran_env, only: real32, real64, int32, int64
     use chemfiles
     use testing
 
     implicit none
     type(chfl_atom) :: atom
-    real(kind=real32) :: mass = 0.0, charge = 0.0
-    real(kind=real64) :: radius = 0.0
+    real(real32) :: mass = 0.0, charge = 0.0
+    real(real64) :: radius = 0.0
     integer :: status
-    integer(kind=int32) :: number
-    integer(kind=kind(CHFL_ATOM_TYPES)) :: atom_type
+    integer(int32) :: number
+    integer(CHFL_ATOM_TYPES) :: atom_type
     character(len=32) :: name
 
     call atom%init("He", status=status)
@@ -23,7 +23,7 @@ program atom_test
     call check((status == 0), "atom%charge")
     call check((charge == 0.0), "atom%charge")
 
-    call atom%name(name, len(name), status=status)
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "He"), "atom%name")
 
@@ -41,11 +41,11 @@ program atom_test
 
     call atom%set_name("Zn", status=status)
     call check((status == 0), "atom%set_name")
-    call atom%name(name, len(name), status=status)
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "Zn"), "atom%name")
 
-    call atom%full_name(name, len(name), status=status)
+    call atom%full_name(name, len(name, int64), status=status)
     call check((status == 0), "atom%full_name")
     call check((name == "Zinc"), "atom%full_name")
 

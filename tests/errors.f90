@@ -20,7 +20,7 @@ program cell_test
     use logging
 
     implicit none
-    integer(kind=kind(CHFL_LOG_LEVEL)) :: level
+    integer(CHFL_LOG_LEVEL) :: level
     integer :: status
     logical :: fexist
     character(len=1024) :: error

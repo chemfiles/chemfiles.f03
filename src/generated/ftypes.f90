@@ -15,22 +15,21 @@
 ! =========================================================================== !
 
 
-type chfl_cell
+type chfl_trajectory
     private
     type(c_ptr) :: ptr
 contains
-    procedure :: init => chfl_cell_init_
-    procedure :: triclinic => chfl_cell_triclinic_init_
-    procedure :: from_frame => chfl_cell_from_frame_init_
-    procedure :: volume => chfl_cell_volume
-    procedure :: lengths => chfl_cell_lengths
-    procedure :: set_lengths => chfl_cell_set_lengths
-    procedure :: angles => chfl_cell_angles
-    procedure :: set_angles => chfl_cell_set_angles
-    procedure :: matrix => chfl_cell_matrix
-    procedure :: type => chfl_cell_type
-    procedure :: set_type => chfl_cell_set_type
-    procedure :: free => chfl_cell_free
+    procedure :: open => chfl_trajectory_open_init_
+    procedure :: with_format => chfl_trajectory_with_format_init_
+    procedure :: read => chfl_trajectory_read
+    procedure :: read_step => chfl_trajectory_read_step
+    procedure :: write => chfl_trajectory_write
+    procedure :: set_topology => chfl_trajectory_set_topology
+    procedure :: set_topology_file => chfl_trajectory_set_topology_file
+    procedure :: set_cell => chfl_trajectory_set_cell
+    procedure :: nsteps => chfl_trajectory_nsteps
+    procedure :: sync => chfl_trajectory_sync
+    procedure :: close => chfl_trajectory_close
 end type
 
 type chfl_atom
@@ -78,23 +77,6 @@ contains
     procedure :: free => chfl_topology_free
 end type
 
-type chfl_trajectory
-    private
-    type(c_ptr) :: ptr
-contains
-    procedure :: open => chfl_trajectory_open_init_
-    procedure :: with_format => chfl_trajectory_with_format_init_
-    procedure :: read => chfl_trajectory_read
-    procedure :: read_step => chfl_trajectory_read_step
-    procedure :: write => chfl_trajectory_write
-    procedure :: set_topology => chfl_trajectory_set_topology
-    procedure :: set_topology_file => chfl_trajectory_set_topology_file
-    procedure :: set_cell => chfl_trajectory_set_cell
-    procedure :: nsteps => chfl_trajectory_nsteps
-    procedure :: sync => chfl_trajectory_sync
-    procedure :: close => chfl_trajectory_close
-end type
-
 type chfl_frame
     private
     type(c_ptr) :: ptr
@@ -113,4 +95,22 @@ contains
     procedure :: guess_topology => chfl_frame_guess_topology
     procedure :: selection => chfl_frame_selection
     procedure :: free => chfl_frame_free
+end type
+
+type chfl_cell
+    private
+    type(c_ptr) :: ptr
+contains
+    procedure :: init => chfl_cell_init_
+    procedure :: triclinic => chfl_cell_triclinic_init_
+    procedure :: from_frame => chfl_cell_from_frame_init_
+    procedure :: volume => chfl_cell_volume
+    procedure :: lengths => chfl_cell_lengths
+    procedure :: set_lengths => chfl_cell_set_lengths
+    procedure :: angles => chfl_cell_angles
+    procedure :: set_angles => chfl_cell_set_angles
+    procedure :: matrix => chfl_cell_matrix
+    procedure :: type => chfl_cell_type
+    procedure :: set_type => chfl_cell_set_type
+    procedure :: free => chfl_cell_free
 end type

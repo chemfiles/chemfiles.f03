@@ -5,10 +5,10 @@ program cell_test
 
     implicit none
     type(chfl_cell) :: cell
-    real(kind=real64) :: a, b, c, V
-    real(kind=real64), dimension(3, 3) :: expected_mat, mat
+    real(real64) :: a, b, c, V
+    real(real64), dimension(3, 3) :: expected_mat, mat
     integer :: status, i, j
-    integer(kind=kind(CHFL_CELL_TYPES)) :: cell_type
+    integer(CHFL_CELL_TYPES) :: cell_type
 
     call cell%init(2d0, 3d0, 4d0, status=status)
     call check((status == 0), "cell%init")

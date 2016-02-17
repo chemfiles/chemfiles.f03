@@ -19,5 +19,4 @@ set_fortran_debug_flag_if_possible("-Wextra")
 set_fortran_debug_flag_if_possible("-pedantic")
 set_fortran_debug_flag_if_possible("-Wimplicit-interface")
 set_fortran_debug_flag_if_possible("-Wimplicit-procedure")
-
-set_fortran_flag_if_possible("-fdefault-integer-8")
+set_fortran_debug_flag_if_possible("-Wno-c-binding-type")

@@ -8,14 +8,14 @@ program frame_test
     type(chfl_cell) :: cell
     type(chfl_topology) :: topology
     type(chfl_atom) :: Zn, Ar, atom
-    integer :: status, i, j
-    integer(kind=int64) :: natoms, step
-    real(kind=real32), dimension(:, :), pointer :: set_data, check_data
-    real(kind=real64) :: a, b, c
+    integer :: status
+    integer(int64) :: natoms, step, i, j
+    real(real32), dimension(:, :), pointer :: set_data, check_data
+    real(real64) :: a, b, c
     character(len=32) :: name
     logical(1) :: has_vel = .true.
 
-    call frame%init(5, status=status)
+    call frame%init(5_int64, status=status)
     call check((status == 0), "frame%init")
 
     call frame%atoms_count(natoms, status=status)
@@ -26,13 +26,13 @@ program frame_test
     call check((status == 0), "frame%step")
     call check((step == 0), "frame%step")
 
-    call frame%set_step(42, status=status)
+    call frame%set_step(42_int64, status=status)
     call check((status == 0), "frame%set_step")
     call frame%step(step, status=status)
     call check((status == 0), "frame%step")
     call check((step == 42), "frame%set_step")
 
-    call frame%resize(4, status=status)
+    call frame%resize(4_int64, status=status)
     call check((status == 0), "frame%resize")
 
     call frame%positions(set_data, natoms, status=status)
@@ -108,16 +108,16 @@ program frame_test
     call topology%from_frame(frame, status=status)
     call check((status == 0), "topology%from_frame")
 
-    call atom%from_topology(topology, 0, status=status)
+    call atom%from_topology(topology, 0_int64, status=status)
     call check((status == 0), "atom%from_topology")
-    call atom%name(name, len(name), status=status)
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "Zn"), "atom%name")
     call atom%free()
 
-    call atom%from_frame(frame, 1, status=status)
+    call atom%from_frame(frame, 1_int64, status=status)
     call check((status == 0), "atom%from_frame")
-    call atom%name(name, len(name), status=status)
+    call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")
     call check((name == "Ar"), "atom%name")
 

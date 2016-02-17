@@ -9,8 +9,8 @@ PROGRAM trajectory_read
     type(chfl_atom) :: atom
     type(chfl_frame) :: frame
 
-    real(kind=real32), dimension(:, :), pointer :: positions
-    integer(kind=int64) :: natoms
+    real(real32), dimension(:, :), pointer :: positions
+    integer(int64) :: natoms
     character(len=2048) :: expected_content, content
     character :: EOL = char(10)
     integer :: status, i, j
@@ -40,9 +40,9 @@ PROGRAM trajectory_read
         call check((status == 0), "topology%append")
     end do
 
-    call frame%init(0, status=status)
+    call frame%init(0_int64, status=status)
     call check((status == 0), "frame%init")
-    call frame%resize(4, status=status)
+    call frame%resize(4_int64, status=status)
     call check((status == 0), "frame%resize")
     call frame%positions(positions, natoms, status=status)
     call check((status == 0), "frame%positions")
@@ -66,7 +66,7 @@ PROGRAM trajectory_read
     call topology%append(atom, status=status)
     call check((status == 0), "topology%append")
 
-    call frame%resize(6, status=status)
+    call frame%resize(6_int64, status=status)
     call check((status == 0), "frame%resize")
     call frame%positions(positions, natoms, status=status)
     call check((status == 0), "frame%positions")

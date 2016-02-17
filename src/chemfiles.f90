@@ -9,8 +9,11 @@
 
 module chemfiles
     use iso_c_binding
+    use iso_fortran_env, only: int32
+
     use strings
     implicit none
+
     private
     ! Export types
     public :: chfl_trajectory, chfl_frame, chfl_cell, chfl_topology, chfl_atom
@@ -23,6 +26,7 @@ module chemfiles
     public :: chfl_logfile, chfl_loglevel, chfl_set_loglevel, chfl_log_callback
     public :: chfl_last_error, chfl_strerror
 
+    ! Global pointer to the callback procedure
     procedure(chfl_logging_callback), pointer :: logging_callback
 
     include "generated/cenums.f90"
