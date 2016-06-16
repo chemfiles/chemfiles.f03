@@ -96,6 +96,8 @@ program frame_test
     call Zn%init("Zn")
     call Ar%init("Ar")
     call topology%append(Zn)
+    call topology%append(Zn)
+    call topology%append(Ar)
     call topology%append(Ar)
 
     call frame%set_topology(topology, status=status)
@@ -115,7 +117,7 @@ program frame_test
     call check((name == "Zn"), "atom%name")
     call atom%free()
 
-    call atom%from_frame(frame, 1_int64, status=status)
+    call atom%from_frame(frame, 3_int64, status=status)
     call check((status == 0), "atom%from_frame")
     call atom%name(name, len(name, int64), status=status)
     call check((status == 0), "atom%name")

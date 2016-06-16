@@ -149,7 +149,9 @@ program trajectory_read
     call topology%init()
     call atom%init("Cs")
 
-    do i=1,3
+    call frame%atoms_count(natoms, status=status)
+    call check((status == 0), "frame%atoms_count")
+    do i=1,natoms
         call topology%append(atom, status=status)
         call check((status == 0), "topology%append")
     end do
@@ -171,10 +173,15 @@ program trajectory_read
     call atom%free(status=status)
     call check((status == 0), "atom%free")
 
+    call file%close(status=status)
+    call check((status == 0), "file%close")
+    call file%open(trim(DATADIR) // "/xyz/trajectory.xyz", 'r', status=status)
+    call check((status == 0), "file%open")
+
     ! Set the topology associated with a trajectory from a file
     call file%set_topology_file(trim(DATADIR) // "/xyz/topology.xyz", status=status)
     call check((status == 0), "file%set_topology")
-    call file%read_step(10_int64, frame, status=status)
+    call file%read_step(1_int64, frame, status=status)
     call check((status == 0), "file%read_step")
 
     call atom%from_frame(frame, 0_int64);
