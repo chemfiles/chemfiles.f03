@@ -45,6 +45,18 @@ function chfl_last_error() result(string)
     string = c_to_f_str(c_string)
 end function
 
+subroutine chfl_clear_errors(status)
+    implicit none
+
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_clear_errors_c()
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
 subroutine chfl_loglevel(level, status)
     implicit none
     integer(CHFL_LOG_LEVEL) :: level
@@ -121,11 +133,11 @@ subroutine chfl_trajectory_open_init_(this, filename, mode, status)
     implicit none
     class(chfl_trajectory) :: this
     character(len=*), intent(in) :: filename
-    character(len=*), intent(in) :: mode
+    character, value :: mode
     integer(int32), optional :: status
     integer(int32) :: status_tmp_
 
-    this%ptr = chfl_trajectory_open_c(f_to_c_str(filename), f_to_c_str(mode))
+    this%ptr = chfl_trajectory_open_c(f_to_c_str(filename), mode)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = -1
@@ -142,12 +154,12 @@ subroutine chfl_trajectory_with_format_init_(this, filename, mode, format, statu
     implicit none
     class(chfl_trajectory) :: this
     character(len=*), intent(in) :: filename
-    character(len=*), intent(in) :: mode
+    character, value :: mode
     character(len=*), intent(in) :: format
     integer(int32), optional :: status
     integer(int32) :: status_tmp_
 
-    this%ptr = chfl_trajectory_with_format_c(f_to_c_str(filename), f_to_c_str(mode), f_to_c_str(format))
+    this%ptr = chfl_trajectory_with_format_c(f_to_c_str(filename), mode, f_to_c_str(format))
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = -1
@@ -221,6 +233,20 @@ subroutine chfl_trajectory_set_topology_file(this, filename, status)
     integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_trajectory_set_topology_file_c(this%ptr, f_to_c_str(filename))
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_trajectory_set_topology_with_format(this, filename, format, status)
+    implicit none
+    class(chfl_trajectory) :: this
+    character(len=*), intent(in) :: filename
+    character(len=*), intent(in) :: format
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_trajectory_set_topology_with_format_c(this%ptr, f_to_c_str(filename), f_to_c_str(format))
     if (present(status)) then
         status = status_tmp_
     end if
@@ -431,29 +457,13 @@ subroutine chfl_frame_set_step(this, step, status)
     end if
 end subroutine
 
-subroutine chfl_frame_guess_topology(this, bonds, status)
+subroutine chfl_frame_guess_topology(this, status)
     implicit none
     class(chfl_frame) :: this
-    logical(kind=c_bool), value :: bonds
     integer(int32), optional :: status
     integer(int32) :: status_tmp_
 
-    status_tmp_ = chfl_frame_guess_topology_c(this%ptr, bonds)
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_frame_selection(this, selection, matched, natoms, status)
-    implicit none
-    class(chfl_frame), intent(in) :: this
-    character(len=*), intent(in) :: selection
-    logical(kind=c_bool), dimension(:), target :: matched
-    integer(kind=c_size_t), value :: natoms
-    integer(int32), optional :: status
-    integer(int32) :: status_tmp_
-
-    status_tmp_ = chfl_frame_selection_c(this%ptr, f_to_c_str(selection), c_loc(matched), natoms)
+    status_tmp_ = chfl_frame_guess_topology_c(this%ptr)
     if (present(status)) then
         status = status_tmp_
     end if
@@ -521,7 +531,7 @@ end subroutine
 subroutine chfl_cell_from_frame_init_(this, frame, status)
     implicit none
     class(chfl_cell) :: this
-    class(chfl_frame) :: frame
+    class(chfl_frame), intent(in) :: frame
     integer(int32), optional :: status
     integer(int32) :: status_tmp_
 
@@ -684,7 +694,7 @@ end subroutine
 subroutine chfl_topology_from_frame_init_(this, frame, status)
     implicit none
     class(chfl_topology) :: this
-    class(chfl_frame) :: frame
+    class(chfl_frame), intent(in) :: frame
     integer(int32), optional :: status
     integer(int32) :: status_tmp_
 
@@ -1138,6 +1148,79 @@ subroutine chfl_atom_free(this, status)
     integer(int32) :: status_tmp_
 
     status_tmp_ = chfl_atom_free_c(this%ptr)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_selection_init_(this, selection, status)
+    implicit none
+    class(chfl_selection) :: this
+    character(len=*), intent(in) :: selection
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    this%ptr = chfl_selection_c(f_to_c_str(selection))
+
+    if (.not. c_associated(this%ptr)) then
+        status_tmp_ = -1
+    else
+        status_tmp_ = 0
+    end if
+
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_selection_size(this, size, status)
+    implicit none
+    class(chfl_selection), intent(in) :: this
+    integer(kind=c_size_t) :: size
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_selection_size_c(this%ptr, size)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_selection_evalutate(this, frame, n_matches, status)
+    implicit none
+    class(chfl_selection) :: this
+    class(chfl_frame), intent(in) :: frame
+    integer(kind=c_size_t) :: n_matches
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_selection_evalutate_c(this%ptr, frame%ptr, n_matches)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_selection_matches(this, matches, n_matches, status)
+    implicit none
+    class(chfl_selection), intent(in) :: this
+    type(chfl_match), dimension(:), target :: matches
+    integer(kind=c_size_t), value :: n_matches
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_selection_matches_c(this%ptr, c_loc(matches), n_matches)
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_selection_free(this, status)
+    implicit none
+    class(chfl_selection) :: this
+    integer(int32), optional :: status
+    integer(int32) :: status_tmp_
+
+    status_tmp_ = chfl_selection_free_c(this%ptr)
     if (present(status)) then
         status = status_tmp_
     end if

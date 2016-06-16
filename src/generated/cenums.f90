@@ -25,12 +25,12 @@ end enum
 integer, parameter :: CHFL_LOG_LEVEL = kind(CHFL_LOG_ERROR)
 
 enum, bind(C)
-    enumerator :: CHFL_CELL_ORTHOROMBIC = 0
+    enumerator :: CHFL_CELL_ORTHORHOMBIC = 0
     enumerator :: CHFL_CELL_TRICLINIC = 1
     enumerator :: CHFL_CELL_INFINITE = 2
 end enum
 
-integer, parameter :: CHFL_CELL_TYPES = kind(CHFL_CELL_ORTHOROMBIC)
+integer, parameter :: CHFL_CELL_TYPES = kind(CHFL_CELL_ORTHORHOMBIC)
 
 enum, bind(C)
     enumerator :: CHFL_ATOM_ELEMENT = 0

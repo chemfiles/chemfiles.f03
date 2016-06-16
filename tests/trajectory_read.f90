@@ -128,7 +128,7 @@ program trajectory_read
     call check((status == 0), "atom%free")
 
     ! Guess the system topology
-    call frame%guess_topology(logical(.true., kind=1), status=status)
+    call frame%guess_topology(status=status)
     call check((status == 0), "frame%guess_topology")
 
     call topology%from_frame(frame, status=status)

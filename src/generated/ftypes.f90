@@ -15,6 +15,17 @@
 ! =========================================================================== !
 
 
+type chfl_selection
+    private
+    type(c_ptr) :: ptr
+contains
+    procedure :: init => chfl_selection_init_
+    procedure :: size => chfl_selection_size
+    procedure :: evalutate => chfl_selection_evalutate
+    procedure :: matches => chfl_selection_matches
+    procedure :: free => chfl_selection_free
+end type
+
 type chfl_trajectory
     private
     type(c_ptr) :: ptr
@@ -26,6 +37,7 @@ contains
     procedure :: write => chfl_trajectory_write
     procedure :: set_topology => chfl_trajectory_set_topology
     procedure :: set_topology_file => chfl_trajectory_set_topology_file
+    procedure :: set_topology_with_format => chfl_trajectory_set_topology_with_format
     procedure :: set_cell => chfl_trajectory_set_cell
     procedure :: nsteps => chfl_trajectory_nsteps
     procedure :: sync => chfl_trajectory_sync
@@ -93,7 +105,6 @@ contains
     procedure :: step => chfl_frame_step
     procedure :: set_step => chfl_frame_set_step
     procedure :: guess_topology => chfl_frame_guess_topology
-    procedure :: selection => chfl_frame_selection
     procedure :: free => chfl_frame_free
 end type
 

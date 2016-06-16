@@ -74,7 +74,7 @@ program cell_test
 
     call cell%type(cell_type, status=status)
     call check((status == 0), "cell%type")
-    call check((cell_type == CHFL_CELL_ORTHOROMBIC), "cell%type")
+    call check((cell_type == CHFL_CELL_ORTHORHOMBIC), "cell%type")
 
     call cell%set_type(CHFL_CELL_TRICLINIC, status=status)
     call check((status == 0), "cell%set_type")
