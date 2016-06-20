@@ -93,6 +93,12 @@ Error and logging functions
 
     :return string strerror: The error message corresponding to the status code
 
+.. f:subroutine:: string chfl_clear_errors([status])
+
+    Clear the last error message.
+
+    :optional integer status [optional]: The status code
+
 .. f:subroutine:: chfl_loglevel(level, [status])
 
     Get the current maximal logging level
@@ -200,7 +206,7 @@ Error and logging functions
     Open a trajectory file.
 
     :argument string filename: The path to the trajectory file
-    :argument string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
+    :argument character mode: The opening mode: 'r' for read, 'w' for write and  'a' for append.
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: with_format(filename, mode, , [status])
@@ -208,7 +214,7 @@ Error and logging functions
     Open a trajectory file using a given format to read the file.
 
     :argument string filename: The path to the trajectory file
-    :argument string mode: The opening mode: "r" for read, "w" for write and  "a" for append.
+    :argument character mode: The opening mode: 'r' for read, 'w' for write and  'a' for append.
     :argument string format: The format to use
     :optional integer status [optional]: The status code
 
@@ -249,6 +255,16 @@ Error and logging functions
     frame of ``filename``; and extracting the topology of this frame.
 
     :argument string filename: The file to read in order to get the new topology
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: set_topology_with_format(filename, format, [status])
+
+    Set the topology associated with a trajectory by reading the first
+    frame of ``filename`` using the given ``format``; and extracting the
+    topology of this frame.
+
+    :argument string filename: The file to read in order to get the new topology
+    :argument string filename: The format to use for the topology file
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: cell(cell, [status])
@@ -394,32 +410,11 @@ Error and logging functions
     :argument integer step: The new frame step
     :optional integer status [optional]: The status code
 
-.. f:subroutine:: guess_topology(bonds, [status])
+.. f:subroutine:: guess_topology([status])
 
-    Try to guess the bonds, angles and dihedrals in the system. If ``bonds``
-    is ``.true.``, guess everything; else only guess the angles and dihedrals from
-    the bond list.
+    Try to guess the bonds, angles and dihedrals in the system, using a
+    distance-based algorithm.
 
-    :argument logical bonds: Should we recompute the bonds from the positions or not ?
-    :optional integer status [optional]: The status code
-
-
-.. f:subroutine:: selection(selection, matched, natoms)
-
-    Select atoms in a frame, from a specific selection string.
-
-    This function select atoms in a frame matching a selection string. For example,
-    ``"name H and x > 4"`` will select all the atoms with name ``"H"`` and ``x``
-    coordinate less than 4. See the C++ documentation for the full selection language.
-
-    Results of this function are used to fill the ``matched`` pre-allocated array
-    containing ``natoms`` logical, where ``natoms`` is the number of atoms in the frame.
-    The array will contain ``.true.`` at position ``i`` if the atom at position ``i``
-    matches the selection string, and false otherwise.
-
-    :argument integer natoms: The selection string
-    :argument logical matched [dimension(\:)]: A pre-allocated array of size ``natoms``
-    :argument integer natoms: The size of the ``matched`` array. This must be the same size as ``chfl_frame%atoms_count``
     :optional integer status [optional]: The status code
 
 .. f:subroutine:: free([status])
@@ -885,5 +880,76 @@ Error and logging functions
 .. f:subroutine:: free([status])
 
     Destroy an atom, and free the associated memory
+
+    :optional integer status [optional]: The status code
+
+
+``chfl_selection`` type
+------------------------
+
+.. f:currentmodule:: chfl_selection
+
+.. f:type:: chfl_selection
+
+    Wrapping around a C pointer of type ``CHFL_SELECTION*``. The following
+    subroutine are available:
+
+    :field subroutine init:
+    :field subroutine size:
+    :field subroutine evaluate:
+    :field subroutine matches:
+
+    The initialization routine is ``init``.
+
+
+.. f:subroutine:: init(selection, [status])
+
+    Create a selection corresponding to the given ``selection`` string.
+    For example, the selection string ``"name H and x > 4"`` will select all
+    the atoms with name ``"H"`` and ``x`` coordinate less than 4. See the C++
+    documentation for the full selection language.
+
+    :argument string selection: The selection string
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: size(size, [status])
+
+    Get the size of the selection, i.e. the number of atoms we are selecting
+    together.
+
+    :argument integer size: The selection size
+    :optional integer status [optional]: The status code
+
+.. f:subroutine:: evaluate(frame, n_matches, [status])
+
+    Evaluate a selection for a given frame. This function also return the number
+    of matches for a selection in ``n_matches``
+
+    :argument chfl_frame frame: The frame to use
+    :argument integer n_matches: The number of matches for this selection and
+                                  this frame
+    :optional integer status [optional]: The status code
+
+
+.. f:subroutine:: matches(matches, n_matches, [status])
+
+    :argument chfl_match matches [allocatable, dimension(*)]: Pre-allocated
+        array of the size given by ``chfl_selection%evaluate``.
+    :argument integer n_matchs: Size of the ``matches`` array
+    :optional integer status [optional]: The status code
+
+.. f:type:: chfl_match
+
+    This type contains the matched atoms for a given selection in the ``atoms``
+    array. Values in the ``atoms`` array are valid up to the ``size`` of this
+    match. If the match size is 2, then ``atom(1)`` and ``atom(2)`` are valid,
+    and ``atom(3)`` and ``atom(4)`` contains invalid indexes.
+
+    :field integer size: The size of this match.
+    :field integer atoms [dimension(4)]: The index of the matched atoms.
+
+.. f:subroutine:: free([status])
+
+    Destroy a selection, and free the associated memory
 
     :optional integer status [optional]: The status code
