@@ -183,8 +183,10 @@ Error and logging functions
 
 .. f:type:: chfl_trajectory
 
-    Wrapping around a C pointer of type ``CHFL_TRAJECTORY*``. The following
-    subroutine are available:
+    A ``chfl_trajectory`` uses a file and a format together to read simulation
+    data from the file. It can read and write one or many ``chfl_frame`` from
+    and to this file. The file type and the format are automatically determined
+    from the extention.
 
     :field subroutine open:
     :field subroutine with_format:
@@ -303,8 +305,16 @@ Error and logging functions
 
 .. f:type:: chfl_frame
 
-    Wrapping around a C pointer of type ``CHFL_FRAME*``. The following
-    subroutine are available:
+    A ``chfl_frame`` holds data for one step of a simulation. As not all formats
+    provides all the types of informations, some fields may be initialized to a
+    default value.
+
+    A ``chfl_frame`` may contains the following data:
+
+    * Positions for all the atoms in the system;
+    * Velocities for all the atoms in the system;
+    * The topology (``chfl_topology``) of the system;
+    * The unit cell (``chfl_cell``) of the system.
 
     :field subroutine init:
     :field subroutine atoms_count:
@@ -430,8 +440,12 @@ Error and logging functions
 
 .. f:type:: chfl_cell
 
-    Wrapping around a C pointer of type ``CHFL_CELL*``. The following
-    subroutine are available:
+    The ``chfl_cell`` type describe the boundary conditions of the system:
+    where are the boundaries, and what is the periodicity of theses boundaries.
+    An unit cell can be of three types: *Infinite*, *Orthorombic* or
+    *Triclinic*. Inifinite cells does not have any boundaries. Orthorombic cells
+    are defined by three orthogonals vectors, and Triclinic cells are defined by
+    three vectors without any constrains.
 
     :field subroutine init:
     :field subroutine from_frame:
@@ -560,8 +574,9 @@ Error and logging functions
 
 .. f:type:: chfl_topology
 
-    Wrapping around a C pointer of type ``CHFL_TOPOLOGY*``. The following
-    subroutine are available:
+    A ``chfl_topology`` describes the organisation of the particles in the
+    system. What are they names, how are they bonded together, … A topology is
+    mainly a list of ``chfl_atom`` in the system.
 
     :field subroutine init:
     :field subroutine from_frame:
@@ -729,8 +744,14 @@ Error and logging functions
 
 .. f:type:: chfl_atom
 
-    Wrapping around a C pointer of type ``CHFL_ATOM*``. The following
-    subroutine are available:
+    The ``chfl_atom`` type contains basic information about the atoms in the
+    system: the name (if it is disponible), mass, kind of atom and so on. Atoms
+    are not limited to plain chemical elements. Four types of atoms are defined:
+    *Element* are Atoms from the periodic classification; *coarse grained* atoms
+    are particles taking together more than one element (*CH4* or *H2O* are
+    examples); *Dummy* atoms are fictitous points associated with some data,
+    like the fourth site in the TIP4P model of water; and *Undefined* atoms are
+    all the other atoms types.
 
     :field subroutine init:
     :field subroutine from_frame:
@@ -891,8 +912,11 @@ Error and logging functions
 
 .. f:type:: chfl_selection
 
-    Wrapping around a C pointer of type ``CHFL_SELECTION*``. The following
-    subroutine are available:
+    Chemfiles provides a selection, implemented with the ``chfl_selection``
+    type. This selection language allow the users to select a group of atoms
+    using a string. Examples of selections are ``"name H"`` and ``"(x < 45 and
+    name O) or name C"`` for selections with one atom, and ``"angles: name($2) O
+    and mass($3) < 7 or index($1) > 10"`` for multiple atoms selections.
 
     :field subroutine init:
     :field subroutine size:
