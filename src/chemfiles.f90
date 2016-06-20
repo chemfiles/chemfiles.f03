@@ -25,7 +25,7 @@ module chemfiles
     ! Export free functions
     public :: chfl_version, chfl_log_stderr, chfl_log_stdout, chfl_log_silent
     public :: chfl_logfile, chfl_loglevel, chfl_set_loglevel, chfl_log_callback
-    public :: chfl_last_error, chfl_strerror
+    public :: chfl_last_error, chfl_strerror, chfl_clear_errors
 
     ! Global pointer to the callback procedure
     procedure(chfl_logging_callback), pointer :: logging_callback
