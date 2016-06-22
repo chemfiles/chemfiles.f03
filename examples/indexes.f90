@@ -10,7 +10,7 @@ program indexes_
     type(chfl_frame) :: frame
 
     real(real32), dimension(:, :), pointer :: positions
-    integer, dimension(:), allocatable :: indexes
+    integer(int64), dimension(:), allocatable :: indexes
     integer(int64) :: natoms, i, j
     integer(int32) :: status
 

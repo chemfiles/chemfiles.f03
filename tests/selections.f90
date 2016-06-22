@@ -10,7 +10,6 @@ program selections_test
     integer(kind=int64) :: size, n_matches
     integer :: status
 
-
     frame = testing_frame()
     call selection%init("name O", status=status)
     call check(status == 0, "selection%init")
@@ -149,7 +148,7 @@ contains
         type(chfl_match), allocatable, intent(in) :: matches(:)
         integer, dimension(3), intent(in) :: match
         logical :: find_match
-        integer :: i, n
+        integer :: i
 
         find_match = .false.
         do i=1,2 ! FIXME: using 'size(matches)' does not compile
