@@ -1045,7 +1045,7 @@ subroutine chfl_atom_name(this, name, buffsize, status)
     if (present(status)) then
         status = status_tmp_
     end if
-    name = rm_c_null_in_str(name)
+    name = rm_null_in_str(name)
 end subroutine
 
 subroutine chfl_atom_set_name(this, name, status)
@@ -1073,7 +1073,7 @@ subroutine chfl_atom_full_name(this, name, buffsize, status)
     if (present(status)) then
         status = status_tmp_
     end if
-    name = rm_c_null_in_str(name)
+    name = rm_null_in_str(name)
 end subroutine
 
 subroutine chfl_atom_vdw_radius(this, radius, status)

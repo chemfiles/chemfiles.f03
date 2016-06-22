@@ -7,6 +7,9 @@ macro(set_fortran_flag_if_possible _flag_)
     endif()
 endmacro()
 
+set_fortran_flag_if_possible("-std=f2008")
+set_fortran_flag_if_possible("-pedantic")
+
 macro(set_fortran_debug_flag_if_possible _flag_)
     CHECK_Fortran_COMPILER_FLAG("${_flag_}" FC_SUPPORTS${_flag_})
     if(FC_SUPPORTS${_flag_})

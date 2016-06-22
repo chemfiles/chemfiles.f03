@@ -60,7 +60,7 @@ module chemfiles
 contains
     include "generated/interface.f90"
 
-    subroutine logging_callback_wrapper(level, message)
+    subroutine logging_callback_wrapper(level, message) bind(C)
         implicit none
         integer(c_int), intent(in), value :: level
         type(c_ptr), intent(in), value :: message
