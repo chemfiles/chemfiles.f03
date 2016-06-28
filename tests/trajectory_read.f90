@@ -191,6 +191,23 @@ program trajectory_read
 
     call atom%free(status=status)
     call check((status == 0), "atom%free")
+
+
+    ! Set the topology associated with a trajectory from a file with a specific
+    ! format
+    call file%set_topology_with_format(trim(DATADIR) // "/xyz/topology.xyz", "XYZ", status=status)
+    call check((status == 0), "file%set_topology_with_format")
+    call file%read_step(1_int64, frame, status=status)
+    call check((status == 0), "file%read_step")
+
+    call atom%from_frame(frame, 0_int64);
+    call atom%name(name, len(name, int64), status=status)
+    call check((status == 0), "atom%name")
+    call check((name == "Zn"), "atom%name")
+
+    call atom%free(status=status)
+    call check((status == 0), "atom%free")
+
     call file%close(status=status)
     call check((status == 0), "file%close")
 

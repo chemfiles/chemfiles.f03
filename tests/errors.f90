@@ -24,7 +24,11 @@ program cell_test
     integer :: status
     logical :: fexist
     character(len=1024) :: error
+    character(len=1024) :: version
     type(chfl_trajectory) :: trajectory
+
+    version = chfl_version()
+    call check(len_trim(version) > 0)
 
     error = chfl_strerror(int(0, 4))
     call check(trim(error) == "Operation was sucessfull", "chfl_strerror")
