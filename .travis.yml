@@ -13,27 +13,32 @@ addons:
     - gfortran-4.9
     - cmake
 
+env:
+  global:
+     secure: "JghFAH3XkB2ztCnWQ4bkTxiMTRbLicxqZFHswKtk6RzzimZwWjLLZsUw/FM2MHT2w8iBxJwVpPpmSfYTpHVtmVFPw5UNPb+tEdvXZEj4f0N4erIOxjTYotcFs0o24VISwKhkmWlmwPGxwLSxW73CltjZpRFQ95DxUHBLKKWHco4BiDUhMn3LbJ4Pe/JxqG0yPiuwIR7jekAUE1Ig1mSQZxuyI5P8zagqNqfQY6Cl9RgNL79EbSKsCoR8YbMBPlubNSgJu2LGja3IbQ0vHcEiNzgoIk9sJthJh0dYjAvF6B6PFcMg0uN1790zfFg+Lu9jl4KUon5P4rwELoORTFAsimzk9WNgVp9eKUkqi+R3EK8X82Qt8D4dMtA0IEag21nbGOmNU4uY5SANhFydyyeUL95MzKlWIA4bd9pAakPewCtdGN2TSlXL/GWayI0SlCDwPZLZDPhV3mp9NZbQL86rIwxnGmJxaEoGCWO+IspLmS6bjNUPPyOlrPVnAOpekcM4fnJQojozwKGEmI6Jszr27Th/8eGHXJGFUZjRCcoctte4Vui6p+5U6HdnsdNb+RG8hJ+Okbx+2b9/7jE75V5Y72mQ8+k9da8dnGi+1lcWjwgYGxJCBQs1Zac8jYKZKq6jpzyAtV0J4VivMsM8SaoBPSN3PnI/uaz7eNTf/qkO/0w="
+
+
 before_install:
   # Setting environement
   - export CMAKE_ARGS="-DCMAKE_BUILD_TYPE=debug -DBUILD_TESTS=ON"
   - |
-    if test "$TRAVIS_OS_NAME" == "linux"; then
-        export DO_COVERAGE=true
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        export EXTRA_WORK=true
         export CMAKE_ARGS="$CMAKE_ARGS -DCODE_COVERAGE=ON"
         pip install --user codecov
     else
-        export DO_COVERAGE=false
+        export EXTRA_WORK=false
     fi
   # Install Linux stuff
   - |
-    if test "${TRAVIS_OS_NAME}" == "linux"; then
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
         export CC=gcc-4.9
         export CXX=g++-4.9
         export FC=gfortran-4.9
     fi
   # Install OS X stuff
   - |
-    if test "$TRAVIS_OS_NAME" == "osx"; then
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         brew update
         brew rm gcc
         brew install gcc
@@ -54,8 +59,11 @@ script:
   - make
   - ctest --output-on-failure
 
-after_success:
+after_script:
   - |
-    if ${DO_COVERAGE}; then
+    if ${EXTRA_WORK}; then
         codecov --gcov-exec=gcov-4.9
+        cd ${TRAVIS_BUILD_DIR}
+        git clone https://${GH_TOKEN}@github.com/chemfiles/chemfiles.f03 gh-pages
+        ./deploy-docs.sh
     fi
