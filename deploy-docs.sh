@@ -13,6 +13,7 @@ pip install --user -r doc/requirements.txt
 # Build documentation
 cd doc
 make html
+rm -rf _build/html/_static/bootswatch-* _build/html/_static/bootstrap-2.3.2 
 
 cd ../gh-pages
 git checkout gh-pages
@@ -28,7 +29,7 @@ else
     exit 1
 fi
 
-git add .
+git add --all .
 # Skip push if there is no change
 if git diff --cached --exit-code --quiet; then
     echo "No changes to the output on this push; exiting."
