@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import sphinx_bootstrap_theme
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(ROOT)
 
 # -- General configuration ------------------------------------------------
 
@@ -10,7 +12,7 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinxfortran.fortran_domain',
+    'fortran_domain',
 ]
 
 # The suffix of source filenames.
