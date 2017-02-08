@@ -62,8 +62,9 @@ script:
 after_script:
   - |
     if ${EXTRA_WORK}; then
+        ./scripts/check-tests.py
         codecov --gcov-exec=gcov-4.9
         cd ${TRAVIS_BUILD_DIR}
         git clone https://${GH_TOKEN}@github.com/chemfiles/chemfiles.f03 gh-pages
-        ./deploy-docs.sh
+        ./scripts/deploy-docs.sh
     fi
