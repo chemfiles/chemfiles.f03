@@ -14,7 +14,7 @@ program select
     integer :: status
 
     call file%open("filename.xyz", "r")
-    call frame%init(int(0, int64))
+    call frame%init()
     call file%read(frame, status=status)
     if (status /= 0) then
         ! handle error
@@ -25,7 +25,7 @@ program select
     matching = 0
 
     ! Get the number of matching atoms from the frame
-    call selection%evalutate(frame, matching)
+    call selection%evaluate(frame, matching)
     print *, "We have ", matching, " zinc in the frame"
     allocate(matches(matching))
 
@@ -40,7 +40,7 @@ program select
 
     ! Create a selection for multiple atoms
     call selection%init("angles: name($1) H and name($2) O and name($3) H")
-    call selection%evalutate(frame, matching)
+    call selection%evaluate(frame, matching)
     print *, "We have ", matching, " water in the frame"
     allocate(matches(matching))
 

@@ -15,22 +15,34 @@
 ! =========================================================================== !
 
 
-enum, bind(C)
-    enumerator :: CHFL_SUCCESS = 0
-    enumerator :: CHFL_MEMORY_ERROR = 1
-    enumerator :: CHFL_FILE_ERROR = 2
-    enumerator :: CHFL_FORMAT_ERROR = 3
-    enumerator :: CHFL_SELECTION_ERROR = 4
-    enumerator :: CHFL_GENERIC_ERROR = 5
-    enumerator :: CHFL_CXX_ERROR = 6
-end enum
+function chfl_version() result(string)
+    implicit none
 
-integer, parameter :: chfl_status = kind(CHFL_SUCCESS)
+    character(len=1024) :: string
+    type(c_ptr) :: c_string
 
-enum, bind(C)
-    enumerator :: CHFL_CELL_ORTHORHOMBIC = 0
-    enumerator :: CHFL_CELL_TRICLINIC = 1
-    enumerator :: CHFL_CELL_INFINITE = 2
-end enum
+    c_string = c_chfl_version()
+    string = c_to_f_str(c_string)
+end function
 
-integer, parameter :: chfl_cell_shape_t = kind(CHFL_CELL_ORTHORHOMBIC)
+function chfl_last_error() result(string)
+    implicit none
+
+    character(len=1024) :: string
+    type(c_ptr) :: c_string
+
+    c_string = c_chfl_last_error()
+    string = c_to_f_str(c_string)
+end function
+
+subroutine chfl_clear_errors(status)
+    implicit none
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_clear_errors()
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine

@@ -1,5 +1,5 @@
 PROGRAM trajectory_read
-    use iso_fortran_env, only: real32, real64, int64
+    use iso_fortran_env, only: real64, int64
     use chemfiles
     use testing
 
@@ -9,7 +9,7 @@ PROGRAM trajectory_read
     type(chfl_atom) :: atom
     type(chfl_frame) :: frame
 
-    real(real32), dimension(:, :), pointer :: positions
+    real(real64), dimension(:, :), pointer :: positions
     integer(int64) :: natoms
     character(len=2048) :: expected_content, content
     character :: EOL = char(10)
@@ -31,22 +31,22 @@ PROGRAM trajectory_read
                        "He 4 5 6" // EOL
 
     call topology%init(status=status)
-    call check((status == 0), "topology%init")
+    call check(status == 0, "topology%init")
     call atom%init("He", status=status)
-    call check((status == 0), "atom%init")
+    call check(status == 0, "atom%init")
 
     do i=1,4
-        call topology%append(atom, status=status)
-        call check((status == 0), "topology%append")
+        call topology%add_atom(atom, status=status)
+        call check(status == 0, "topology%append")
     end do
 
-    call frame%init(0_int64, status=status)
-    call check((status == 0), "frame%init")
+    call frame%init(status=status)
+    call check(status == 0, "frame%init")
     call frame%resize(4_int64, status=status)
-    call check((status == 0), "frame%resize")
+    call check(status == 0, "frame%resize")
     call frame%positions(positions, natoms, status=status)
-    call check((status == 0), "frame%positions")
-    call check((natoms == 4), "frame%positions")
+    call check(status == 0, "frame%positions")
+    call check(natoms == 4, "frame%positions")
     do i=1,3
         do j=1,4
             positions(i, j) = real(i)
@@ -54,23 +54,23 @@ PROGRAM trajectory_read
     end do
 
     call frame%set_topology(topology, status=status)
-    call check((status == 0), "frame%set_topology")
+    call check(status == 0, "frame%set_topology")
 
     call file%open("test-tmp.xyz", "w", status=status)
-    call check((status == 0), "file%open")
+    call check(status == 0, "file%open")
     call file%write(frame, status=status)
-    call check((status == 0), "file%write")
+    call check(status == 0, "file%write")
 
-    call topology%append(atom, status=status)
-    call check((status == 0), "topology%append")
-    call topology%append(atom, status=status)
-    call check((status == 0), "topology%append")
+    call topology%add_atom(atom, status=status)
+    call check(status == 0, "topology%append")
+    call topology%add_atom(atom, status=status)
+    call check(status == 0, "topology%append")
 
     call frame%resize(6_int64, status=status)
-    call check((status == 0), "frame%resize")
+    call check(status == 0, "frame%resize")
     call frame%positions(positions, natoms, status=status)
-    call check((status == 0), "frame%positions")
-    call check((natoms == 6), "frame%positions")
+    call check(status == 0, "frame%positions")
+    call check(natoms == 6, "frame%positions")
 
     do i=1,3
         do j=1,6
@@ -79,21 +79,21 @@ PROGRAM trajectory_read
     end do
 
     call frame%set_topology(topology, status=status)
-    call check((status == 0), "frame%set_topology")
+    call check(status == 0, "frame%set_topology")
 
     call atom%free(status=status)
-    call check((status == 0), "atom%free")
+    call check(status == 0, "atom%free")
     call topology%free(status=status)
-    call check((status == 0), "topology%free")
+    call check(status == 0, "topology%free")
 
     call file%write(frame, status=status)
-    call check((status == 0), "file%write")
-    call file%sync(status=status)
-    call check((status == 0), "file%sync")
+    call check(status == 0, "file%write")
+    call file%close(status=status)
+    call check(status == 0, "file%close")
 
 
     content = read_whole_file("test-tmp.xyz")
-    call check((content == expected_content), "Check file content")
+    call check(content == expected_content, "Check file content")
 
     open(unit=11, iostat=status, file="test-tmp.xyz", status='old')
     if (status == 0) close(11, status='delete')

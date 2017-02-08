@@ -25,13 +25,8 @@ install(TARGETS chemfiles_f DESTINATION lib)
 
 CHECK_Fortran_COMPILER_FLAG("-Wno-compare-reals" FC_SUPPORTS_NO_COMPARE_REAL)
 
-if(CODE_COVERAGE)
-    if(NOT CMAKE_COMPILER_IS_GNUCXX)
-        # Code coverage should use gcc
-        message(FATAL_ERROR "Code coverage can only be used with GCC")
-    endif()
+if(${CHFL_CODE_COVERAGE})
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fprofile-arcs -ftest-coverage -O0")
-    set(BUILD_TESTS ON CACHE BOOL "" FORCE)
     set(CMAKE_BUILD_TYPE "debug" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
@@ -40,7 +35,7 @@ function(chrp_fortran_test _file_)
     set(_name_ "fortran-${_name_}")
     add_executable(${_name_} ${_file_})
     target_link_libraries(${_name_} chemfiles_f fortran-testing gcov)
-    add_test(NAME ${_name_} COMMAND ${_name_} "${PROJECT_SOURCE_DIR}/chemfiles/tests/data")
+    add_test(NAME ${_name_} COMMAND ${_name_} "${PROJECT_BINARY_DIR}/chemfiles/tests/data")
     if(FC_SUPPORTS_NO_COMPARE_REAL)
         # We are comparing reals in the tests
         set_target_properties(${_name_} PROPERTIES COMPILE_FLAGS "-Wno-compare-reals")
@@ -53,7 +48,7 @@ function(chrp_fortran_example _file_)
     target_link_libraries(example-f90-${_name_} chemfiles_f gcov)
 endfunction()
 
-if(BUILD_TESTS)
+if(${CHFL_BUILD_TESTS})
     enable_testing()
     file(GLOB f_test_files ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.f90)
     add_library(fortran-testing STATIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/mod/testing.f90)

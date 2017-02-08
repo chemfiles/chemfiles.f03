@@ -2,21 +2,22 @@
 !* Any copyright is dedicated to the Public Domain.
 !* http://creativecommons.org/publicdomain/zero/1.0/
 program indexes_
-    use iso_fortran_env, only: real32, int64, int32
+    use iso_fortran_env, only: real64, int64
     use chemfiles
     implicit none
     ! Chemfiles types declaration uses the "chfl_" prefix
-    type(chfl_trajectory) :: traj
+    type(chfl_trajectory) :: trajectory
     type(chfl_frame) :: frame
 
-    real(real32), dimension(:, :), pointer :: positions
+    real(real64), dimension(:, :), pointer :: positions
     integer(int64), dimension(:), allocatable :: indexes
     integer(int64) :: natoms, i, j
-    integer(int32) :: status
+    integer :: status
 
-    call traj%open("filename.xyz", "r")
+    call frame%init()
+    call trajectory%open("filename.xyz", "r")
 
-    call traj%read(frame, status=status)
+    call trajectory%read(frame, status=status)
     if (status /= 0) then
         stop "Error"
     end if
@@ -43,6 +44,6 @@ program indexes_
 
     ! Cleanup the allocated memory
     deallocate(indexes, positions)
-    call traj%close()
+    call trajectory%close()
     call frame%free()
 end program

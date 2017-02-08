@@ -18,7 +18,7 @@ program selections_test
     call check(status == 0, "selection%size")
     call check(size == 1, "selection%size")
 
-    call selection%evalutate(frame, n_matches, status=status)
+    call selection%evaluate(frame, n_matches, status=status)
     call check(status == 0, "selection%evalutate")
     call check(n_matches == 2, "selection%size")
 
@@ -47,7 +47,7 @@ program selections_test
     call check(status == 0, "selection%size")
     call check(size == 1, "selection%size")
 
-    call selection%evalutate(frame, n_matches, status=status)
+    call selection%evaluate(frame, n_matches, status=status)
     call check(status == 0, "selection%evalutate")
     call check(n_matches == 1, "selection%size")
 
@@ -74,7 +74,7 @@ program selections_test
     call check(status == 0, "selection%size")
     call check(size == 3, "selection%size")
 
-    call selection%evalutate(frame, n_matches, status=status)
+    call selection%evaluate(frame, n_matches, status=status)
     call check(status == 0, "selection%evalutate")
     call check(n_matches == 2, "selection%size")
 
@@ -113,13 +113,13 @@ contains
         call topology%init(status=status)
         call check(status == 0, "topology%init")
 
-        call topology%append(H, status=status)
+        call topology%add_atom(H, status=status)
         call check(status == 0, "topology%append")
-        call topology%append(O, status=status)
+        call topology%add_atom(O, status=status)
         call check(status == 0, "topology%append")
-        call topology%append(O, status=status)
+        call topology%add_atom(O, status=status)
         call check(status == 0, "topology%append")
-        call topology%append(H, status=status)
+        call topology%add_atom(H, status=status)
         call check(status == 0, "topology%append")
 
         call O%free(status=status)
@@ -134,8 +134,10 @@ contains
         call topology%add_bond(2_int64, 3_int64, status=status)
         call check(status == 0, "topology%add_bond")
 
-        call testing_frame%init(4_int64, status=status)
+        call testing_frame%init(status=status)
         call check(status == 0, "testing_frame%init")
+        call testing_frame%resize(int(4, int64), status=status)
+        call check(status == 0, "testing_frame%resize")
 
         call testing_frame%set_topology(topology, status=status)
         call check(status == 0, "testing_frame%set_topology")
