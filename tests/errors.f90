@@ -11,7 +11,7 @@ contains
     end subroutine my_callback
 end module warnings
 
-program cell_test
+program errors_test
     use chemfiles
     use testing
     use warnings
@@ -29,7 +29,7 @@ program cell_test
     call check(trim(error) == "", "chfl_last_error")
 
     call chfl_set_warning_callback(my_callback, status=status)
-    call check(status == 0, "chfl_set_warning_callback")
+    call check(status == CHFL_SUCCESS, "chfl_set_warning_callback")
     ! Generating an error message
     call trajectory%open("nothere", "r")
     call check(trim(last_message) == 'Can not find a format associated with the "" extension.', "chfl_set_warning_callback")
@@ -38,7 +38,7 @@ program cell_test
     call check(trim(error) == 'Can not find a format associated with the "" extension.', "chfl_last_error")
 
     call chfl_clear_errors(status=status)
-    call check(status == 0, "chfl_clear_errors")
+    call check(status == CHFL_SUCCESS, "chfl_clear_errors")
     error = chfl_last_error()
     call check(trim(error) == '', "chfl_last_error")
 end program
