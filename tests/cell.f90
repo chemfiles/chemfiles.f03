@@ -4,6 +4,7 @@ program cell_test
     use testing
     implicit none
 
+    call test_copy()
     call test_triclinic()
     call test_orthorhombic()
     call test_volume()
@@ -13,6 +14,40 @@ program cell_test
     call test_matrix()
 
 contains
+    subroutine test_copy()
+        implicit none
+        type(chfl_cell) :: cell, cloned
+        real(real64), dimension(3) :: lengths
+        integer :: status
+
+        call cell%init([2d0, 3d0, 4d0], status=status)
+        call check(status == 0, "cell%init")
+        call cloned%copy(cell, status=status)
+        call check(status == 0, "cell%copy")
+
+        call cell%lengths(lengths, status=status)
+        call check(status == 0, "cell%lengths")
+        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        call cloned%lengths(lengths, status=status)
+        call check(status == 0, "cell%lengths")
+        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+
+        call cell%set_lengths([34d0, 33d0, 35d0], status=status)
+        call check(status == 0, "cell%set_lengths")
+
+        call cell%lengths(lengths, status=status)
+        call check(status == 0, "cell%lengths")
+        call check(all(lengths == [34.0, 33.0, 35.0]), "cell%lengths")
+        call cloned%lengths(lengths, status=status)
+        call check(status == 0, "cell%lengths")
+        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+
+        call cell%free(status=status)
+        call check(status == 0, "cell%free")
+        call cloned%free(status=status)
+        call check(status == 0, "cell%free")
+    end subroutine
+
     subroutine test_triclinic()
         implicit none
         type(chfl_cell) :: cell

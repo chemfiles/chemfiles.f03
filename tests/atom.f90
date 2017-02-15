@@ -4,6 +4,7 @@ program atom_test
     use testing
     implicit none
 
+    call test_copy()
     call test_name()
     call test_type()
     call test_mass()
@@ -12,6 +13,42 @@ program atom_test
     call test_atomic_number()
 
 contains
+    subroutine test_copy()
+        implicit none
+        type(chfl_atom) :: atom, cloned
+        character(len=32) :: name
+        integer :: status
+
+        call atom%init("He", status=status)
+        call check(status == 0, "atom%init")
+        call cloned%copy(atom, status=status)
+        call check(status == 0, "atom%copy")
+
+        call atom%name(name, len(name, int64), status=status)
+        call check(status == 0, "atom%name")
+        call check(name == "He", "atom%name")
+        name = ""
+        call cloned%name(name, len(name, int64), status=status)
+        call check(status == 0, "atom%name")
+        call check(name == "He", "atom%name")
+
+        call atom%set_name("Zn", status=status)
+        call check(status == 0, "atom%set_name")
+
+        call atom%name(name, len(name, int64), status=status)
+        call check(status == 0, "atom%name")
+        call check(name == "Zn", "atom%name")
+        name = ""
+        call cloned%name(name, len(name, int64), status=status)
+        call check(status == 0, "atom%name")
+        call check(name == "He", "atom%name")
+
+        call atom%free(status=status)
+        call check(status == 0, "atom%free")
+        call cloned%free(status=status)
+        call check(status == 0, "atom%free")
+    end subroutine
+
     subroutine test_name()
         implicit none
         type(chfl_atom) :: atom

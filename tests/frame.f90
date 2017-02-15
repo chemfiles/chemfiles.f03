@@ -4,6 +4,8 @@ program frame_test
     use testing
     implicit none
 
+    call test_copy()
+    call test_add_atom()
     call test_natoms()
     call test_step()
     call test_positions()
@@ -13,6 +15,40 @@ program frame_test
     call test_velocities()
 
 contains
+    subroutine test_copy()
+        implicit none
+        type(chfl_frame) :: frame, cloned
+        integer(int64) :: natoms
+        integer :: status
+
+        call frame%init(status=status)
+        call check(status == CHFL_SUCCESS, "frame%init")
+        call cloned%copy(frame, status=status)
+        call check(status == CHFL_SUCCESS, "frame%copy")
+
+        call frame%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 0, "frame%atoms_count")
+        call cloned%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 0, "frame%atoms_count")
+
+        call frame%resize(int(10, int64), status=status)
+        call check(status == CHFL_SUCCESS, "frame%resize")
+
+        call frame%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 10, "frame%atoms_count")
+        call cloned%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 0, "frame%atoms_count")
+
+        call frame%free(status=status)
+        call check(status == CHFL_SUCCESS, "frame%free")
+        call cloned%free(status=status)
+        call check(status == CHFL_SUCCESS, "frame%free")
+    end subroutine
+
     subroutine test_natoms()
         implicit none
         type(chfl_frame) :: frame
@@ -59,6 +95,41 @@ contains
 
         call frame%free(status=status)
         call check(status == CHFL_SUCCESS, "frame%free")
+    end subroutine
+
+    subroutine test_add_atom()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_atom) :: atom
+        integer(int64) :: natoms
+        integer :: status
+
+        call frame%init(status=status)
+        call check(status == CHFL_SUCCESS, "frame%init")
+
+        call atom%init("Zn", status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+
+        call frame%add_atom(atom, [10d0, 20d0, 30d0], status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+        call frame%add_atom(atom, [10d0, 20d0, 30d0], [10d0, 20d0, 30d0], status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+
+        call frame%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 2, "frame%atoms_count")
+
+        call frame%remove(int(0, int64), status=status)
+        call check(status == CHFL_SUCCESS, "frame%remove")
+
+        call frame%atoms_count(natoms, status=status)
+        call check(status == CHFL_SUCCESS, "frame%atoms_count")
+        call check(natoms == 1, "frame%atoms_count")
+
+        call frame%free(status=status)
+        call check(status == CHFL_SUCCESS, "frame%free")
+        call atom%free(status=status)
+        call check(status == CHFL_SUCCESS, "atom%free")
     end subroutine
 
     subroutine test_positions()

@@ -4,11 +4,46 @@ program selections_test
     use testing
     implicit none
 
+    call test_copy()
     call test_size()
+    call test_string()
     call test_evaluate_atoms()
     call test_evaluate_angles()
 
 contains
+    subroutine test_copy()
+        implicit none
+        type(chfl_selection) :: selection, cloned
+        integer :: status
+
+        call selection%init("name O", status=status)
+        call check(status == 0, "selection%init")
+        call cloned%copy(selection, status=status)
+        call check(status == 0, "selection%copy")
+
+        call selection%free(status=status)
+        call check(status == 0, "selection%free")
+        call cloned%free(status=status)
+        call check(status == 0, "selection%free")
+    end subroutine
+
+    subroutine test_string()
+        implicit none
+        type(chfl_selection) :: selection
+        character(len=32) :: string
+        integer :: status
+
+        call selection%init("name O", status=status)
+        call check(status == 0, "selection%init")
+
+        call selection%string(string, len(string, int64), status=status)
+        call check(status == 0, "selection%string")
+        call check(string == "name O", "selection%string")
+
+        call selection%free(status=status)
+        call check(status == 0, "selection%free")
+    end subroutine
+
     subroutine test_size()
         implicit none
         type(chfl_selection) :: selection

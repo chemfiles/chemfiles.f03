@@ -193,6 +193,8 @@ contains
         call check(status == CHFL_SUCCESS, "frame%free")
         call file%close(status=status)
         call check(status == CHFL_SUCCESS, "file%close")
+        call atom%free(status=status)
+        call check(status == CHFL_SUCCESS, "atom%free")
     end subroutine
 
     subroutine test_set_topology_from_file()
@@ -333,6 +335,9 @@ contains
         call check(status == CHFL_SUCCESS, "file%write")
         call file%close(status=status)
         call check(status == CHFL_SUCCESS, "file%close")
+
+        call frame%free(status=status)
+        call check(status == CHFL_SUCCESS, "frame%free")
 
         content = read_whole_file("test-tmp.xyz")
         call check(content == EXPECTED, "Check file content")
