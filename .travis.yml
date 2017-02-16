@@ -57,11 +57,12 @@ script:
   - cd ${TRAVIS_BUILD_DIR}/build
   - make
   - ctest --output-on-failure
+  - cd ${TRAVIS_BUILD_DIR}
+  - ./scripts/check-tests.py
+  - ./scripts/check-docs.py
   - |
     if ${EXTRA_WORK}; then
-        ./scripts/check-tests.py
         codecov --gcov-exec=gcov-4.9
-        cd ${TRAVIS_BUILD_DIR}
         git clone https://${GH_TOKEN}@github.com/chemfiles/chemfiles.f03 gh-pages
         ./scripts/deploy-docs.sh
     fi

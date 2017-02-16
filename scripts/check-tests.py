@@ -12,6 +12,8 @@ import sys
 import os
 import re
 
+from functions import all_functions
+
 ERROR = False
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 
@@ -20,23 +22,6 @@ def error(message):
     print(message)
     global ERROR
     ERROR = True
-
-
-def all_functions():
-    functions = []
-    current_type = None
-    with open(os.path.join(ROOT, "src", "generated", "types.f90")) as fd:
-        for line in fd:
-            if "end type" in line:
-                current_type = None
-                continue
-            if line.startswith("type"):
-                current_type = line.split()[1]
-                continue
-            if current_type and "procedure" in line:
-                procedure = line.split()[2]
-                functions.append(current_type + "%" + procedure)
-    return functions
 
 
 def usage_in_tests():
@@ -61,6 +46,12 @@ def usage_in_tests():
                             var, function = match.groups()
                             chfl_type = variables[var]
                             usages.append(chfl_type + "%" + function)
+
+                    match = re.search("[=(call)]\s+chfl_(.*?)\(.*\)", line)
+                    if match:
+                        name = match.groups()[0]
+                        usages.append("chfl_" + name)
+
     return usages
 
 
@@ -71,5 +62,5 @@ if __name__ == '__main__':
         if function not in tests:
             error("missing tests for {}".format(function))
 
-    if error:
+    if ERROR:
         sys.exit(1)

@@ -93,7 +93,7 @@ Error and logging functions
 
     :return string strerror: The error message corresponding to the status code
 
-.. f:subroutine:: string chfl_clear_errors([status])
+.. f:subroutine:: chfl_clear_errors([status])
 
     Clear the last error message.
 
@@ -962,6 +962,12 @@ Error and logging functions
     :argument integer n_matchs: Size of the ``matches`` array
     :optional integer status [optional]: The status code
 
+.. f:subroutine:: free([status])
+
+    Destroy a selection, and free the associated memory
+
+    :optional integer status [optional]: The status code
+
 .. f:type:: chfl_match
 
     This type contains the matched atoms for a given selection in the ``atoms``
@@ -971,9 +977,3 @@ Error and logging functions
 
     :field integer size: The size of this match.
     :field integer atoms [dimension(4)]: The index of the matched atoms.
-
-.. f:subroutine:: free([status])
-
-    Destroy a selection, and free the associated memory
-
-    :optional integer status [optional]: The status code
