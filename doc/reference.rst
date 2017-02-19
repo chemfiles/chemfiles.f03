@@ -3,435 +3,519 @@
 Fortran interface reference
 ===========================
 
-The ``chemfiles`` module is built around the 5 main types of chemfiles: ``chfl_trajectory``,
-``chfl_frame``, ``chfl_cell``, ``chfl_topology``, and ``chfl_atom``. For more
-information about these types, please see the chemfiles `overview`_.
+The ``chemfiles`` module is built around the main types of chemfiles:
+:f:type:`chfl_trajectory`, :f:type:`chfl_frame`, :f:type:`chfl_cell`,
+:f:type:`chfl_topology`, :f:type:`chfl_residue`, :f:type:`chfl_atom` and
+:f:type:`chfl_selection`. For more information about these types, please see the
+chemfiles `overview`_.
 
 .. warning::
 
-    Atomic indexes in chemfiles starts at 0, not 1. That means that the first atom in
-    a frame have the index 0, not 1. This should be taken in account when using
-    chemfiles function. Fortran arrays returned by function still have indexes
-    starting at 1.
+    Atomic indexes in chemfiles starts at 0, not 1. That means that the first
+    atom in a frame have the index 0, not 1. This should be taken in account
+    when using chemfiles functions. Fortran arrays returned by function still
+    have indexes starting at 1.
 
     .. code-block :: fortran
 
         program indexing
-            use iso_fortran_env, only: real32, int64
+            use iso_fortran_env, only: real64, int64
             use chemfiles
             implicit none
             type(chfl_frame)      :: frame
             type(chfl_atom)       :: atom
-            real(real32), pointer :: positions(:, :)
+            real(real64), pointer :: positions(:, :)
             integer(int64)        :: natoms
 
-            ! Read the frame here
+            ! Initialize the frame ...
 
             ! Get the first atom in the frame
             call atom%from_frame(frame, 0)
             ! Get the second atom in the frame
-            ! call atom%from_frame(frame, 1)
+            call atom%from_frame(frame, 1)
 
             call frame%poositions(positions, natoms)
             ! position(1, :) now contains the positions of the first atom
         end program
 
-    This may change in future release to make all atomic number starting at 1, which
-    is more familiar to Fortran developers and would be less confusing.
+.. _overview: http://chemfiles.github.io/chemfiles/latest/overview.html
 
-.. _overview: http://chemfiles.readthedocs.org/en/latest/overview.html
+Conventions
+-----------
 
-Naming conventions and call conventions
----------------------------------------
-
-All the functions and types have the ``chfl_`` prefix. Except for the ``chfl_strerror``
-and ``chfl_last_error`` functions, all the functions take a ``status`` argument,
-which will indicate the status of the operation. It should be 0 if everything
-was OK, and can be any other number in case of error.
+All the functions and types have the ``chfl_`` prefix. All the functions take an
+optional ``status`` argument which will indicate the status of the operation. It
+should be ``CHFL_SUCCESS`` if everything was OK, and another value indicating in
+case of error. The only exeption to this rule are the functions returnning
+character strings: ``chfl_version`` and ``chfl_last_error()``.
 
 When creating a variable of one of the chemfiles types, the first routine to be
-called should be an initialization routine. It can be either the ``init`` routine
-for default initialization, or another routine documented as initializing.
+called should be an initialization routine. It can be either the ``init``
+routine for default initialization, or another routine documented as
+initializing.
 
 .. code-block:: fortran
 
-    implicit none
     type(chfl_cell) :: cell
     type(chfl_frame) :: frame
 
-    call cell%init(20, 20, 20, 90, 90, 90)
-    call frame%init(3)
+    ! Initialize the variables
+    call cell%init([20, 20, 20])
+    call frame%init()
+
+    ! free the memory
+    call cell%free()
+    call frame%free()
 
 These initialization function should only be called once. In order to free the
 memory asssociated with any chemfiles variable, the ``free`` subroutine should
-be called. After a call the the ``free`` subroutine, the ``init`` subroutine
-can be called again whithout any memory leak risk. Not initializing chemfiles
-variables will lead to segmentations faults.
-
-Miscellaneous functions
----------------------------
-
-.. f:function:: string chfl_version([status])
-
-    Get the version of the chemfiles library as a string.
-
-    :optional integer status [optional]: The status code
+be called. After a call the the ``free`` subroutine, the ``init`` subroutine can
+be called again whithout any memory leak risk. Not initializing chemfiles
+variables will lead to errors.
 
 Error and logging functions
 ---------------------------
 
-.. f:function:: string chfl_strerror(status)
+.. f:function:: chfl_version()
 
-    Get the error message corresponding to an error code.
+    Get the version of the Chemfiles library.
 
-    :argument integer status: The status code
-    :return string strerror: The error message corresponding to the status code
+    :return character [len=*]: chemfiles version
 
-.. f:function:: string chfl_last_error()
+.. f:function:: chfl_last_error()
 
-    Get the last error message.
+    Get the last error message emmited by Chemfiles.
 
-    :return string strerror: The error message corresponding to the status code
+    :return character [len=*]: error message for the last error
 
 .. f:subroutine:: chfl_clear_errors([status])
 
-    Clear the last error message.
+    Clear the last error message emmited by Chemfiles.
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: chfl_loglevel(level, [status])
+.. f:subroutine:: chfl_set_warning_callback(callback, [status])
 
-    Get the current maximal logging level
+    Chemfiles sends warning on various events, for example invalid files or
+    errors in the API usage. By default they are printed to the standard error
+    stream, but you can redirect them by setting a callback to be called on each
+    event with the event message. This function set the callback for all warning
+    events.
 
-    :argument integer level [kind=CHFL_LOG_LEVEL]: A variable that will contain the logging level
-    :optional integer status [optional]: The status code
+    :parameter procedure callback [kind=chfl_warning_callback]: warning callback
+    :optional integer status [optional, kind=chfl_status]: status code of the
+          operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+          about the error by using ``chfl_last_error``.
 
-    The logging level are integers which ``kind`` is the parameter ``CHFL_LOG_LEVEL``:
+.. f:subroutine:: chfl_warning_callback(message)
 
-    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_ERROR
+    Interface for the warning callback to be used with
+    ``chfl_set_warning_callback``.
 
-        Only log errors
-
-    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_WARNING
-
-        Log warnings and erors. This is the default.
-
-    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_INFO
-
-        Log infos, warnings and errors
-
-    .. f:variable:: integer(CHFL_LOG_LEVEL) :: CHFL_LOG_DEBUG
-
-        Log everything
-
-.. f:subroutine:: chfl_set_loglevel(level, [status])
-
-    Set the maximal logging level to ``level``
-
-    :argument integer level [kind=CHFL_LOG_LEVEL]: The new logging level
-    :optional integer status [optional]: The status code
+    :parameter character message [len=*, intent(in)]: The warning message
 
 
-.. f:subroutine:: chfl_logfile(file, [status])
+The optional status argument is an integer of kind ``chfl_status``, which can
+take the following values:
 
-    Redirect the logs to ``file``, overwriting the file if it exists.
+.. f:variable:: integer(chfl_status) :: CHFL_SUCCESS
 
-    :argument string file: The path to the log file
-    :optional integer status [optional]: The status code
+    Status for successful operations.
 
-.. f:subroutine:: chfl_log_stderr([status])
+.. f:variable:: integer(chfl_status) :: CHFL_MEMORY_ERROR
 
-    Redirect the logs to the standard error output. This is enabled by default.
+    Status code for error concerning memory: out of memory, wrong size for
+    pre-allocated buffers, *etc.*
 
-    :optional integer status [optional]: The status code
+.. f:variable:: integer(chfl_status) :: CHFL_FILE_ERROR
 
-.. f:subroutine:: chfl_log_stdout([status])
+    Status code for error concerning files: the file do not exist, the user
+    does not have rights to open it, *etc.*
 
-    Redirect the logs to the standard output.
+.. f:variable:: integer(chfl_status) :: CHFL_FORMAT_ERROR
 
-    :optional integer status [optional]: The status code
+    Status code for error in file formating, i.e. for invalid files.
 
-.. f:subroutine:: chfl_log_silent([status])
+.. f:variable:: integer(chfl_status) :: CHFL_SELECTION_ERROR
 
-    Remove all logging output.
+    Status code for invalid selection strings.
 
-    :optional integer status [optional]: The status code
+.. f:variable:: integer(chfl_status) :: CHFL_GENERIC_ERROR
 
-.. f:subroutine:: chfl_log_callback(callback, [status])
+    Status code for any other error from Chemfiles.
 
-    Redirect all logging to user-provided logging. The ``callback`` subroutine will
-    be called at each logging operation with the level of the message, and the the
-    message itself.
+.. f:variable:: integer(chfl_status) :: CHFL_CXX_ERROR
 
-    :parameter procedure(chfl_logging_callback) callback: The callback procedure
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: chfl_logging_callback(level, message)
-
-    This is the interface for callback functions in the logging system. At every log
-    event, this function will be called with the level and the message of the log
-    event.
-
-    :parameter integer level [intent(in)]: The level of the log event
-    :parameter string message [intent(in)]: The message of the log event
-
+    Status code for error in the C++ standard library.
 
 ``chfl_trajectory`` type
 ------------------------
 
-.. f:currentmodule:: chfl_trajectory
-
 .. f:type:: chfl_trajectory
 
-    A ``chfl_trajectory`` uses a file and a format together to read simulation
-    data from the file. It can read and write one or many ``chfl_frame`` from
-    and to this file. The file type and the format are automatically determined
-    from the extention.
+    The :f:type:`chfl_trajectory` type is the main entry point when using
+    chemfiles. A :f:type:`chfl_trajectory` behave a like a file, allowing to
+    read and/or write :f:type:`chfl_frame`.
 
-    :field subroutine open:
-    :field subroutine with_format:
-    :field subroutine read:
-    :field subroutine read_step:
-    :field subroutine write:
-    :field subroutine set_topology:
-    :field subroutine set_topology_file:
-    :field subroutine cell:
-    :field subroutine nstep:
-    :field subroutine sync:
-    :field subroutine close:
+    The initialization routine for :f:type:`chfl_trajectory` are
+    :f:func:`chfl_trajectory%open` and :f:func:`chfl_trajectory%with_format`.
+    The memory liberation routine is :f:func:`chfl_trajectory%close`.
 
-    The initialization routine are ``open`` and ``with_format``, and the memory
-    liberation routine is ``close``.
+    :field subroutine open: :f:func:`chfl_trajectory%open`
+    :field subroutine with_format: :f:func:`chfl_trajectory%with_format`
+    :field subroutine nsteps: :f:func:`chfl_trajectory%nsteps`
+    :field subroutine read: :f:func:`chfl_trajectory%read`
+    :field subroutine read_step: :f:func:`chfl_trajectory%read_step`
+    :field subroutine write: :f:func:`chfl_trajectory%write`
+    :field subroutine set_topology: :f:func:`chfl_trajectory%set_topology`
+    :field subroutine topology_file: :f:func:`chfl_trajectory%topology_file`
+    :field subroutine set_cell: :f:func:`chfl_trajectory%set_cell`
+    :field subroutine close: :f:func:`chfl_trajectory%close`
 
-.. f:subroutine:: open(filename, mode, , [status])
+.. f:subroutine:: chfl_trajectory%open(path, mode, , [status])
 
-    Open a trajectory file.
+    Open the file at the given ``path`` using the given ``mode``.
+    Valid modes are ``'r'`` for read, ``'w'`` for write and ``'a'`` for append.
 
-    :argument string filename: The path to the trajectory file
-    :argument character mode: The opening mode: 'r' for read, 'w' for write and  'a' for append.
-    :optional integer status [optional]: The status code
+    :argument character path [len=*]: path to the trajectory file
+    :argument character mode: opening mode
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: with_format(filename, mode, , [status])
+.. f:subroutine:: chfl_trajectory%with_format(path, mode, format, [status])
 
-    Open a trajectory file using a given format to read the file.
+    Open the trajectory at the given ``path`` using a specific file ``format``
+    and the given ``mode``.
 
-    :argument string filename: The path to the trajectory file
-    :argument character mode: The opening mode: 'r' for read, 'w' for write and  'a' for append.
-    :argument string format: The format to use
-    :optional integer status [optional]: The status code
+    This is be needed when the file format does not match the extension, or when
+    there is not standard extension for this format. Valid modes are ``'r'`` for
+    read, ``'w'`` for write and ``'a'`` for append.
 
-.. f:subroutine:: read(frame, [status])
+    If ``format`` is an empty string, the format will be guessed from the
+    extension.
 
-    Read the next step of the trajectory into a frame
+    :argument character path [len=*]: path to the trajectory file
+    :argument character mode: opening mode
+    :argument character format [len=*]: format to use
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument chfl_frame frame: A frame to fill with the data
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_trajectory%read(frame, [status])
 
-.. f:subroutine:: read_step(step, frame, [status])
+    Read the next step of the trajectory into a ``frame``.
 
-    Read a specific step of the trajectory in a frame
+    If the number of atoms in frame does not correspond to the number of atom in
+    the next step, the frame is resized.
 
-    :argument integer step: The step to read
-    :argument chfl_frame frame: A frame to fill with the data
-    :optional integer status [optional]: The status code
+    :argument chfl_frame frame: frame to fill with the data
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: write(frame, [status])
+.. f:subroutine:: chfl_trajectory%read_step(step, frame, [status])
 
-    Write a frame to the trajectory.
+    Read a specific ``step`` of the trajectory into a ``frame``. The first
+    trajectory step is the step 0.
 
-    :argument chfl_frame frame: the frame which will be writen to the file
-    :optional integer status [optional]: The status code
+    If the number of atoms in frame does not correspond to the number of atom
+    in the step, the frame is resized.
 
-.. f:subroutine:: set_topology(topology, [status])
+    :argument integer step: step to read
+    :argument chfl_frame frame: frame to fill with the data
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Set the topology associated with a trajectory. This topology will be
+.. f:subroutine:: chfl_trajectory%write(frame, [status])
+
+    Write a single ``frame`` to the trajectory.
+
+    :argument chfl_frame frame: frame to be writen to the file
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_trajectory%set_topology(topology, [status])
+
+    Set the ``topology`` associated with the trajectory. This topology will be
     used when reading and writing the files, replacing any topology in the
     frames or files.
 
-    :argument chfl_topology topology: The new topology to use
-    :optional integer status [optional]: The status code
+    :argument chfl_topology topology: new topology to use
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_topology_file(filename, [status])
+.. f:subroutine:: chfl_trajectory%topology_file(path, [format, status])
 
-    Set the topology associated with a trajectory by reading the first
-    frame of ``filename``; and extracting the topology of this frame.
+    Set the topology associated with the trajectory by reading the first frame of
+    the file at the given ``path`` using the file format in ``format``; and
+    extracting the topology of this frame.
 
-    :argument string filename: The file to read in order to get the new topology
-    :optional integer status [optional]: The status code
+    If ``format`` is an empty string or not given, the format will be guessed
+    from the extension.
 
-.. f:subroutine:: set_topology_with_format(filename, format, [status])
+    :argument character path [len=*]: file to read in order to get the new topology
+    :optional string format [optional]: format to use for the topology file
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Set the topology associated with a trajectory by reading the first
-    frame of ``filename`` using the given ``format``; and extracting the
-    topology of this frame.
+.. f:subroutine:: chfl_trajectory%set_cell(cell, [status])
 
-    :argument string filename: The file to read in order to get the new topology
-    :argument string filename: The format to use for the topology file
-    :optional integer status [optional]: The status code
+    Set the unit ``cell`` associated with the trajectory. This cell will be used
+    when reading and writing the files, replacing any pre-existing unit cell.
 
-.. f:subroutine:: cell(cell, [status])
+    :argument chfl_cell cell: new cell to use
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Set the unit cell associated with a trajectory. This cell will be
-    used when reading and writing the files, replacing any unit cell in the
-    frames or files.
+.. f:subroutine:: chfl_trajectory%nsteps(nsteps, [status])
 
-    :argument chfl_cell cell: The new cell to use
-    :optional integer status [optional]: The status code
+    Store the number of steps (the number of frames) from the trajectory in
+    ``nsteps``.
 
-.. f:subroutine:: nsteps(nsteps, [status])
-
-    Get the number of steps (the number of frames) in a trajectory.
-
-    :argument integer nsteps: This will contain the number of steps
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: sync([status])
-
-    Flush any buffered content to the hard drive.
-
-    :optional integer status [optional]: The status code
+    :argument integer nsteps: number of steps
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 
-.. f:subroutine:: close([status])
+.. f:subroutine:: chfl_trajectory%close([status])
 
-    Close a trajectory file, and free the associated memory
+    Close a trajectory file, and free the associated memory.
 
-    :optional integer status [optional]: The status code
+    Closing a file will synchronize all changes made to the file with the
+    storage (hard drive, network, ...) used for this file.
+
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 ``chfl_frame`` type
 -------------------
 
-.. f:currentmodule:: chfl_frame
-
 .. f:type:: chfl_frame
 
-    A ``chfl_frame`` holds data for one step of a simulation. As not all formats
-    provides all the types of informations, some fields may be initialized to a
-    default value.
+    A :f:type:`chfl_frame` contains data from one simulation step: the current unit
+    cell, the topology, the positions, and the velocities of the particles in
+    the system. If some information is missing (topology or velocity or unit
+    cell), the corresponding data is filled with a default value.
 
-    A ``chfl_frame`` may contains the following data:
+    The initialization routine for :f:type:`chfl_frame` are
+    :f:func:`chfl_frame%init` and :f:func:`chfl_frame%copy`.
 
-    * Positions for all the atoms in the system;
-    * Velocities for all the atoms in the system;
-    * The topology (``chfl_topology``) of the system;
-    * The unit cell (``chfl_cell``) of the system.
+    :field subroutine init: :f:func:`chfl_frame%init`
+    :field subroutine copy: :f:func:`chfl_frame%copy`
+    :field subroutine atoms_count: :f:func:`chfl_frame%atoms_count`
+    :field subroutine add_atom: :f:func:`chfl_frame%add_atom`
+    :field subroutine remove: :f:func:`chfl_frame%remove`
+    :field subroutine resize: :f:func:`chfl_frame%resize`
+    :field subroutine positions: :f:func:`chfl_frame%positions`
+    :field subroutine velocities: :f:func:`chfl_frame%velocities`
+    :field subroutine add_velocities: :f:func:`chfl_frame%add_velocities`
+    :field subroutine has_velocities: :f:func:`chfl_frame%has_velocities`
+    :field subroutine set_cell: :f:func:`chfl_frame%set_cell`
+    :field subroutine set_topology: :f:func:`chfl_frame%set_topology`
+    :field subroutine guess_topology: :f:func:`chfl_frame%guess_topology`
+    :field subroutine step: :f:func:`chfl_frame%step`
+    :field subroutine set_step: :f:func:`chfl_frame%set_step`
+    :field subroutine free: :f:func:`chfl_frame%free`
 
-    :field subroutine init:
-    :field subroutine atoms_count:
-    :field subroutine resize:
-    :field subroutine positions:
-    :field subroutine velocities:
-    :field subroutine add_velocities:
-    :field subroutine has_velocities:
-    :field subroutine set_cell:
-    :field subroutine set_topology:
-    :field subroutine step:
-    :field subroutine set_step:
-    :field subroutine selection:
-    :field subroutine free:
+.. f:subroutine:: chfl_frame%init([status])
 
-.. f:subroutine:: init(natoms, [status])
+    Initialize this unit cell with a new empty frame. It will be resized by the
+    library as needed.
 
-    Create an empty frame with initial capacity of ``natoms``. It will be
-    resized by the library as needed.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument integer natoms: the size of the wanted frame
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_frame%copy(frame, [status])
 
-.. f:subroutine:: atoms_count(natoms, [status])
+    Initialize this frame with a copy of ``frame``.
 
-    Get the current number of atoms in the frame
+    :argument chfl_frame frame: frame to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument integer natoms: the number of atoms in the frame
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_frame%atoms_count(natoms, [status])
 
-.. f:subroutine:: resize(natoms, [status])
+    Get the current number of atoms in the frame in ``natoms``.
 
-    Resize the positions and the velocities in frame, to make space for ``natoms`` atoms.
-    This function may invalidate any pointer to the positions or the velocities if the new
-    size is bigger than the old one. In all the cases, previous data is conserved. This
-    function conserve the presence of abscence of velocities.
+    :argument integer natoms: number of atoms in the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%add_atom(atom, position, [velocity, status])
+
+    Add a :f:type:`chfl_atom` and the corresponding ``position`` and
+    ``velocity`` data to this frame. ``velocity`` can be absent if no velocity
+    is associated with this frame.
+
+    :argument chfl_atom atom: atom to add to the frame
+    :argument real position(3): atom position
+    :optional real velocity(3) [optional]: atom velocity
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%remove(index, [status])
+
+    Remove the atom at the given ``index`` in the frame.
+
+    This modify all the atoms indexes after ``index``, and invalidate any
+    pointer obtained using :f:func:`chfl_frame%positions` or
+    :f:func:`chfl_frame%velocities`.
+
+    :argument integer index: index of the atom to remove
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%resize(natoms, [status])
+
+    Resize the positions, velocities and topology in the frame, to have space
+    for ``natoms`` atoms.
+
+    This function may invalidate any pointer to the positions or the velocities
+    if the new size is bigger than the old one. In all the cases, previous data
+    is conserved. This function conserve the presence or absence of velocities.
 
     :argument integer natoms: the new number of atoms in the frame
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: positions(data, size, [status])
+.. f:subroutine:: chfl_frame%positions(data, size, [status])
 
-    Get a pointer to the positions array from a frame. The positions are stored as a ``3
-    x N`` array, this function set a pointer to point to the first element of this array,
-    and give the value of N in the ``size`` argument. If the frame is resized (by writing
-    to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
+    Get a pointer to the positions array from the frame.
 
-    :argument real data [dimension(\:, \:), pointer]: A pointer to a float array containing the positions
-    :argument integer size: After the call, contains the array size (N).
-    :optional integer status [optional]: The status code
+    This function set the ``data`` array to be the internal positions array.
+    This array is a ``natoms x 3`` array, and the number of atoms will be in the
+    ``size`` parameter.
 
-.. f:subroutine:: velocities(data, size, [status])
+    This function gives access to chemfiles internal data structure, and do not
+    perform any copy, both when reading and writing the positions.
 
-    Get a pointer to the velocities array from a frame. The velocities are stored as a ``3
-    x N`` array, this function set a pointer to point to the first element of this array,
-    and give the value of N in the ``size`` argument. If the frame is resized (by writing
-    to it, or calling ``chfl_frame%resize``), the pointer is invalidated.
+    If the frame is resized (by writing to it, or calling
+    :f:func:`chfl_frame%resize`), the pointer is invalidated. If the frame is
+    freed using :f:func:`chfl_frame%free`, the pointer is freed too.
 
-    :argument real data [dimension(\:, \:), pointer]: A pointer to a float array containing the velocities
-    :argument integer size: The array size (N).
-    :optional integer status [optional]: The status code
+    :argument real data(\:, \:) [pointer]: pointer to a float array containing
+        the positions
+    :argument integer size: number of atom, *i.e.* size of the ``data`` array
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: add_velocities([status])
+.. f:subroutine:: chfl_frame%velocities(data, size, [status])
 
-    Add velocity storage to this frame. The storage is initialized with the result of
-    ``chfl_frame%atoms_count`` as number of atoms. If the frame already have velocities,
+    Get a pointer to the velocities array from the frame.
+
+    This function set the ``data`` array to be the internal positions array.
+    This array is a ``natoms x 3`` array, and the number of atoms will be in the
+    ``size`` parameter.
+
+    This function gives access to chemfiles internal data structure, and do not
+    perform any copy, both when reading and writing the velocities.
+
+    If the frame is resized (by writing to it, or calling
+    :f:func:`chfl_frame%resize`), the pointer is invalidated. If the frame is
+    freed using :f:func:`chfl_frame%free`, the pointer is freed too.
+
+    :argument real data(\:, \:) [pointer]: pointer to a float array containing
+        the velocities
+    :argument integer size: number of atom, *i.e.* size of the ``data`` array
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%add_velocities([status])
+
+    Add velocity data to this frame.
+
+    The velocities ar initialized to zero. If the frame already has velocities,
     this does nothing.
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: has_velocities(has_vel, [status])
+.. f:subroutine:: chfl_frame%has_velocities(result, [status])
 
-    Check if a frame has velocity information.
+    Check if this frame contains velocity data.
 
-    :argument logical has_vel: ``.true.`` if the frame has velocities, ``.false.`` otherwise.
-    :optional integer status [optional]: The status code
+    :argument logical result [kind=1]: ``.true.`` if the frame has velocities,
+        ``.false.`` otherwise.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_cell(cell, [status])
+.. f:subroutine:: chfl_frame%set_cell(cell, [status])
 
-    Set the UnitCell of a Frame.
+    Set the :f:type:`chfl_cell` of this frame to ``cell``.
 
-    :argument chfl_cell cell: The new unit cell
-    :optional integer status [optional]: The status code
+    :argument chfl_cell cell: new unit cell of the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_topology(topology, [status])
+.. f:subroutine:: chfl_frame%set_topology(topology, [status])
 
-    Set the Topology of a Frame.
+    Set the :f:type:`chfl_topology` of this frame to ``topology``.
 
-    :argument chfl_topology topology: The new topology
-    :optional integer status [optional]: The status code
+    Calling this function with a topology that does not contain the right number
+    of atom will return an error.
 
-.. f:subroutine:: step(step, [status])
+    :argument chfl_topology topology: new topology of the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Get the Frame step, i.e. the frame number in the trajectory
+.. f:subroutine:: chfl_frame%step(step, [status])
 
-    :argument integer step: This will contains the step number
-    :optional integer status [optional]: The status code
+    Get the frame step, *i.e.* the frame number in the trajectory in ``step``.
 
-.. f:subroutine:: set_step(step, [status])
+    :argument integer step: frame step number
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Set the Frame step.
+.. f:subroutine:: chfl_frame%set_step(step, [status])
+
+    Set the frame step, *i.e.* the frame number in the trajectory to ``step``.
 
     :argument integer step: The new frame step
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: guess_topology([status])
+.. f:subroutine:: chfl_frame%guess_topology([status])
 
-    Try to guess the bonds, angles and dihedrals in the system, using a
-    distance-based algorithm.
+    Guess the bonds, angles and dihedrals in the frame.
 
-    :optional integer status [optional]: The status code
+    The bonds are guessed using a distance-based algorithm, and then angles and
+    dihedrals are guessed from the bonds.
 
-.. f:subroutine:: free([status])
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%free([status])
 
     Destroy a frame, and free the associated memory
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 ``chfl_cell`` type
 ------------------
@@ -440,88 +524,125 @@ Error and logging functions
 
 .. f:type:: chfl_cell
 
-    The ``chfl_cell`` type describe the boundary conditions of the system:
-    where are the boundaries, and what is the periodicity of theses boundaries.
-    An unit cell can be of three types: *Infinite*, *Orthorombic* or
-    *Triclinic*. Inifinite cells does not have any boundaries. Orthorombic cells
-    are defined by three orthogonals vectors, and Triclinic cells are defined by
-    three vectors without any constrains.
+    A :f:type:`chfl_cell` represent the box containing the atoms, and its
+    periodicity.
 
-    :field subroutine init:
-    :field subroutine from_frame:
-    :field subroutine lengths:
-    :field subroutine set_lengths:
-    :field subroutine angles:
-    :field subroutine set_angles:
-    :field subroutine matrix:
-    :field subroutine type:
-    :field subroutine set_type:
-    :field subroutine periodicity:
-    :field subroutine set_periodicity:
-    :field subroutine free:
+    An unit cell is fully represented by three lengths (a, b, c); and three
+    angles (alpha, beta, gamma). The angles are stored in degrees, and the
+    lengths in Angstroms.
 
-    The initialization routine are ``init`` and ``from_frame``.
+    The initialization routine for :f:type:`chfl_cell` are
+    :f:func:`chfl_cell%init`, :f:func:`chfl_cell%triclinic`,
+    :f:func:`chfl_cell%from_frame` and :f:func:`chfl_cell%copy`.
+
+    :field subroutine init: :f:func:`chfl_cell%init`
+    :field subroutine triclinic: :f:func:`chfl_cell%triclinic`
+    :field subroutine from_frame: :f:func:`chfl_cell%from_frame`
+    :field subroutine copy: :f:func:`chfl_cell%copy`
+    :field subroutine lengths: :f:func:`chfl_cell%lengths`
+    :field subroutine set_lengths: :f:func:`chfl_cell%set_lengths`
+    :field subroutine angles: :f:func:`chfl_cell%angles`
+    :field subroutine set_angles: :f:func:`chfl_cell%set_angles`
+    :field subroutine matrix: :f:func:`chfl_cell%matrix`
+    :field subroutine shape: :f:func:`chfl_cell%shape`
+    :field subroutine set_shape: :f:func:`chfl_cell%set_shape`
+    :field subroutine volume: :f:func:`chfl_cell%volume`
+    :field subroutine free: :f:func:`chfl_cell%free`
 
 
-.. f:subroutine:: init(a, b, c, alpha, beta, gamma, [status])
+.. f:subroutine:: chfl_cell%init(lengths, [status])
 
-    Create an ``chfl_cell`` from the three lenghts and the three angles.
+    Initialize this unit cell with an unit cell having the given ``lengths``.
+    The unit cell shape is :f:var:`CHFL_CELL_ORTHORHOMBIC`.
 
-    :argument real a: the a cell length, in angstroms
-    :argument real b: the b cell length, in angstroms
-    :argument real c: the c cell length, in angstroms
-    :argument real alpha: the alpha angles, in degrees
-    :argument real beta: the beta angles, in degrees
-    :argument real gamma: the gamma angles, in degrees
-    :optional integer status [optional]: The status code
+    :argument real lengths(3): cell lengths, in angstroms
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: from_frame_init_(frame, [status])
+.. f:subroutine:: chfl_cell%triclinic(lengths, angles, [status])
 
-    Get a copy of the ``chfl_cell`` of a frame.
+    Initialize this unit cell with an unit cell having the given ``lengths`` and
+    ``angles``. The unit cell shape is :f:var:`CHFL_CELL_TRICLINIC`.
+
+    :argument real lengths(3): cell lengths, in angstroms
+    :argument real angles(3): cell angles, in degrees
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_cell%copy(cell, [status])
+
+    Initialize this unit cell with a copy of ``cell``.
+
+    :argument chfl_cell cell: cell to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_cell%from_frame(frame, [status])
+
+    Initialize this topology with a copy of the :f:type:`chfl_cell` of a frame.
 
     :argument chfl_frame frame: the frame
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: lengths(a, b, c, [status])
+.. f:subroutine:: chfl_cell%volume(volume, [status])
 
-    Get the cell lenghts.
+    Get the volume of the unit cell in ``volume``.
 
-    :argument real a: the a cell length, in angstroms
-    :argument real b: the b cell length, in angstroms
-    :argument real c: the c cell length, in angstroms
-    :optional integer status [optional]: The status code
+    :argument real volume: volume of the unit cell
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_lengths(a, b, c, [status])
+.. f:subroutine:: chfl_cell%lengths(lengths, [status])
 
-    Set the unit cell lenghts.
+    Get the unit cell lengths in ``lengths``.
 
-    :argument real a: the new a cell length, in angstroms
-    :argument real b: the new b cell length, in angstroms
-    :argument real c: the new c cell length, in angstroms
-    :optional integer status [optional]: The status code
+    :argument real lengths(3): cell lengths, in angstroms
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: angles(alpha, beta, gamma, [status])
+.. f:subroutine:: chfl_cell%set_lengths(lengths, [status])
 
-    Get the cell angles, in degrees.
+    Set the unit cell lengths to ``lengths``.
 
-    :argument real alpha: the alpha angles, in degrees
-    :argument real beta: the beta angles, in degrees
-    :argument real gamma: the gamma angles, in degrees
-    :optional integer status [optional]: The status code
+    :argument real lengths(3): new cell lengths, in angstroms
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_angles(alpha, beta, gamma, [status])
+.. f:subroutine:: chfl_cell%angles(angles, [status])
 
-    Set the cell angles, in degrees
+    Get the unit cell angles in ``angles``.
 
-    :argument real alpha: the new alpha angles, in degrees
-    :argument real beta: the new beta angles, in degrees
-    :argument real gamma: the new gamma angles, in degrees
-    :optional integer status [optional]: The status code
+    :argument real angles(3): cell angles, in degrees
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: matrix(matrix, [status])
+.. f:subroutine:: chfl_cell%set_angles(alpha, beta, gamma, [status])
 
-    Get the unit cell matricial representation, i.e. the representation of the three
-    base vectors arranged as:
+    Set the cell angles to ``angles``. Trying to set cell angles on a cell which
+    is not triclinic (does not have the ``CHFL_CELL_TRICLINIC`` shape) is an
+    error.
+
+    :argument real angles(3): new cell angles, in degrees
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_cell%matrix(matrix, [status])
+
+    Get the unit cell matricial representation in ``matrix``.
+
+    The unit cell representation is obtained by aligning the a vector along the
+    *x* axis and putting the b vector in the *xy* plane. This make the matrix
+    an upper triangular matrix:
 
     .. code-block:: sh
 
@@ -530,443 +651,799 @@ Error and logging functions
         |  0   0  c_z |
 
 
-    :argument real matrix [dimension(3, 3)]: the matrix to fill.
-    :optional integer status [optional]: The status code
+    :argument real matrix(3, 3): unit cell matrix
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: type(type, [status])
+.. f:subroutine:: chfl_cell%shape(shape, [status])
 
-    Get the cell type
+    Get the unit cell shape in ``shape``.
 
-    :argument integer type [kind=CHFL_CELL_TYPES]: the type of the cell
-    :optional integer status [optional]: The status code
+    :argument integer type [kind=chfl_cell_shape_t]: the shape of the cell
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    The cell types are integers which ``kind`` is the parameter ``CHFL_CELL_TYPES``:
+    The cell shapes are integers which ``kind`` is the ``chfl_cell_shape_t``
+    parameter:
 
-    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_ORTHOROMBIC
+    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_ORTHORHOMBIC
 
         The three angles are 90°
 
-    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_TRICLINIC
+    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_TRICLINIC
 
         The three angles may not be 90°
 
-    .. f:variable:: integer(CHFL_CELL_TYPES) :: CHFL_CELL_INFINITE
+    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_INFINITE
 
         Cell type when there is no periodic boundary conditions
 
-.. f:subroutine:: set_type(type, [status])
+.. f:subroutine:: chfl_cell%set_shape(shape, [status])
 
-    Set the cell type
+    Set the unit cell shape to ``shape``
 
-    :argument integer type [kind=CHFL_CELL_TYPES]: the new type of the cell
-    :optional integer status [optional]: The status code
+    :argument integer type [kind=chfl_cell_shape_t]: the new type of the cell
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: free([status])
+.. f:subroutine:: chfl_cell%free([status])
 
     Destroy an unit cell, and free the associated memory
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 ``chfl_topology`` type
 ----------------------
 
-.. f:currentmodule:: chfl_topology
-
 .. f:type:: chfl_topology
 
-    A ``chfl_topology`` describes the organisation of the particles in the
-    system. What are they names, how are they bonded together, … A topology is
-    mainly a list of ``chfl_atom`` in the system.
+    A :f:type:`chfl_topology` contains the definition of all the atoms in the
+    system, and the liaisons between the atoms (bonds, angles, dihedrals,
+    ...). It will also contain all the residues information if it is available.
 
-    :field subroutine init:
-    :field subroutine from_frame:
-    :field subroutine atoms_count:
-    :field subroutine guess:
-    :field subroutine append:
-    :field subroutine remove:
-    :field subroutine isbond:
-    :field subroutine isangle:
-    :field subroutine isdihedral:
-    :field subroutine bonds_count:
-    :field subroutine angles_count:
-    :field subroutine dihedrals_count:
-    :field subroutine bonds:
-    :field subroutine angles:
-    :field subroutine dihedrals:
-    :field subroutine add_bond:
-    :field subroutine remove_bond:
-    :field subroutine free:
+    The initialization routine for :f:type:`chfl_topology` are
+    :f:func:`chfl_topology%init`, :f:func:`chfl_topology%from_frame` and
+    :f:func:`chfl_topology%copy`.
 
-    The initialization routine are ``init`` and ``from_frame``.
+    :field subroutine init: :f:func:`chfl_topology%init`
+    :field subroutine copy: :f:func:`chfl_topology%copy`
+    :field subroutine from_frame: :f:func:`chfl_topology%from_frame`
+    :field subroutine atoms_count: :f:func:`chfl_topology%atoms_count`
+    :field subroutine add_atom: :f:func:`chfl_topology%add_atom`
+    :field subroutine resize: :f:func:`chfl_topology%resize`
+    :field subroutine remove: :f:func:`chfl_topology%remove`
+    :field subroutine add_bond: :f:func:`chfl_topology%add_bond`
+    :field subroutine remove_bond: :f:func:`chfl_topology%remove_bond`
+    :field subroutine isbond: :f:func:`chfl_topology%isbond`
+    :field subroutine isangle: :f:func:`chfl_topology%isangle`
+    :field subroutine isdihedral: :f:func:`chfl_topology%isdihedral`
+    :field subroutine bonds_count: :f:func:`chfl_topology%bonds_count`
+    :field subroutine angles_count: :f:func:`chfl_topology%angles_count`
+    :field subroutine dihedrals_count: :f:func:`chfl_topology%dihedrals_count`
+    :field subroutine bonds: :f:func:`chfl_topology%bonds`
+    :field subroutine angles: :f:func:`chfl_topology%angles`
+    :field subroutine dihedrals: :f:func:`chfl_topology%dihedrals`
+    :field subroutine residues_count: :f:func:`chfl_topology%residues_count`
+    :field subroutine add_residue: :f:func:`chfl_topology%add_residue`
+    :field subroutine residues_linked: :f:func:`chfl_topology%residues_linked`
+    :field subroutine free: :f:func:`chfl_topology%free`
 
-.. f:subroutine:: init([status])
+.. f:subroutine:: chfl_topology%init([status])
 
-    Create a new empty topology
+    Initialize this topology with a new empty topology.
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: from_frame(frame, [status])
+.. f:subroutine:: chfl_topology%from_frame(frame, [status])
 
-    Extract the topology from a frame.
+    Initialize this topology with a copy of the topology of ``frame``.
 
-    :argument chfl_frame frame: The frame
-    :optional integer status [optional]: The status code
+    :argument chfl_frame frame: the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: atoms_count(natoms, [status])
+.. f:subroutine:: chfl_topology%copy(topology, [status])
 
-    Get the current number of atoms in the topology.
+    Initialize this topology with a copy of ``topology``.
 
-    :argument integer natoms: Will contain the number of atoms in the frame
-    :optional integer status [optional]: The status code
+    :argument chfl_topology topology: topology to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: append(atom, [status])
+.. f:subroutine:: chfl_topology%atoms_count(natoms, [status])
 
-    Add an atom at the end of a topology.
+    Get the number of atoms in the topology in ``natoms``.
 
-    :argument chfl_atom atom: The atom to be added
-    :optional integer status [optional]: The status code
+    :argument integer natoms: number of atoms in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%resize(natoms, [status])
+
+    Resize the topology to hold ``natoms`` atoms. If the new number of atoms is
+    bigger than the current number, new atoms will be created with an empty name
+    and type. If it is lower than the current number of atoms, the last atoms
+    will be removed, together with the associated bonds, angles and dihedrals.
+
+    :argument integer natoms: new size of the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%add_atom(atom, [status])
+
+    Add a copy of ``atom`` at the end of the topology.
+
+    :argument chfl_atom atom: atom to be added
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 
-.. f:subroutine:: remove(i, [status])
+.. f:subroutine:: chfl_topology%remove(i, [status])
 
-    Remove an atom from a topology by index.
+    Remove the atom at index ``i`` from the topology.
 
-    :argument integer i: The atomic index
-    :optional integer status [optional]: The status code
+    This shifts all the atoms indexes after ``i`` by 1 (n becomes n-1).
 
-.. f:subroutine:: isbond(i, j, result, [status])
+    :argument integer i: index of the atom to remove
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Tell if the atoms ``i`` and ``j`` are bonded together
+.. f:subroutine:: chfl_topology%isbond(i, j, result, [status])
+
+    Check if the atoms at indexes ``i`` and ``j`` are bonded together, and store
+    the result in ``result``.
+
+    :argument integer i: atomic index of the first atom
+    :argument integer j: atomic index of the second atom
+    :argument logical result [kind=1]: ``.true.`` if the atoms are bonded,
+        ``.false.`` otherwise
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%isangle(i, j, k, result, [status])
+
+    Check if the atoms at indexes ``i``, ``j`` and ``k`` form an angle, and
+    store the result in ``result``.
+
+    :argument integer i: atomic index of the first atom
+    :argument integer j: atomic index of the second atom
+    :argument integer k: atomic index of the third atom
+    :argument logical result [kind=1]: ``.true.`` if the atoms form an angle,
+        ``.false.`` otherwise
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%isdihedral(i, j, k, m, result, [status])
+
+    Check if the atoms at indexes ``i``, ``j``, ``k`` and ``m`` form a dihedral
+    angle, and store the result in ``result``.
+
+    :argument integer i: atomic index of the first atom
+    :argument integer j: atomic index of the second atom
+    :argument integer k: atomic index of the third atom
+    :argument integer m: atomic index of the fourth atom
+    :argument logical result [kind=1]: ``.true.`` if the atoms form a dihedral
+        angle, ``.false.`` otherwise
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%bonds_count(nbonds, [status])
+
+    Get the number of bonds in the topology in ``nbonds``.
+
+    :argument integer nbonds: number of bonds
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%angles_count(nangles, [status])
+
+    Get the number of angles in the topology in ``nangles``.
+
+    :argument integer nangles: number of angles
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%dihedrals_count(ndihedrals, [status])
+
+    Get the number of dihedral angles in the topology in ``ndihedrals``.
+
+    :argument integer ndihedrals: number of dihedral angles
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%bonds(data, nbonds, [status])
+
+    Get the list of bonds in the topology in the pre-allocated array ``data``
+    of size ``2 x nbonds``.
+
+    ``data`` size must be passed in the ``nbonds`` parameter, and be equal to
+    the result of :f:func:`chfl_topology%bonds_count`.
+
+    :argument integer data(2, nbonds): ``2 x nbonds`` array to be filled with
+        the bonds in the system
+    :argument integer nbonds: size of the array. This should be equal to the
+        value given by :f:func:`chfl_topology%bonds_count`.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%angles(data, nangles, [status])
+
+    Get the list of angles in the ``topology`` in the pre-allocated array
+    ``data`` of size ``3 x nangles``.
+
+    ``data`` size must be passed in the ``nangles`` parameter, and be equal to the
+    result of :f:func:`chfl_topology%angles_count`.
+
+    :argument integer data(3, nangles): ``3 x nangles`` array to be filled with
+        the angles in the system
+    :argument integer nangles: size of the array. This should be equal to the
+        value given by :f:func:`chfl_topology%angles_count`.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%dihedrals(data, ndihedrals, [status])
+
+    Get the list of dihedral angles in the topology in the pre-allocated array
+    ``data`` of size ``4 x ndihedrals``.
+
+    ``data`` size must be passed in the ``ndihedrals`` parameter, and be equal
+    to the result of :f:func:`chfl_topology%dihedrals_count`.
+
+    :argument integer data(4, ndihedrals): ``4 x ndihedrals`` array to be
+        filled with the dihedral angles in the system
+    :argument integer ndihedrals: size of the array. This should be equal to
+        the value given by :f:func:`chfl_topology%dihedrals_count`.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%add_bond(i, j, [status])
+
+    Add a bond between the atoms at indexes ``i`` and ``j`` in the topology
+
+    :argument integer i: atomic index of the first atom of the bond
+    :argument integer j: atomic index of the second atom of the bond
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%remove_bond(i, j, [status])
+
+    Remove any existing bond between the atoms at indexes ``i`` and ``j`` in the
+    topology.
+
+    This function does nothing if there is no bond between ``i`` and ``j``.
 
     :argument integer i: The atomic index of the first atom
     :argument integer j: The atomic index of the second atom
-    :argument logical result: ``.true.`` if the atoms are bonded, ``.false.`` otherwise
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: isangle(i, j, k, result, [status])
+.. f:subroutine:: chfl_topology%residues_count(natoms, [status])
 
-    Tell if the atoms ``i``, ``j`` and ``k`` constitues an angle
+    Get the number of residues in the topology in ``nresidues``.
 
-    :argument integer i: The atomic index of the first atom
-    :argument integer j: The atomic index of the second atom
-    :argument integer k: The atomic index of the third atom
-    :argument logical result: ``.true.`` if the atoms constitues an angle, ``.false.`` otherwise
-    :optional integer status [optional]: The status code
+    :argument integer natoms: number of residues
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: isdihedral(i, j, k, m, result, [status])
+.. f:subroutine:: chfl_topology%add_residue(residue, [status])
 
-    Tell if the atoms ``i``, ``j``, ``k`` and ``m`` constitues a dihedral angle
+    Add a copy of ``residue`` to this topology.
 
-    :argument integer i: The atomic index of the first atom
-    :argument integer j: The atomic index of the second atom
-    :argument integer k: The atomic index of the third atom
-    :argument integer m: The atomic index of the fourth atom
-    :argument logical result: ``.true.`` if the atoms constitues a dihedral angle, ``.false.`` otherwise
-    :optional integer status [optional]: The status code
+    The residue id must not already be in the topology, and the residue must
+    contain only atoms that are not already in another residue.
 
-.. f:subroutine:: bonds_count(nbonds, [status])
+    :argument chfl_residue residue: residue to add in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Get the number of bonds in the system
+.. f:subroutine:: chfl_topology%residues_linked(first, second, are_linked, [status])
 
-    :argument integer nbonds: After the call, contains the number of bond
-    :optional integer status [optional]: The status code
+    Check if the two residues ``first`` and ``second`` from the topology are
+    linked together, *i.e.* if there is a bond between one atom in the first
+    residue and one atom in the second one, and store the result in ``result``.
 
-.. f:subroutine:: angles_count(nangles, [status])
+    :argument chfl_residue first: first residue
+    :argument chfl_residue second: second residue
+    :argument logical are_linked [kind=1]: ``.true.`` if the residues are
+        linked, ``.false.`` otherwise
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Get the number of angles in the system
-
-    :argument integer nangles: After the call, contains the number of angles
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: dihedrals_count(ndihedrals, [status])
-
-    Get the number of dihedral angles in the system
-
-    :argument integer ndihedrals: After the call, contains the number of dihedral angles
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: bonds(data, nbonds, [status])
-
-    Get the bonds in the system
-
-    :argument integer data [dimension(2, nbonds)]: A 2x ``nbonds`` array to be
-                                            filled with the bonds in the system
-    :argument integer nbonds: The size of the array. This should equal the value
-                                given by the ``chfl_topology%bonds_count`` function
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: angles(data, nangles, [status])
-
-    Get the angles in the system
-
-    :argument integer data [dimension(3, nangles)]: A 3x ``nangles`` array to be
-                                            filled with the angles in the system
-    :argument integer nangles: The size of the array. This should equal the
-                        value give by the ``chfl_topology%angles_count`` function
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: dihedrals(data, ndihedrals, [status])
-
-    Get the dihedral angles in the system
-
-    :argument integer data [dimension(4, ndihedrals)]: A 4x ``ndihedrals`` array
-                            to be filled with the dihedral angles in the system
-    :argument integer ndihedrals: The size of the array. This should equal the
-                    value give by the ``chfl_topology%dihedrals_count`` function
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: add_bond(i, j, [status])
-
-    Add a bond between the atoms ``i`` and ``j`` in the system
-
-    :argument integer i: The atomic index of the first atom
-    :argument integer j: The atomic index of the second atom
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: remove_bond(i, j, [status])
-
-    Remove any existing bond between the atoms ``i`` and ``j`` in the system
-
-    :argument integer i: The atomic index of the first atom
-    :argument integer j: The atomic index of the second atom
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: free([status])
+.. f:subroutine:: chfl_topology%free([status])
 
     Destroy a topology, and free the associated memory
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+``chfl_residue`` type
+----------------------
+
+.. f:type:: chfl_residue
+
+    A :f:type:`chfl_residue` is a group of atoms belonging to the same logical
+    unit. They can be small molecules, amino-acids in a protein, monomers in
+    polymers, *etc.*
+
+    The initialization routine for :f:type:`chfl_residue` are
+    :f:func:`chfl_residue%init`, :f:func:`chfl_residue%from_topology`,
+    :f:func:`chfl_residue%for_atom` and :f:func:`chfl_residue%copy`.
+
+    :field subroutine init: :f:func:`chfl_residue%init`
+    :field subroutine copy: :f:func:`chfl_residue%copy`
+    :field subroutine from_topology: :f:func:`chfl_residue%from_topology`
+    :field subroutine for_atom: :f:func:`chfl_residue%for_atom`
+    :field subroutine name: :f:func:`chfl_residue%name`
+    :field subroutine id: :f:func:`chfl_residue%id`
+    :field subroutine atoms_count: :f:func:`chfl_residue%atoms_count`
+    :field subroutine add_atom: :f:func:`chfl_residue%add_atom`
+    :field subroutine contains: :f:func:`chfl_residue%contains`
+    :field subroutine free: :f:func:`chfl_residue%free`
+
+.. f:subroutine:: chfl_residue%init(name, [id, status])
+
+    Initialize the residue with a new residue with the given ``name`` and
+    optional residue identifier ``id``.
+
+    :argument character name [len=*]: residue name
+    :optional integer id: residue id
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%copy(residue, [status])
+
+    Initialize this residue with a copy of ``residue``.
+
+    :argument chfl_residue residue: residue to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%from_topology(topology, i, [status])
+
+    Initialize this residue with a copy of the residue at index ``i`` from a
+    ``topology``. The residue index in the topology is not always the same as
+    the residue id.
+
+    :argument chfl_topology topology: topology
+    :argument integer i: index of the residue in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%for_atom(topology, i, [status])
+
+    Get a copy of the residue containing the atom at index ``i`` in the
+    ``topology``.
+
+    :argument chfl_topology topology: topology
+    :argument integer i: index of the atom in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%name(name, buffsize, [status])
+
+    Get the name of the residue in the string buffer ``name``.
+
+    The buffer size must be passed in ``buffsize``. This function will truncate
+    the residue name to fit in the buffer.
+
+    :argument character name [len=buffsize]: string buffer to be filled with
+        the residue name
+    :argument buffsize: length of the string buffer
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%id(id, [status])
+
+    Get the identifier of the residue in the initial topology file in ``id``
+
+    :argument integer id: identifier of the residue
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%atoms_count(size, [status])
+
+    Get the number of atoms in the residue in ``size``.
+
+    :argument integer size: number of atoms in the residue
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%add_atom(i, [status])
+
+    Add the atom at index ``i`` in the residue.
+
+    :argument integer i: index of the atom to add
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%contains(i, result, [status])
+
+    Check if the atom at index ``i`` is in the residue, and store the result in
+    ``result``.
+
+    :argument integer i: index of the atom
+    :argument logical result [kind=1]: `.true.` if the atom is in the residue,
+        `.false.` otherwise
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_residue%free([status])
+
+    Destroy a residue, and free the associated memory
+
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 ``chfl_atom`` type
 ------------------
 
-.. f:currentmodule:: chfl_atom
-
 .. f:type:: chfl_atom
 
-    The ``chfl_atom`` type contains basic information about the atoms in the
-    system: the name (if it is disponible), mass, kind of atom and so on. Atoms
-    are not limited to plain chemical elements. Four types of atoms are defined:
-    *Element* are Atoms from the periodic classification; *coarse grained* atoms
-    are particles taking together more than one element (*CH4* or *H2O* are
-    examples); *Dummy* atoms are fictitous points associated with some data,
-    like the fourth site in the TIP4P model of water; and *Undefined* atoms are
-    all the other atoms types.
+    A :f:type:`chfl_atom` is a particle in the current :f:type:`chfl_frame`. It stores the
+    following atomic properties:
 
-    :field subroutine init:
-    :field subroutine from_frame:
-    :field subroutine from_topology:
-    :field subroutine mass:
-    :field subroutine set_mass:
-    :field subroutine charge:
-    :field subroutine set_charge:
-    :field subroutine name:
-    :field subroutine set_name:
-    :field subroutine full_name:
-    :field subroutine vdw_radius:
-    :field subroutine covalent_radius:
-    :field subroutine atomic_number:
-    :field subroutine free:
+    - atom name;
+    - atom type;
+    - atom mass;
+    - atom charge.
 
-    The initialization routine are ``init``, ``from_frame`` and ``from_topology``.
+    The atom name is usually an unique identifier (``H1``, ``C_a``) while the
+    atom type will be shared between all particles of the same type: ``H``,
+    ``Ow``, ``CH3``.
 
-.. f:subroutine:: init(name, [status])
+    The initialization routine for :f:type:`chfl_atom` are
+    :f:func:`chfl_atom%init`, :f:func:`chfl_atom%from_frame` and
+    :f:func:`chfl_atom%from_topology`.
 
-    Create an atom from an atomic name
+    :field subroutine init: :f:func:`chfl_atom%init`
+    :field subroutine copy: :f:func:`chfl_atom%copy`
+    :field subroutine from_frame: :f:func:`chfl_atom%from_frame`
+    :field subroutine from_topology: :f:func:`chfl_atom%from_topology`
+    :field subroutine mass: :f:func:`chfl_atom%mass`
+    :field subroutine set_mass: :f:func:`chfl_atom%set_mass`
+    :field subroutine charge: :f:func:`chfl_atom%charge`
+    :field subroutine set_charge: :f:func:`chfl_atom%set_charge`
+    :field subroutine type: :f:func:`chfl_atom%type`
+    :field subroutine set_type: :f:func:`chfl_atom%set_type`
+    :field subroutine name: :f:func:`chfl_atom%name`
+    :field subroutine set_name: :f:func:`chfl_atom%set_name`
+    :field subroutine full_name: :f:func:`chfl_atom%full_name`
+    :field subroutine vdw_radius: :f:func:`chfl_atom%vdw_radius`
+    :field subroutine covalent_radius: :f:func:`chfl_atom%covalent_radius`
+    :field subroutine atomic_number: :f:func:`chfl_atom%atomic_number`
+    :field subroutine free: :f:func:`chfl_atom%free`
 
-    :argument string name: The new atom name
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%init(name, [status])
 
-.. f:subroutine:: from_frame(frame, idx, [status])
+    Initialize this atom with the given ``name``, and set the atom type to
+    ``name``.
 
-    Get a specific atom from a frame
+    :argument character name [len=*]: atom name
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument chfl_frame frame: The frame
-    :argument integer idx: The atom index in the frame
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%copy(atom, [status])
 
-.. f:subroutine:: from_topology(topology, idx, [status])
+    Initialize this atom with a copy of ``atom``.
 
-    Get a specific atom from a topology
+    :argument chfl_atom atom: atom to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument chfl_topology topology: The topology
-    :argument integer idx: The atom index in the topology
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%from_frame(frame, i, [status])
 
-.. f:subroutine:: mass(mass, [status])
+    Initialize this atom with a copy the atom at index ``i`` from a ``frame``.
 
-    Get the mass of an atom, in atomic mass units
+    :argument chfl_frame frame: frame
+    :argument integer i: atom index in the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument real mass: The atom mass
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%from_topology(topology, i, [status])
 
-.. f:subroutine:: set_mass(mass, [status])
+    Initialize this atom with a copy the atom at index ``i`` from a
+    ``topology``.
 
-    Set the mass of an atom, in atomic mass units
+    :argument chfl_topology topology: topology
+    :argument integer idx: atom index in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument real mass: The new atom mass
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%mass(mass, [status])
 
-.. f:subroutine:: charge(charge, [status])
+    Get the mass of tah atom in ``mass``. The mass is in atomic mass units.
 
-    Get the charge of an atom, in number of the electron charge e
+    :argument real mass: atom mass
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_atom%set_mass(mass, [status])
+
+    Set the mass of the atom to ``mass``. The mass should be in atomic mass
+    units.
+
+    :argument real mass: new atom mass
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_atom%charge(charge, [status])
+
+    Get the charge of the atom in ``charge``. The charge is in number of the
+    electron charge *e*.
 
     :argument real charge: The atom charge
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_charge(charge, [status])
+.. f:subroutine:: chfl_atom%set_charge(charge, [status])
 
-    Set the charge of an atom, in number of the electron charge e
+    Get the charge of the atom to ``charge``. The charge should be in number of
+    the electron charge *e*.
 
-    :argument real charge: The new atom charge
-    :optional integer status [optional]: The status code
+    :argument real charge: new atom charge
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: name(name, buffsize, [status])
+.. f:subroutine:: chfl_atom%name(name, buffsize, [status])
 
-    Get the name of an atom
+    Get the name of an atom in the string buffer ``name``.
 
-    :argument string name: A string buffer to be filled with the name
-    :argument buffsize: The lenght of the string ``name``
-    :optional integer status [optional]: The status code
+    The buffer size must be passed in ``buffsize``. This function will truncate
+    the name to fit in the buffer.
 
-.. f:subroutine:: set_name(name, [status])
+    :argument character name [len=buffsize]: string buffer to be filled with
+        the atom name
+    :argument buffsize: length of the string buffer
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Set the name of an atom
+.. f:subroutine:: chfl_atom%set_name(name, [status])
 
-    :argument string name: A string containing the new name
-    :optional integer status [optional]: The status code
+    Set the name of an atom to ``name``.
 
-.. f:subroutine:: full_name(name, buffsize, [status])
+    :argument character name [len=*]: new atom name
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    Try to get the full name of an atom from the short name
+.. f:subroutine:: chfl_atom%full_name(name, buffsize, [status])
 
-    :argument string name: A string buffer to be filled with the name
-    :argument buffsize: The lenght of the string ``name``
-    :optional integer status [optional]: The status code
+    Get the full name of an ``atom`` from its type in the string buffer
+    ``name``.
 
-.. f:subroutine:: vdw_radius(radius, [status])
+    The buffer size must be passed in ``buffsize``. This function will truncate
+    the name to fit in the buffer.
 
-    Try to get the Van der Waals radius of an atom from the short name
+    :argument character name [len=buffsize]: string buffer to be filled with
+        the atom full name
+    :argument buffsize: length of the string buffer
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    :argument real radius: The Van der Waals radius of the atom or -1 if no value could be found.
-    :optional integer status [optional]: The status code
+.. f:subroutine:: chfl_atom%type(type, buffsize, [status])
 
-.. f:subroutine:: covalent_radius(radius, [status])
+    Get the type of an atom in the string buffer ``type``.
 
-    Try to get the covalent radius of an atom from the short name
+    The buffer size must be passed in ``buffsize``. This function will truncate
+    the type to fit in the buffer.
 
-    :argument real radius: The covalent radius of the atom or -1 if no value could be found.
-    :optional integer status [optional]: The status code
+    :argument character name [len=buffsize]: string buffer to be filled with
+        the atom type
+    :argument buffsize: length of the string buffer
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: atomic_number(number, [status])
+.. f:subroutine:: chfl_atom%set_type(type, [status])
 
-    Try to get the atomic number of an atom from the short name
+    Set the type of an atom to ``type``.
 
-    :argument integer number: The atomic number, or -1 if no value could be found.
-    :optional integer status [optional]: The status code
+    :argument character name [len=*]: new atom type
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: type(type, [status])
+.. f:subroutine:: chfl_atom%vdw_radius(radius, [status])
 
-    Get the atom type
+    Get the Van der Waals radius of an atom from the atom type in ``radius``.
 
-    :argument integer type [kind=CHFL_ATOM_TYPES]: the type of the atom
-    :optional integer status [optional]: The status code
+    If the radius in unknown, this function set ``radius`` to -1.
 
-    The atom types are integers which ``kind`` is the parameter ``CHFL_ATOM_TYPES``:
+    :argument real radius: Van der Waals radius
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_ELEMENT
+.. f:subroutine:: chfl_atom%covalent_radius(radius, [status])
 
-        Element from the periodic table of elements.
+    Get the covalent radius of an atom from the atom type in ``radius``.
 
-    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_COARSE_GRAINED
+    If the radius in unknown, this function set ``radius`` to -1.
 
-        Coarse-grained atom are composed of more than one element: CH3 groups,
-        amino-acids are coarse-grained atoms.
+    :argument real radius: covalent radius
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_DUMMY
+.. f:subroutine:: chfl_atom%atomic_number(number, [status])
 
-        Dummy site, with no physical reality.
+    Get the atomic number of an atom from the atom type in ``number``.
 
-    .. f:variable:: integer(CHFL_ATOM_TYPES) :: CHFL_ATOM_UNDEFINED
+    If the atomic number in unknown, this function set ``number`` to -1.
 
-        Undefined atom type.
+    :argument integer number: atomic number
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: set_type(type, [status])
-
-    Set the atom type
-
-    :argument integer type [kind=CHFL_ATOM_TYPES]: the new type of the atom
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: free([status])
+.. f:subroutine:: chfl_atom%free([status])
 
     Destroy an atom, and free the associated memory
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 
 ``chfl_selection`` type
 ------------------------
 
-.. f:currentmodule:: chfl_selection
-
 .. f:type:: chfl_selection
 
-    Chemfiles provides a selection, implemented with the ``chfl_selection``
-    type. This selection language allow the users to select a group of atoms
-    using a string. Examples of selections are ``"name H"`` and ``"(x < 45 and
-    name O) or name C"`` for selections with one atom, and ``"angles: name($2) O
-    and mass($3) < 7 or index($1) > 10"`` for multiple atoms selections.
+    :f:type:`chfl_selection` allow to select atoms in a :f:type:`chfl_frame`,
+    from a selection language. The selection language is built by combining
+    basic operations. Each basic operation follows the
+    ``<selector>[(<variable>)] <operator> <value>`` structure, where
+    ``<operator>`` is a comparison operator in ``== != < <= > >=``.
 
-    :field subroutine init:
-    :field subroutine size:
-    :field subroutine evaluate:
-    :field subroutine matches:
+    The initialization routines for :f:type:`chfl_selection` are
+    :f:func:`chfl_selection%init` and :f:func:`chfl_selection%copy`.
 
-    The initialization routine is ``init``.
+    :field subroutine init: :f:func:`chfl_selection%init`
+    :field subroutine copy: :f:func:`chfl_selection%copy`
+    :field subroutine size: :f:func:`chfl_selection%size`
+    :field subroutine string: :f:func:`chfl_selection%string`
+    :field subroutine evaluate: :f:func:`chfl_selection%evaluate`
+    :field subroutine matches: :f:func:`chfl_selection%matches`
+    :field subroutine free: :f:func:`chfl_selection%free`
+
+.. f:subroutine:: chfl_selection%init(selection, [status])
+
+    Initialize the selection with a new selection from the given ``selection``
+    string.
+
+    See the `selection documentation`_ for the selection language specification.
+
+    .. _selection documentation: http://chemfiles.github.io/chemfiles/latest/selections.html
+
+    :argument character selection [len=*]: The selection string
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_selection%copy(selection, [status])
+
+    Initialize the selection with a copy of ``selection``.
+
+    The copy does not contains any state, and :f:func:`chfl_selection%evaluate`
+    must be called again before using :f:func:`chfl_selection%matches`.
+
+    :argument chfl_selection selection: selection to copy
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_selection%size(size, [status])
+
+    Get the size of the selection in ``size``.
+
+    The size of a selection is the number of atoms we are selecting together.
+    This value is 1 for the 'atom' context, 2 for the 'pair' and 'bond' context,
+    3 for the 'three' and 'angles' contextes and 4 for the 'four' and 'dihedral'
+    contextes.
+
+    :argument integer size: selection size
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_selection%string(string, buffsize, [status])
+
+    Get the selection string used to create this selection in the ``string``
+    buffer.
+
+    The buffer size must be passed in ``buffsize``. This function will truncate
+    the selection string to fit in the buffer.
+
+    :argument character size [len=buffsize]: string buffer to be filled with the
+        initial selection string
+    :argument integer buffsize: size of the string buffer
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 
-.. f:subroutine:: init(selection, [status])
+.. f:subroutine:: chfl_selection%evaluate(frame, nmatches, [status])
 
-    Create a selection corresponding to the given ``selection`` string.
-    For example, the selection string ``"name H and x > 4"`` will select all
-    the atoms with name ``"H"`` and ``x`` coordinate less than 4. See the C++
-    documentation for the full selection language.
+    Evaluate the selection for a given ``frame``, and store the number of
+    matches in ``nmatches``. Use :f:func:`chfl_selection%matches` to get the
+    matches.
 
-    :argument string selection: The selection string
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: size(size, [status])
-
-    Get the size of the selection, i.e. the number of atoms we are selecting
-    together.
-
-    :argument integer size: The selection size
-    :optional integer status [optional]: The status code
-
-.. f:subroutine:: evaluate(frame, n_matches, [status])
-
-    Evaluate a selection for a given frame. This function also return the number
-    of matches for a selection in ``n_matches``
-
-    :argument chfl_frame frame: The frame to use
-    :argument integer n_matches: The number of matches for this selection and
-                                  this frame
-    :optional integer status [optional]: The status code
+    :argument chfl_frame frame: frame to evaluate
+    :argument integer n_matches: number of matches for this selection
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 
-.. f:subroutine:: matches(matches, n_matches, [status])
+.. f:subroutine:: chfl_selection%matches(matches, n, [status])
 
-    :argument chfl_match matches [allocatable, dimension(*)]: Pre-allocated
-        array of the size given by ``chfl_selection%evaluate``.
-    :argument integer n_matchs: Size of the ``matches`` array
-    :optional integer status [optional]: The status code
+    Get the matches for the ``selection`` after a call to
+    :f:func:`chfl_selection%evalutate`, in the pre-allocated ``matches`` array.
+    The size of the ``matches`` array must be passed in ``n``.
 
-.. f:subroutine:: free([status])
+    :argument chfl_match matches(nmatchs) [allocatable]: Pre-allocated array of
+        the size given by ``chfl_selection%evaluate``.
+    :argument integer n: size of the ``matches`` array
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_selection%free([status])
 
     Destroy a selection, and free the associated memory
 
-    :optional integer status [optional]: The status code
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
 
 .. f:type:: chfl_match
 
@@ -976,4 +1453,4 @@ Error and logging functions
     and ``atom(3)`` and ``atom(4)`` contains invalid indexes.
 
     :field integer size: The size of this match.
-    :field integer atoms [dimension(4)]: The index of the matched atoms.
+    :field integer atoms(4): The index of the matched atoms.

@@ -25,24 +25,30 @@ def usage_in_doc():
     usages = []
     reference = os.path.join(ROOT, "doc", "reference.rst")
     with open(reference, encoding="utf8") as fd:
+        for line in fd:
+            if line.startswith(".."):
+                _, kind = line.split()[:2]
+                if kind in ["f:function::", "f:subroutine::"]:
+                    name = line.split()[2].split('(')[0]
+                    usages.append(name)
+    return usages
+
+
+def type_bound_functions():
+    functions = []
+    reference = os.path.join(ROOT, "doc", "reference.rst")
+    with open(reference, encoding="utf8") as fd:
         type = None
         for line in fd:
             if line.startswith(".."):
                 _, kind = line.split()[:2]
                 if kind == "f:type::":
                     type = line.split()[2]
-                elif kind == "f:function::":
-                    name = line.split()[3].split('(')[0]
-                    usages.append(name)
-                elif kind == "f:subroutine::":
-                    if type:
-                        name = line.split()[2].split('(')[0]
-                        usages.append(type + "%" + name)
-                    else:
-                        # Free subroutine
-                        name = line.split()[2].split('(')[0]
-                        usages.append(name)
-    return usages
+
+            if type and ":field subroutine" in line:
+                name = line.split()[2][:-1]
+                functions.append(type + "%" + name)
+    return functions
 
 
 if __name__ == '__main__':
@@ -56,6 +62,15 @@ if __name__ == '__main__':
     for function in docs:
         if function not in functions:
             error("documentation for non-existing {}".format(function))
+
+    types_bound = type_bound_functions()
+    for function in types_bound:
+        if function not in docs:
+            error("mismatch in type: missing doc for {}".format(function))
+
+    for function in docs:
+        if function not in types_bound and '%' in function:
+            error("mismatch in type: missing field for {}".format(function))
 
     if ERROR:
         sys.exit(1)
