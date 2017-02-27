@@ -16,18 +16,18 @@ Here is a simple example of how the usage feels in Fortran:
 ```fortran
 program example
     use chemfiles
-    use iso_fortran_env, only: int64, real32
+    use iso_fortran_env, only: int64, real64
 
     implicit none
     type(chfl_trajectory) :: trajectory
     type(chfl_frame) :: frame
     integer(int64) :: natoms
-    real(real32), dimension(:, :), allocatable :: positions
+    real(real64), dimension(:, :), pointer :: positions
     integer :: status
 
     call trajectory%open("filename.xyz", "r", status=status)
     if status /= 0 stop "Error while opening file"
-    call frame%init(0)
+    call frame%init()
 
     call file%read(frame, status=status)
     if status /= 0 stop "Error while reading file"
@@ -35,16 +35,12 @@ program example
     call frame%atoms_count(natoms)
     write(*, *) "There are ", natoms, "atoms in the frame"
 
-    allocate(positions(3, natoms))
-
     call frame%positions(positions, natoms)
-
     ! Do awesome things with the positions here !
 
     call frame%free()
     call trajectory%close()
-    deallocate(positions)
-}
+end program
 ```
 
 You can find more examples in the `examples` directory.
