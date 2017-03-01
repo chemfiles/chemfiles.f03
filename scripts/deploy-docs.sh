@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 # Exit early if we don't want to deploy the docs
-if [[ "$TRAVIS_BRANCH" != "master" && "$TRAVIS_TAG" == "" ]]; then
+if [[ "$TRAVIS_BRANCH" != "master" || "$TRAVIS_TAG" == "" || "${TRAVIS_PULL_REQUEST}" == "true" ]]; then
     exit 0
 fi
 
@@ -13,7 +13,7 @@ pip install --user -r doc/requirements.txt
 # Build documentation
 cd doc
 make html
-rm -rf _build/html/_static/bootswatch-* _build/html/_static/bootstrap-2.3.2 
+rm -rf _build/html/_static/bootswatch-* _build/html/_static/bootstrap-2.3.2
 
 cd ../gh-pages
 git checkout gh-pages
