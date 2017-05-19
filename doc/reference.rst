@@ -38,7 +38,7 @@ chemfiles `overview`_.
             ! position(1, :) now contains the positions of the first atom
         end program
 
-.. _overview: http://chemfiles.github.io/chemfiles/latest/overview.html
+.. _overview: http://chemfiles.org/chemfiles/latest/overview.html
 
 Conventions
 -----------
@@ -1362,7 +1362,7 @@ take the following values:
 
     See the `selection documentation`_ for the selection language specification.
 
-    .. _selection documentation: http://chemfiles.github.io/chemfiles/latest/selections.html
+    .. _selection documentation: http://chemfiles.org/chemfiles/latest/selections.html
 
     :argument character selection [len=*]: The selection string
     :optional integer status [optional, kind=chfl_status]: status code of the

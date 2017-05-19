@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/chemfiles/chemfiles.f03.svg?branch=master)](https://travis-ci.org/chemfiles/chemfiles.f03)
 [![Code coverage](http://codecov.io/github/chemfiles/chemfiles.f03/coverage.svg?branch=master)](http://codecov.io/github/chemfiles/chemfiles.f03?branch=master)
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](http://chemfiles.github.io/chemfiles.f03/)
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](http://chemfiles.org/chemfiles.f03/)
 
 This repository contains the fortran 2003 binding to the
 [chemfiles](https://github.com/chemfiles/chemfiles) library. The
-[documentation](http://chemfiles.github.io/chemfiles.f03/) contains the
+[documentation](http://chemfiles.org/chemfiles.f03/) contains the
 installation instructions.
 
 ## Usage example
