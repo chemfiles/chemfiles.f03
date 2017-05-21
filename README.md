@@ -29,7 +29,7 @@ program example
     if status /= 0 stop "Error while opening file"
     call frame%init()
 
-    call file%read(frame, status=status)
+    call trajectory%read(frame, status=status)
     if status /= 0 stop "Error while reading file"
 
     call frame%atoms_count(natoms)
