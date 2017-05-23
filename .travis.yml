@@ -62,11 +62,17 @@ script:
     fi
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GH_TOKEN
-  local_dir: gh-pages
-  on:
-    branch: master
-    tags: true
-    os: linux
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GH_TOKEN
+    local_dir: gh-pages
+    on:
+        branch: master
+        os: linux
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GH_TOKEN
+    local_dir: gh-pages
+    on:
+        tags: true
+        os: linux
