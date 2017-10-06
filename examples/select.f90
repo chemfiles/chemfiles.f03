@@ -33,7 +33,7 @@ program select
     call selection%matches(matches, matching)
     do i=1, matching
         print *, matches(i)%atoms(1), "is a zinc"
-    enddo
+    end do
 
     call selection%free()
     deallocate(matches)
@@ -48,7 +48,7 @@ program select
     call selection%matches(matches, matching)
     do i=1, matching
         print *, i, "is a zinc"
-    enddo
+    end do
 
     ! Get the matching atoms
     call selection%matches(matches, matching)
@@ -56,7 +56,7 @@ program select
         print *, matches(i)%atoms(1), "-", &
                  matches(i)%atoms(2), "-", &
                  matches(i)%atoms(3),  " is a water molecule"
-    enddo
+    end do
 
     call selection%free()
     call file%close()

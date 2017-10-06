@@ -22,3 +22,10 @@ Write frames (convert.f90)
 .. literalinclude:: ../examples/convert.f90
    :language: fortran
    :lines: 4-
+
+Use selections (select.f90)
+---------------------------
+
+.. literalinclude:: ../examples/select.f90
+   :language: fortran
+   :lines: 4-

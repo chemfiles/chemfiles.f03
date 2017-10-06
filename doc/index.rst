@@ -1,17 +1,14 @@
 Fortran interface to chemfiles
 ==============================
 
-This is the documentation for the Fortran 2003 interface to the `chemfiles`_ library.
-This Fortran interface to chemfiles is built in an object-oriented fashion, using the
-C interface of chemfiles and the ``iso_c_binding`` intrisic module.
+This is the documentation for the Fortran 2003 interface to the `chemfiles`_
+library.  This Fortran interface to chemfiles is built in an object-oriented
+fashion, using the C interface of chemfiles and the ``iso_c_binding`` intrisic
+module.
 
 All the functionalities are in the ``chemfiles`` module, which should be used in
-all the programs using chemfiles. The ``iso_fortran_env`` instrisic module can also
-be usefull to set the kind of real and doubles where needed.
-
-.. _chemfiles: https://github.com/chemfiles/chemfiles
-.. _chemfiles-deps: http://chemfiles.org/chemfiles/latest/installation.html#core-library-dependencies
-.. _chemfiles-opts: http://chemfiles.org/chemfiles/latest/installation.html#build-steps
+all the programs using chemfiles. The ``iso_fortran_env`` instrisic module can
+also be usefull to set the kind of real and doubles where needed.
 
 Installation
 ^^^^^^^^^^^^
@@ -37,7 +34,8 @@ to build it with another compiler, please tell me so that I can add it here.
     # install to `PREFIX`
     make install
 
-Other options are available and documented with the `main C++ library <chemfiles-opts_>`_.
+Other options are available and documented with the `main C++ library
+<chemfiles-opts_>`_.
 
 Usage
 ^^^^^
@@ -55,11 +53,16 @@ to run
 User documentation
 ^^^^^^^^^^^^^^^^^^
 
-This section contains example of how to use chemfiles, and the complete interface
-reference for all the types and subroutines in chemfiles.
+This section contains example of how to use chemfiles, and the complete
+interface reference for all the types and subroutines in chemfiles.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    examples
-   reference
+   reference/index
+
+
+.. _chemfiles: https://github.com/chemfiles/chemfiles
+.. _chemfiles-deps: http://chemfiles.org/chemfiles/latest/installation.html#core-library-dependencies
+.. _chemfiles-opts: http://chemfiles.org/chemfiles/latest/installation.html#build-steps
