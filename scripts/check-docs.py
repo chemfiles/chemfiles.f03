@@ -23,31 +23,33 @@ def error(message):
 
 def usage_in_doc():
     usages = []
-    reference = os.path.join(ROOT, "doc", "reference.rst")
-    with open(reference, encoding="utf8") as fd:
-        for line in fd:
-            if line.startswith(".."):
-                _, kind = line.split()[:2]
-                if kind in ["f:function::", "f:subroutine::"]:
-                    name = line.split()[2].split('(')[0]
-                    usages.append(name)
+    for (root, _, pathes) in os.walk(os.path.join(ROOT, "doc", "reference")):
+        for path in pathes:
+            with open(os.path.join(root, path), encoding="utf8") as fd:
+                for line in fd:
+                    if line.startswith(".."):
+                        _, kind = line.split()[:2]
+                        if kind in ["f:function::", "f:subroutine::"]:
+                            name = line.split()[2].split('(')[0]
+                            usages.append(name)
     return usages
 
 
 def type_bound_functions():
     functions = []
-    reference = os.path.join(ROOT, "doc", "reference.rst")
-    with open(reference, encoding="utf8") as fd:
-        type = None
-        for line in fd:
-            if line.startswith(".."):
-                _, kind = line.split()[:2]
-                if kind == "f:type::":
-                    type = line.split()[2]
+    for (root, _, pathes) in os.walk(os.path.join(ROOT, "doc", "reference")):
+        for path in pathes:
+            with open(os.path.join(root, path), encoding="utf8") as fd:
+                type = None
+                for line in fd:
+                    if line.startswith(".."):
+                        _, kind = line.split()[:2]
+                        if kind == "f:type::":
+                            type = line.split()[2]
 
-            if type and ":field subroutine" in line:
-                name = line.split()[2][:-1]
-                functions.append(type + "%" + name)
+                    if type and ":field subroutine" in line:
+                        name = line.split()[2][:-1]
+                        functions.append(type + "%" + name)
     return functions
 
 
