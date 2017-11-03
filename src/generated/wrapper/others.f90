@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -41,6 +37,19 @@ subroutine chfl_clear_errors(status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_clear_errors()
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_add_configuration(path, status)
+    implicit none
+    character(len=*), intent(in) :: path
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_add_configuration(f_to_c_str(path))
     
     if (present(status)) then
         status = status_tmp_

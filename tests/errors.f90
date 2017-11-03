@@ -32,10 +32,16 @@ program errors_test
     call check(status == CHFL_SUCCESS, "chfl_set_warning_callback")
     ! Generating an error message
     call trajectory%open("nothere", "r")
-    call check(trim(last_message) == 'Can not find a format associated with the "" extension.', "chfl_set_warning_callback")
+    call check( &
+        trim(last_message) == "file at 'nothere' does not have an extension, provide a format name to read it", &
+        "chfl_set_warning_callback" &
+    )
 
     error = chfl_last_error()
-    call check(trim(error) == 'Can not find a format associated with the "" extension.', "chfl_last_error")
+    call check( &
+        trim(error) == "file at 'nothere' does not have an extension, provide a format name to read it", &
+        "chfl_last_error" &
+    )
 
     call chfl_clear_errors(status=status)
     call check(status == CHFL_SUCCESS, "chfl_clear_errors")

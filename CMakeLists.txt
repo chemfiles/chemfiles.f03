@@ -16,7 +16,7 @@ endif()
 
 add_subdirectory(chemfiles)
 
-file(GLOB sources src/*.f90)
+set(sources src/strings.f90 src/chemfiles.f90)
 add_library(chemfilesf03 ${sources})
 target_link_libraries(chemfilesf03 chemfiles ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
 set_property(TARGET chemfilesf03 PROPERTY VERSION ${CHEMFILES_VERSION})

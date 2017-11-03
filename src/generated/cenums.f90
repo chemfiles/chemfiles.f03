@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -21,11 +17,23 @@ enum, bind(C)
     enumerator :: CHFL_FILE_ERROR = 2
     enumerator :: CHFL_FORMAT_ERROR = 3
     enumerator :: CHFL_SELECTION_ERROR = 4
-    enumerator :: CHFL_GENERIC_ERROR = 5
-    enumerator :: CHFL_CXX_ERROR = 6
+    enumerator :: CHFL_CONFIGURATION_ERROR = 5
+    enumerator :: CHFL_OUT_OF_BOUNDS = 6
+    enumerator :: CHFL_PROPERTY_ERROR = 7
+    enumerator :: CHFL_GENERIC_ERROR = 254
+    enumerator :: CHFL_CXX_ERROR = 255
 end enum
 
 integer, parameter :: chfl_status = kind(CHFL_SUCCESS)
+
+enum, bind(C)
+    enumerator :: CHFL_PROPERTY_BOOL = 0
+    enumerator :: CHFL_PROPERTY_DOUBLE = 1
+    enumerator :: CHFL_PROPERTY_STRING = 2
+    enumerator :: CHFL_PROPERTY_VECTOR3D = 3
+end enum
+
+integer, parameter :: chfl_property_kind = kind(CHFL_PROPERTY_BOOL)
 
 enum, bind(C)
     enumerator :: CHFL_CELL_ORTHORHOMBIC = 0
@@ -33,4 +41,4 @@ enum, bind(C)
     enumerator :: CHFL_CELL_INFINITE = 2
 end enum
 
-integer, parameter :: chfl_cell_shape_t = kind(CHFL_CELL_ORTHORHOMBIC)
+integer, parameter :: chfl_cellshape = kind(CHFL_CELL_ORTHORHOMBIC)

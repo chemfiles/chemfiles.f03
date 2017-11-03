@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -15,7 +11,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_version", at types.h:135
+! Function "chfl_version", at types.h:144:14
 function c_chfl_version() bind(C, name="chfl_version")
     use iso_c_binding
     
@@ -24,7 +20,7 @@ function c_chfl_version() bind(C, name="chfl_version")
 
 end function
 
-! Function "chfl_last_error", at errors.h:20
+! Function "chfl_last_error", at misc.h:16:14
 function c_chfl_last_error() bind(C, name="chfl_last_error")
     use iso_c_binding
     
@@ -33,7 +29,7 @@ function c_chfl_last_error() bind(C, name="chfl_last_error")
 
 end function
 
-! Function "chfl_clear_errors", at errors.h:27
+! Function "chfl_clear_errors", at misc.h:23:14
 function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
     use iso_c_binding
     import chfl_status
@@ -43,7 +39,7 @@ function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
 
 end function
 
-! Function "chfl_set_warning_callback", at errors.h:36
+! Function "chfl_set_warning_callback", at misc.h:32:14
 function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_callback")
     use iso_c_binding
     import chfl_status
@@ -51,6 +47,16 @@ function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_ca
     implicit none
     integer(kind=chfl_status) :: c_chfl_set_warning_callback
     type(c_funptr), value :: callback
+end function
+
+! Function "chfl_add_configuration", at misc.h:47:14
+function c_chfl_add_configuration(path) bind(C, name="chfl_add_configuration")
+    use iso_c_binding
+    import chfl_status
+
+    implicit none
+    integer(kind=chfl_status) :: c_chfl_add_configuration
+    character(len=1, kind=c_char), dimension(*), intent(in) :: path
 end function
 
 end interface

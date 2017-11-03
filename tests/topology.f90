@@ -128,13 +128,22 @@ contains
     subroutine test_bonds()
         implicit none
         type(chfl_topology) :: topology
+        type(chfl_atom) :: atom
         integer(int64) :: n, i, j
         integer(int64), dimension(2, 3) :: bonds, expected
-        logical(1) :: isbond
         integer :: status
 
         call topology%init(status=status)
         call check(status == CHFL_SUCCESS, "topology%init")
+
+        call atom%init("", status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+        do i = 1,4
+            call topology%add_atom(atom, status=status)
+            call check(status == CHFL_SUCCESS, "topology%add_atom")
+        enddo
+        call atom%free(status=status)
+        call check(status == CHFL_SUCCESS, "atom%free")
 
         call topology%bonds_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%bonds_count")
@@ -150,21 +159,6 @@ contains
         call topology%bonds_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%bonds_count")
         call check(n == 3, "topology%bonds_count")
-
-        call topology%isbond(int(0, int64), int(1, int64), isbond, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isbond")
-        call check(isbond .eqv. .true., "topology%isbond")
-        call topology%isbond(int(0, int64), int(3, int64), isbond, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isbond")
-        call check(isbond .eqv. .false., "topology%isbond")
-
-        call topology%isbond(int(0, int64), int(1, int64), isbond, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isbond")
-        call check(isbond .eqv. .true., "topology%isbond")
-        call topology%isbond(int(0, int64), int(3, int64), isbond, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isbond")
-        call check(isbond .eqv. .false., "topology%isbond")
-
 
         expected = reshape([0, 1, 1, 2, 2, 3], [2, 3])
         call topology%bonds(bonds, int(3, int64), status=status)
@@ -188,13 +182,22 @@ contains
     subroutine test_angles()
         implicit none
         type(chfl_topology) :: topology
+        type(chfl_atom) :: atom
         integer(int64) :: n, i, j
         integer(int64), dimension(3, 2) :: angles, expected
-        logical(1) :: isangle
         integer :: status
 
         call topology%init(status=status)
         call check(status == CHFL_SUCCESS, "topology%init")
+
+        call atom%init("", status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+        do i = 1,4
+            call topology%add_atom(atom, status=status)
+            call check(status == CHFL_SUCCESS, "topology%add_atom")
+        enddo
+        call atom%free(status=status)
+        call check(status == CHFL_SUCCESS, "atom%free")
 
         call topology%angles_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%angles_count")
@@ -210,13 +213,6 @@ contains
         call topology%angles_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%angles_count")
         call check(n == 2, "topology%angles_count")
-
-        call topology%isangle(int(0, int64), int(1, int64), int(2, int64), isangle, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isangle")
-        call check(isangle .eqv. .true., "topology%isangle")
-        call topology%isangle(int(0, int64), int(1, int64), int(3, int64), isangle, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isangle")
-        call check(isangle .eqv. .false., "topology%isangle")
 
         expected = reshape([0, 1, 2, 1, 2, 3], [3, 2])
         call topology%angles(angles, int(2, int64), status=status)
@@ -241,13 +237,22 @@ contains
     subroutine test_dihedrals()
         implicit none
         type(chfl_topology) :: topology
+        type(chfl_atom) :: atom
         integer(int64) :: n, i
         integer(int64), dimension(4, 1) :: dihedrals, expected
-        logical(1) :: isdihedral
         integer :: status
 
         call topology%init(status=status)
         call check(status == CHFL_SUCCESS, "topology%init")
+
+        call atom%init("", status=status)
+        call check(status == CHFL_SUCCESS, "atom%init")
+        do i = 1,4
+            call topology%add_atom(atom, status=status)
+            call check(status == CHFL_SUCCESS, "topology%add_atom")
+        enddo
+        call atom%free(status=status)
+        call check(status == CHFL_SUCCESS, "atom%free")
 
         call topology%dihedrals_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%dihedrals_count")
@@ -263,13 +268,6 @@ contains
         call topology%dihedrals_count(n, status=status)
         call check(status == CHFL_SUCCESS, "topology%dihedrals_count")
         call check(n == 1, "topology%dihedrals_count")
-
-        call topology%isdihedral(int(0, int64), int(1, int64), int(2, int64), int(3, int64), isdihedral, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isdihedral")
-        call check(isdihedral .eqv. .true., "topology%isdihedral")
-        call topology%isdihedral(int(0, int64), int(1, int64), int(3, int64), int(2, int64), isdihedral, status=status)
-        call check(status == CHFL_SUCCESS, "topology%isdihedral")
-        call check(isdihedral .eqv. .false., "topology%isdihedral")
 
         expected = reshape([0, 1, 2, 3], [4, 1])
         call topology%dihedrals(dihedrals, int(1, int64), status=status)

@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -15,7 +11,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_selection", at selection.h:24
+! Function "chfl_selection", at selection.h:20:18
 function c_chfl_selection(selection) bind(C, name="chfl_selection")
     use iso_c_binding
     
@@ -24,7 +20,7 @@ function c_chfl_selection(selection) bind(C, name="chfl_selection")
     character(len=1, kind=c_char), dimension(*), intent(in) :: selection
 end function
 
-! Function "chfl_selection_copy", at selection.h:37
+! Function "chfl_selection_copy", at selection.h:33:18
 function c_chfl_selection_copy(selection) bind(C, name="chfl_selection_copy")
     use iso_c_binding
     
@@ -33,7 +29,7 @@ function c_chfl_selection_copy(selection) bind(C, name="chfl_selection_copy")
     type(c_ptr), value, intent(in) :: selection
 end function
 
-! Function "chfl_selection_size", at selection.h:49
+! Function "chfl_selection_size", at selection.h:45:14
 function c_chfl_selection_size(selection, size) bind(C, name="chfl_selection_size")
     use iso_c_binding
     import chfl_status
@@ -44,7 +40,7 @@ function c_chfl_selection_size(selection, size) bind(C, name="chfl_selection_siz
     integer(kind=c_int64_t) :: size
 end function
 
-! Function "chfl_selection_string", at selection.h:62
+! Function "chfl_selection_string", at selection.h:58:14
 function c_chfl_selection_string(selection, string, buffsize) bind(C, name="chfl_selection_string")
     use iso_c_binding
     import chfl_status
@@ -56,7 +52,7 @@ function c_chfl_selection_string(selection, string, buffsize) bind(C, name="chfl
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_selection_evaluate", at selection.h:75
+! Function "chfl_selection_evaluate", at selection.h:71:14
 function c_chfl_selection_evaluate(selection, frame, nmatches) bind(C, name="chfl_selection_evaluate")
     use iso_c_binding
     import chfl_status
@@ -68,7 +64,7 @@ function c_chfl_selection_evaluate(selection, frame, nmatches) bind(C, name="chf
     integer(kind=c_int64_t) :: nmatches
 end function
 
-! Function "chfl_selection_matches", at selection.h:101
+! Function "chfl_selection_matches", at selection.h:97:14
 function c_chfl_selection_matches(selection, matches, nmatches) bind(C, name="chfl_selection_matches")
     use iso_c_binding
     import chfl_status
@@ -80,7 +76,7 @@ function c_chfl_selection_matches(selection, matches, nmatches) bind(C, name="ch
     integer(kind=c_int64_t), value :: nmatches
 end function
 
-! Function "chfl_selection_free", at selection.h:109
+! Function "chfl_selection_free", at selection.h:105:14
 function c_chfl_selection_free(selection) bind(C, name="chfl_selection_free")
     use iso_c_binding
     import chfl_status

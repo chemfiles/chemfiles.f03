@@ -58,7 +58,7 @@ contains
         integer(int64) :: id
         integer :: status
 
-        call residue%init("Foo", int(56, int64), status=status)
+        call residue%with_id("Foo", int(56, int64), status=status)
         call check(status == CHFL_SUCCESS, "residue%init")
 
         call residue%id(id, status=status)
@@ -72,8 +72,7 @@ contains
         call check(status == CHFL_SUCCESS, "residue%init")
 
         call residue%id(id, status=status)
-        call check(status == CHFL_SUCCESS, "residue%id")
-        call check(id == -1, "residue%id")
+        call check(status == CHFL_GENERIC_ERROR, "residue%id")
 
         call residue%free(status=status)
         call check(status == CHFL_SUCCESS, "residue%free")

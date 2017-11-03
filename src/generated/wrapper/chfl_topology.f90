@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -77,28 +73,28 @@ subroutine chfl_topology_copy_init_(this, topology, status)
     end if
 end subroutine
 
-subroutine chfl_topology_atoms_count(this, natoms, status)
+subroutine chfl_topology_atoms_count(this, size, status)
     implicit none
     class(chfl_topology), intent(in) :: this
-    integer(kind=c_int64_t) :: natoms
+    integer(kind=c_int64_t) :: size
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_topology_atoms_count(this%ptr, natoms)
+    status_tmp_ = c_chfl_topology_atoms_count(this%ptr, size)
     
     if (present(status)) then
         status = status_tmp_
     end if
 end subroutine
 
-subroutine chfl_topology_resize(this, natoms, status)
+subroutine chfl_topology_resize(this, n, status)
     implicit none
     class(chfl_topology) :: this
-    integer(kind=c_int64_t), value :: natoms
+    integer(kind=c_int64_t), value :: n
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_topology_resize(this%ptr, natoms)
+    status_tmp_ = c_chfl_topology_resize(this%ptr, n)
     
     if (present(status)) then
         status = status_tmp_
@@ -127,57 +123,6 @@ subroutine chfl_topology_remove(this, i, status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_topology_remove(this%ptr, i)
-    
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_topology_isbond(this, i, j, result, status)
-    implicit none
-    class(chfl_topology), intent(in) :: this
-    integer(kind=c_int64_t), value :: i
-    integer(kind=c_int64_t), value :: j
-    logical(kind=c_bool) :: result
-    integer(chfl_status), optional :: status
-    integer(chfl_status) :: status_tmp_
-
-    status_tmp_ = c_chfl_topology_isbond(this%ptr, i, j, result)
-    
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_topology_isangle(this, i, j, k, result, status)
-    implicit none
-    class(chfl_topology), intent(in) :: this
-    integer(kind=c_int64_t), value :: i
-    integer(kind=c_int64_t), value :: j
-    integer(kind=c_int64_t), value :: k
-    logical(kind=c_bool) :: result
-    integer(chfl_status), optional :: status
-    integer(chfl_status) :: status_tmp_
-
-    status_tmp_ = c_chfl_topology_isangle(this%ptr, i, j, k, result)
-    
-    if (present(status)) then
-        status = status_tmp_
-    end if
-end subroutine
-
-subroutine chfl_topology_isdihedral(this, i, j, k, m, result, status)
-    implicit none
-    class(chfl_topology), intent(in) :: this
-    integer(kind=c_int64_t), value :: i
-    integer(kind=c_int64_t), value :: j
-    integer(kind=c_int64_t), value :: k
-    integer(kind=c_int64_t), value :: m
-    logical(kind=c_bool) :: result
-    integer(chfl_status), optional :: status
-    integer(chfl_status) :: status_tmp_
-
-    status_tmp_ = c_chfl_topology_isdihedral(this%ptr, i, j, k, m, result)
     
     if (present(status)) then
         status = status_tmp_
@@ -226,6 +171,20 @@ subroutine chfl_topology_dihedrals_count(this, ndihedrals, status)
     end if
 end subroutine
 
+subroutine chfl_topology_impropers_count(this, nimpropers, status)
+    implicit none
+    class(chfl_topology), intent(in) :: this
+    integer(kind=c_int64_t) :: nimpropers
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_topology_impropers_count(this%ptr, nimpropers)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
 subroutine chfl_topology_bonds(this, data, nbonds, status)
     implicit none
     class(chfl_topology), intent(in) :: this
@@ -265,6 +224,21 @@ subroutine chfl_topology_dihedrals(this, data, ndihedrals, status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_topology_dihedrals(this%ptr, c_loc(data), ndihedrals)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_topology_impropers(this, data, nimpropers, status)
+    implicit none
+    class(chfl_topology), intent(in) :: this
+    integer(kind=c_int64_t), dimension(:, :), target :: data
+    integer(kind=c_int64_t), value :: nimpropers
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_topology_impropers(this%ptr, c_loc(data), nimpropers)
     
     if (present(status)) then
         status = status_tmp_

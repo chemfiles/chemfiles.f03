@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -56,14 +52,14 @@ subroutine chfl_frame_copy_init_(this, frame, status)
     end if
 end subroutine
 
-subroutine chfl_frame_atoms_count(this, natoms, status)
+subroutine chfl_frame_atoms_count(this, n, status)
     implicit none
     class(chfl_frame), intent(in) :: this
-    integer(kind=c_int64_t) :: natoms
+    integer(kind=c_int64_t) :: n
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_frame_atoms_count(this%ptr, natoms)
+    status_tmp_ = c_chfl_frame_atoms_count(this%ptr, n)
     
     if (present(status)) then
         status = status_tmp_
@@ -141,14 +137,14 @@ subroutine chfl_frame_remove(this, i, status)
     end if
 end subroutine
 
-subroutine chfl_frame_resize(this, natoms, status)
+subroutine chfl_frame_resize(this, size, status)
     implicit none
     class(chfl_frame) :: this
-    integer(kind=c_int64_t), value :: natoms
+    integer(kind=c_int64_t), value :: size
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_frame_resize(this%ptr, natoms)
+    status_tmp_ = c_chfl_frame_resize(this%ptr, size)
     
     if (present(status)) then
         status = status_tmp_
@@ -245,6 +241,112 @@ subroutine chfl_frame_guess_topology(this, status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_frame_guess_topology(this%ptr)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_distance(this, i, j, distance, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    real(kind=c_double) :: distance
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_distance(this%ptr, i, j, distance)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_angle(this, i, j, k, angle, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    integer(kind=c_int64_t), value :: k
+    real(kind=c_double) :: angle
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_angle(this%ptr, i, j, k, angle)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_dihedral(this, i, j, k, m, dihedral, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    integer(kind=c_int64_t), value :: k
+    integer(kind=c_int64_t), value :: m
+    real(kind=c_double) :: dihedral
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_dihedral(this%ptr, i, j, k, m, dihedral)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_out_of_plane(this, i, j, k, m, distance, status)
+    implicit none
+    class(chfl_frame), intent(in) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    integer(kind=c_int64_t), value :: k
+    integer(kind=c_int64_t), value :: m
+    real(kind=c_double) :: distance
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_out_of_plane(this%ptr, i, j, k, m, distance)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_set_property(this, name, property, status)
+    implicit none
+    class(chfl_frame) :: this
+    character(len=*), intent(in) :: name
+    class(chfl_property), intent(in) :: property
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_set_property(this%ptr, f_to_c_str(name), property%ptr)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_get_property_init_(this, frame, name, status)
+    implicit none
+    class(chfl_property) :: this
+    class(chfl_frame), intent(in) :: frame
+    character(len=*), intent(in) :: name
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    this%ptr = c_chfl_frame_get_property(frame%ptr, f_to_c_str(name))
+
+    if (.not. c_associated(this%ptr)) then
+        status_tmp_ = CHFL_MEMORY_ERROR
+    else
+        status_tmp_ = CHFL_SUCCESS
+    end if
+
     
     if (present(status)) then
         status = status_tmp_

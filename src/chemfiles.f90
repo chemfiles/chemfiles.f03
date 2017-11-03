@@ -17,7 +17,7 @@ module chemfiles
     public :: chfl_selection, chfl_match, chfl_trajectory
     public :: chfl_frame, chfl_cell, chfl_topology, chfl_residue, chfl_atom
     ! Export enums
-    public :: chfl_cell_shape_t, CHFL_CELL_ORTHORHOMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
+    public :: chfl_cellshape, CHFL_CELL_ORTHORHOMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
     public :: chfl_status, CHFL_SUCCESS, CHFL_MEMORY_ERROR, CHFL_FILE_ERROR
     public :: CHFL_FORMAT_ERROR, CHFL_SELECTION_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
     ! Export free functions
@@ -43,6 +43,7 @@ module chemfiles
     include "generated/cdef/chfl_frame.f90"
     include "generated/cdef/chfl_trajectory.f90"
     include "generated/cdef/chfl_selection.f90"
+    include "generated/cdef/chfl_property.f90"
 
     interface
         ! Fortran callback
@@ -68,6 +69,7 @@ contains
     include "generated/wrapper/chfl_frame.f90"
     include "generated/wrapper/chfl_trajectory.f90"
     include "generated/wrapper/chfl_selection.f90"
+    include "generated/wrapper/chfl_property.f90"
 
     subroutine warning_callback_wrapper(message) bind(C)
         implicit none
@@ -87,4 +89,24 @@ contains
             status = status_tmp_
         end if
     end subroutine chfl_set_warning_callback
+
+    function chfl_atom_get_property_manual_(atom, name, status) result(property)
+        implicit none
+        type(chfl_property) :: property
+        class(chfl_atom), intent(in) :: atom
+        character(len=*), intent(in) :: name
+        integer(chfl_status), optional :: status
+
+        call chfl_atom_get_property_init_(property, atom, name, status)
+    end function
+
+    function chfl_frame_get_property_manual_(frame, name, status) result(property)
+        implicit none
+        type(chfl_property) :: property
+        class(chfl_frame), intent(in) :: frame
+        character(len=*), intent(in) :: name
+        integer(chfl_status), optional :: status
+
+        call chfl_frame_get_property_init_(property, frame, name, status)
+    end function
 end module

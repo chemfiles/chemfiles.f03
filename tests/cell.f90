@@ -110,7 +110,7 @@ contains
     subroutine test_shape()
         implicit none
         type(chfl_cell) :: cell
-        integer(chfl_cell_shape_t) :: shape
+        integer(chfl_cellshape) :: shape
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)

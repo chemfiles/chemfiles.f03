@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -15,22 +11,36 @@
 ! =========================================================================== !
 
 
-subroutine chfl_residue_init_(this, name, resid, status)
+subroutine chfl_residue_init_(this, name, status)
     implicit none
     class(chfl_residue) :: this
     character(len=*), intent(in) :: name
-    integer(kind=c_int64_t), optional :: resid
     integer(chfl_status), optional :: status
-    integer(kind=c_int64_t) :: resid_tmp_
     integer(chfl_status) :: status_tmp_
 
+    this%ptr = c_chfl_residue(f_to_c_str(name))
 
-    if (present(resid)) then
-        resid_tmp_ = resid
+    if (.not. c_associated(this%ptr)) then
+        status_tmp_ = CHFL_MEMORY_ERROR
     else
-        resid_tmp_ = -1
+        status_tmp_ = CHFL_SUCCESS
     end if
-    this%ptr = c_chfl_residue(f_to_c_str(name), resid_tmp_)
+
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_residue_with_id_init_(this, name, resid, status)
+    implicit none
+    class(chfl_residue) :: this
+    character(len=*), intent(in) :: name
+    integer(kind=c_int64_t), value :: resid
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    this%ptr = c_chfl_residue_with_id(f_to_c_str(name), resid)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = CHFL_MEMORY_ERROR
@@ -117,6 +127,21 @@ subroutine chfl_residue_atoms_count(this, size, status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_residue_atoms_count(this%ptr, size)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_residue_atoms(this, atoms, n, status)
+    implicit none
+    class(chfl_residue), intent(in) :: this
+    integer(kind=c_int64_t), dimension(:), target :: atoms
+    integer(kind=c_int64_t), value :: n
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_residue_atoms(this%ptr, c_loc(atoms), n)
     
     if (present(status)) then
         status = status_tmp_

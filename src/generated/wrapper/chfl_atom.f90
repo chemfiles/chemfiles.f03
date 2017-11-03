@@ -1,9 +1,5 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015 Guillaume Fraux
-!
-! This Source Code Form is subject to the terms of the Mozilla Public
-! License, v. 2.0. If a copy of the MPL was not distributed with this
-! file, You can obtain one at http://mozilla.org/MPL/2.0/
+! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
@@ -266,6 +262,43 @@ subroutine chfl_atom_atomic_number(this, number, status)
     integer(chfl_status) :: status_tmp_
 
     status_tmp_ = c_chfl_atom_atomic_number(this%ptr, number)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_atom_set_property(this, name, property, status)
+    implicit none
+    class(chfl_atom) :: this
+    character(len=*), intent(in) :: name
+    class(chfl_property), intent(in) :: property
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_atom_set_property(this%ptr, f_to_c_str(name), property%ptr)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_atom_get_property_init_(this, atom, name, status)
+    implicit none
+    class(chfl_property) :: this
+    class(chfl_atom), intent(in) :: atom
+    character(len=*), intent(in) :: name
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    this%ptr = c_chfl_atom_get_property(atom%ptr, f_to_c_str(name))
+
+    if (.not. c_associated(this%ptr)) then
+        status_tmp_ = CHFL_MEMORY_ERROR
+    else
+        status_tmp_ = CHFL_SUCCESS
+    end if
+
     
     if (present(status)) then
         status = status_tmp_
