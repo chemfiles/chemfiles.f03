@@ -1,7 +1,8 @@
+#include "check.inc"
+
 program frame_test
     use iso_fortran_env, only: real64, int64
     use chemfiles
-    use testing
     implicit none
 
     call test_copy()
@@ -22,31 +23,31 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
         call cloned%copy(frame, status=status)
-        call check(status == CHFL_SUCCESS, "frame%copy")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 0, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 0)
         call cloned%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 0, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 0)
 
         call frame%resize(int(10, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 10, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 10)
         call cloned%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 0, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 0)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_natoms()
@@ -56,21 +57,21 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 0, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 0)
 
         call frame%resize(int(10, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 10, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 10)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_step()
@@ -80,21 +81,21 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%step(step, status=status)
-        call check(status == CHFL_SUCCESS, "frame%step")
-        call check(step == 0, "frame%step")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(step == 0)
 
         call frame%set_step(42_int64, status=status)
-        call check(status == CHFL_SUCCESS, "frame%set_step")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%step(step, status=status)
-        call check(status == CHFL_SUCCESS, "frame%step")
-        call check(step == 42, "frame%set_step")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(step == 42)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_add_atom()
@@ -105,31 +106,31 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%init("Zn", status=status)
-        call check(status == CHFL_SUCCESS, "atom%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%add_atom(atom, [10d0, 20d0, 30d0], status=status)
-        call check(status == CHFL_SUCCESS, "atom%init")
+        CHECK(status == CHFL_SUCCESS)
         call frame%add_atom(atom, [10d0, 20d0, 30d0], [10d0, 20d0, 30d0], status=status)
-        call check(status == CHFL_SUCCESS, "atom%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 2, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 2)
 
         call frame%remove(int(0, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%remove")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 1, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 1)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call atom%free(status=status)
-        call check(status == CHFL_SUCCESS, "atom%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_positions()
@@ -140,13 +141,13 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
         call frame%resize(int(4, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%positions(set_positions, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%positions")
-        call check(natoms == 4, "frame%positions")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 4)
         do i=1,3
             do j=1,4
                 set_positions(i, j) = real(i * j)
@@ -154,16 +155,16 @@ contains
         end do
 
         call frame%positions(positions, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%positions")
-        call check(natoms == 4, "frame%positions")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 4)
         do i=1,3
             do j=1,natoms
-                call check(abs(positions(i, j) - real(i * j)) < 1e-9, "frame%positions")
+                CHECK(abs(positions(i, j) - real(i * j)) < 1e-9)
             end do
         end do
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_velocities()
@@ -175,24 +176,24 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
         call frame%resize(int(4, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%has_velocities(has_velocities, status=status)
-        call check(status == CHFL_SUCCESS, "frame%has_velocities")
-        call check(has_velocities .eqv. .false., "frame%has_velocities")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(has_velocities .eqv. .false.)
 
         call frame%add_velocities(status=status)
-        call check(status == CHFL_SUCCESS, "frame%add_velocities")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%has_velocities(has_velocities, status=status)
-        call check(status == CHFL_SUCCESS, "frame%has_velocities")
-        call check(has_velocities .eqv. .true., "frame%has_velocities")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(has_velocities .eqv. .true.)
 
         call frame%velocities(set_velocities, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%velocities")
-        call check(natoms == 4, "frame%velocities")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 4)
         do i=1,3
             do j=1,4
                 set_velocities(i, j) = real(i * j)
@@ -200,15 +201,15 @@ contains
         end do
 
         call frame%velocities(velocities, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%velocities")
+        CHECK(status == CHFL_SUCCESS)
         do i=1,3
             do j=1,natoms
-                call check(abs(velocities(i, j) - real(i * j)) < 1e-9, "frame%velocities")
+                CHECK(abs(velocities(i, j) - real(i * j)) < 1e-9)
             end do
         end do
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_cell()
@@ -219,20 +220,20 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%init([3d0, 4d0, 5d0])
         call frame%set_cell(cell, status=status)
-        call check(status == CHFL_SUCCESS, "frame%set_cell")
+        CHECK(status == CHFL_SUCCESS)
         call cell%free()
 
         call cell%from_frame(frame)
         call cell%lengths(lengths)
-        call check(all(lengths == [3.0, 4.0, 5.0]), "frame%cell")
+        CHECK(all(lengths == [3.0, 4.0, 5.0]))
         call cell%free()
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_topology()
@@ -244,9 +245,9 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
         call frame%resize(int(4, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%init()
         call Zn%init("Zn")
@@ -257,32 +258,32 @@ contains
         call topology%add_atom(Ar)
 
         call frame%set_topology(topology, status=status)
-        call check(status == CHFL_SUCCESS, "frame%set_topology")
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%free()
         call Zn%free()
         call Ar%free()
 
         call topology%from_frame(frame, status=status)
-        call check(status == CHFL_SUCCESS, "topology%from_frame")
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%from_topology(topology, 0_int64, status=status)
-        call check(status == CHFL_SUCCESS, "atom%from_topology")
+        CHECK(status == CHFL_SUCCESS)
         call topology%free()
 
         call atom%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "atom%name")
-        call check(name == "Zn", "atom%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Zn')
         call atom%free()
 
         call atom%from_frame(frame, 3_int64, status=status)
-        call check(status == CHFL_SUCCESS, "atom%from_frame")
+        CHECK(status == CHFL_SUCCESS)
         call atom%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "atom%name")
-        call check(name == "Ar", "atom%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Ar')
         call atom%free()
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 end program

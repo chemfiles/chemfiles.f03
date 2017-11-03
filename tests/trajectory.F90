@@ -1,7 +1,8 @@
+#include "check.inc"
+
 program trajectory_read
     use iso_fortran_env, only: real64, int64
     use chemfiles
-    use testing
     implicit none
 
     character(len=2048) :: DATADIR
@@ -34,50 +35,50 @@ contains
         integer :: status
 
         call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%nsteps(nsteps, status=status)
-        call check(status == CHFL_SUCCESS, "file%nsteps")
-        call check(nsteps == 100, "file%nsteps")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(nsteps == 100)
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Read the first frame
         call file%read(frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Check positions in the first frame
         pos_1 = [0.417219, 8.303366, 11.737172]
         pos_125 = [5.099554, -0.045104, 14.153846]
         call frame%positions(positions, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%positions")
-        call check(natoms == 297, "frame%positions")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 297)
 
         do i=1,3
-            call check(abs(pos_1(i) - positions(i, 1)) < 1d-6, "frame%positions")
-            call check(abs(pos_125(i) - positions(i, 125)) < 1d-6, "frame%positions")
+            CHECK(abs(pos_1(i) - positions(i, 1)) < 1d-6)
+            CHECK(abs(pos_125(i) - positions(i, 125)) < 1d-6)
         end do
 
         ! Check reading a specific step
         call file%read_step(int(41, int64), frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read_step")
+        CHECK(status == CHFL_SUCCESS)
 
         pos_1(1) = 0.761277;  pos_1(2) = 8.106125;   pos_1(3) = 10.622949;
         pos_125(1) = 5.13242; pos_125(2) = 0.079862; pos_125(3) = 14.194161;
 
         call frame%positions(positions, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%positions")
+        CHECK(status == CHFL_SUCCESS)
 
         do i=1,3
-            call check(abs(pos_1(i) - positions(i, 1)) < 1d-6, "frame%positions")
-            call check(abs(pos_125(i) - positions(i, 125)) < 1d-6, "frame%positions")
+            CHECK(abs(pos_1(i) - positions(i, 1)) < 1d-6)
+            CHECK(abs(pos_125(i) - positions(i, 125)) < 1d-6)
         end do
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_open_with_format()
@@ -88,22 +89,22 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%with_format(trim(DATADIR) // "/xyz/helium.xyz.but.not.really", "r", "XYZ", status=status)
-        call check(status == CHFL_SUCCESS, "file%open_with_format")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read(frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%atoms_count")
-        call check(natoms == 125, "frame%atoms_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 125)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_set_cell()
@@ -116,37 +117,37 @@ contains
 
         ! Set the cell associated with a trajectory
         call cell%init([30d0, 30d0, 30d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%set_cell(cell, status=status)
-        call check(status == CHFL_SUCCESS, "trajectory%set_cell")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read(frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Check that the cell was set
         call cell%from_frame(frame, status=status)
-        call check(status == CHFL_SUCCESS, "cell%from_frame")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%lengths(lengths, status=status)
-        call check(status == CHFL_SUCCESS, "cell%lengths")
-        call check(all(lengths == [30.0, 30.0, 30.0]), "cell%lengths")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(lengths == [30.0, 30.0, 30.0]))
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_set_topology()
@@ -159,7 +160,7 @@ contains
         integer :: status, i
 
         call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory by hand
         call topology%init()
@@ -167,34 +168,34 @@ contains
 
         do i=1,297
             call topology%add_atom(atom, status=status)
-            call check(status == CHFL_SUCCESS, "topology%append")
+            CHECK(status == CHFL_SUCCESS)
         end do
 
         call file%set_topology(topology, status=status)
-        call check(status == CHFL_SUCCESS, "file%set_topology")
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%free(status=status)
-        call check(status == CHFL_SUCCESS, "atom%free")
+        CHECK(status == CHFL_SUCCESS)
         call topology%free(status=status)
-        call check(status == CHFL_SUCCESS, "topology%free")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read_step(int(10, int64), frame, status=status)
-        call check(status ==0, "file%read_step")
+        CHECK(status ==0)
 
         call atom%from_frame(frame, int(1, int64))
         call atom%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "atom%name")
-        call check(name == "Cs", "atom%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Cs')
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
         call atom%free(status=status)
-        call check(status == CHFL_SUCCESS, "atom%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_set_topology_from_file()
@@ -206,45 +207,45 @@ contains
         integer :: status
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%open(trim(DATADIR) // "/xyz/trajectory.xyz", "r", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory from a file
         call file%topology_file(trim(DATADIR) // "/xyz/topology.xyz", "", status=status)
-        call check(status == CHFL_SUCCESS, "file%topology_file")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read_step(int(1, int64), frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read_step")
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%from_frame(frame, int(0, int64));
         call atom%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "atom%name")
-        call check(name == "Zn", "atom%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Zn')
 
         call atom%free(status=status)
-        call check(status == CHFL_SUCCESS, "atom%free")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory from a file with a specific
         ! format
         call file%topology_file(trim(DATADIR) // "/xyz/topology.xyz", "XYZ", status=status)
-        call check(status == CHFL_SUCCESS, "file%set_topology_with_format")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read_step(int(1, int64), frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read_step")
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%from_frame(frame, int(0, int64));
         call atom%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "atom%name")
-        call check(name == "Zn", "atom%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Zn')
 
         call atom%free(status=status)
-        call check(status == CHFL_SUCCESS, "atom%free")
+        CHECK(status == CHFL_SUCCESS)
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_guess_topology()
@@ -257,43 +258,43 @@ contains
         integer :: status
 
         call file%open(trim(DATADIR) // "/xyz/water.xyz", "r", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%init([40d0, 40d0, 40d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
         call file%set_cell(cell, status=status)
-        call check(status == CHFL_SUCCESS, "file%set_cell")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call file%read(frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%read")
+        CHECK(status == CHFL_SUCCESS)
 
         ! Guess the system topology
         call frame%guess_topology(status=status)
-        call check(status == CHFL_SUCCESS, "frame%guess_topology")
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%from_frame(frame, status=status)
-        call check(status == CHFL_SUCCESS, "topology%from_frame")
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%bonds_count(n, status=status)
-        call check(status == CHFL_SUCCESS, "topology%bonds_count")
-        call check(n == 186, "topology%bonds_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 186)
 
         call topology%angles_count(n, status=status)
-        call check(status == CHFL_SUCCESS, "topology%angles_count")
-        call check(n == 87, "topology%angles_count")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 87)
 
         call topology%free(status=status)
-        call check(status == CHFL_SUCCESS, "topology%free")
+        CHECK(status == CHFL_SUCCESS)
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_write()
@@ -316,13 +317,13 @@ contains
 
 
         call frame%init(status=status)
-        call check(status == CHFL_SUCCESS, "frame%init")
+        CHECK(status == CHFL_SUCCESS)
         call frame%resize(int(4, int64), status=status)
-        call check(status == CHFL_SUCCESS, "frame%resize")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%positions(positions, natoms, status=status)
-        call check(status == CHFL_SUCCESS, "frame%positions")
-        call check(natoms == 4, "frame%positions")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 4)
         do i=1,3
             do j=1,4
                 positions(i, j) = real(i)
@@ -330,17 +331,17 @@ contains
         end do
 
         call file%open("test-tmp.xyz", "w", status=status)
-        call check(status == CHFL_SUCCESS, "file%open")
+        CHECK(status == CHFL_SUCCESS)
         call file%write(frame, status=status)
-        call check(status == CHFL_SUCCESS, "file%write")
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
-        call check(status == CHFL_SUCCESS, "file%close")
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
-        call check(status == CHFL_SUCCESS, "frame%free")
+        CHECK(status == CHFL_SUCCESS)
 
         content = read_whole_file("test-tmp.xyz")
-        call check(content == EXPECTED, "Check file content")
+        CHECK(content == EXPECTED)
 
         open(unit=11, iostat=status, file="test-tmp.xyz", status='old')
         if (status == 0) close(11, status='delete')

@@ -1,7 +1,8 @@
+#include "check.inc"
+
 program residue_test
     use iso_fortran_env, only: int64
     use chemfiles
-    use testing
     implicit none
 
     call test_copy()
@@ -17,22 +18,22 @@ contains
         integer :: status
 
         call residue%init("Res", status=status)
-        call check(status == 0, "residue%init")
+        CHECK(status == 0)
 
         call residue%add_atom(int(0, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
 
         call cloned%copy(residue, status=status)
-        call check(status == 0, "residue%copy")
+        CHECK(status == 0)
 
 
         ! TODO: test size change
 
 
         call residue%free(status=status)
-        call check(status == 0, "residue%free")
+        CHECK(status == 0)
         call cloned%free(status=status)
-        call check(status == 0, "residue%free")
+        CHECK(status == 0)
     end subroutine
 
     subroutine test_name()
@@ -42,14 +43,14 @@ contains
         integer :: status
 
         call residue%init("Foo", status=status)
-        call check(status == CHFL_SUCCESS, "residue%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%name(name, len(name, int64), status=status)
-        call check(status == CHFL_SUCCESS, "residue%name")
-        call check(name == "Foo", "residue%name")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'Foo')
 
         call residue%free(status=status)
-        call check(status == CHFL_SUCCESS, "residue%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_id()
@@ -59,23 +60,23 @@ contains
         integer :: status
 
         call residue%with_id("Foo", int(56, int64), status=status)
-        call check(status == CHFL_SUCCESS, "residue%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%id(id, status=status)
-        call check(status == CHFL_SUCCESS, "residue%id")
-        call check(id == 56, "residue%id")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(id == 56)
 
         call residue%free(status=status)
-        call check(status == CHFL_SUCCESS, "residue%free")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%init("Bar", status=status)
-        call check(status == CHFL_SUCCESS, "residue%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%id(id, status=status)
-        call check(status == CHFL_GENERIC_ERROR, "residue%id")
+        CHECK(status == CHFL_GENERIC_ERROR)
 
         call residue%free(status=status)
-        call check(status == CHFL_SUCCESS, "residue%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_size()
@@ -85,25 +86,25 @@ contains
         integer :: status
 
         call residue%init("Foo", status=status)
-        call check(status == CHFL_SUCCESS, "residue%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "residue%natoms")
-        call check(natoms == 0, "residue%natoms")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 0)
 
         call residue%add_atom(int(0, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
         call residue%add_atom(int(1, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
         call residue%add_atom(int(2, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
 
         call residue%atoms_count(natoms, status=status)
-        call check(status == CHFL_SUCCESS, "residue%natoms")
-        call check(natoms == 3, "residue%natoms")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 3)
 
         call residue%free(status=status)
-        call check(status == CHFL_SUCCESS, "residue%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_contains()
@@ -113,24 +114,24 @@ contains
         integer :: status
 
         call residue%init("Foo", status=status)
-        call check(status == CHFL_SUCCESS, "residue%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call residue%add_atom(int(0, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
         call residue%add_atom(int(1, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
         call residue%add_atom(int(2, int64), status=status)
-        call check(status == 0, "residue%add_atom")
+        CHECK(status == 0)
 
         call residue%contains(int(2, int64), contains, status=status)
-        call check(status == CHFL_SUCCESS, "residue%contains")
-        call check(contains .eqv. .true., "residue%contains")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(contains .eqv. .true.)
 
         call residue%contains(int(20, int64), contains, status=status)
-        call check(status == CHFL_SUCCESS, "residue%contains")
-        call check(contains .eqv. .false., "residue%contains")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(contains .eqv. .false.)
 
         call residue%free(status=status)
-        call check(status == CHFL_SUCCESS, "residue%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 end program

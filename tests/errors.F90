@@ -11,40 +11,37 @@ contains
     end subroutine my_callback
 end module warnings
 
+#include "check.inc"
+
 program errors_test
     use chemfiles
-    use testing
     use warnings
 
     implicit none
     integer :: status
     character(len=1024) :: error
     character(len=1024) :: version
+    character(len=1024) :: expected
     type(chfl_trajectory) :: trajectory
 
     version = chfl_version()
-    call check(len_trim(version) > 0)
+    CHECK(len_trim(version) > 0)
 
     error = chfl_last_error()
-    call check(trim(error) == "", "chfl_last_error")
+    CHECK(trim(error) == '')
 
     call chfl_set_warning_callback(my_callback, status=status)
-    call check(status == CHFL_SUCCESS, "chfl_set_warning_callback")
+    CHECK(status == CHFL_SUCCESS)
     ! Generating an error message
     call trajectory%open("nothere", "r")
-    call check( &
-        trim(last_message) == "file at 'nothere' does not have an extension, provide a format name to read it", &
-        "chfl_set_warning_callback" &
-    )
+    expected = "file at 'nothere' does not have an extension, provide a format name to read it"
+    CHECK(trim(last_message) == trim(expected))
 
     error = chfl_last_error()
-    call check( &
-        trim(error) == "file at 'nothere' does not have an extension, provide a format name to read it", &
-        "chfl_last_error" &
-    )
+    CHECK(trim(error) == trim(expected))
 
     call chfl_clear_errors(status=status)
-    call check(status == CHFL_SUCCESS, "chfl_clear_errors")
+    CHECK(status == CHFL_SUCCESS)
     error = chfl_last_error()
-    call check(trim(error) == '', "chfl_last_error")
+    CHECK(trim(error) == '')
 end program

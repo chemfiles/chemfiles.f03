@@ -1,7 +1,8 @@
+#include "check.inc"
+
 program cell_test
     use iso_fortran_env, only: real64
     use chemfiles
-    use testing
     implicit none
 
     call test_copy()
@@ -21,31 +22,31 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == 0, "cell%init")
+        CHECK(status == 0)
         call cloned%copy(cell, status=status)
-        call check(status == 0, "cell%copy")
+        CHECK(status == 0)
 
         call cell%lengths(lengths, status=status)
-        call check(status == 0, "cell%lengths")
-        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        CHECK(status == 0)
+        CHECK(all(lengths == [2.0, 3.0, 4.0]))
         call cloned%lengths(lengths, status=status)
-        call check(status == 0, "cell%lengths")
-        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        CHECK(status == 0)
+        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
         call cell%set_lengths([34d0, 33d0, 35d0], status=status)
-        call check(status == 0, "cell%set_lengths")
+        CHECK(status == 0)
 
         call cell%lengths(lengths, status=status)
-        call check(status == 0, "cell%lengths")
-        call check(all(lengths == [34.0, 33.0, 35.0]), "cell%lengths")
+        CHECK(status == 0)
+        CHECK(all(lengths == [34.0, 33.0, 35.0]))
         call cloned%lengths(lengths, status=status)
-        call check(status == 0, "cell%lengths")
-        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        CHECK(status == 0)
+        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
         call cell%free(status=status)
-        call check(status == 0, "cell%free")
+        CHECK(status == 0)
         call cloned%free(status=status)
-        call check(status == 0, "cell%free")
+        CHECK(status == 0)
     end subroutine
 
     subroutine test_triclinic()
@@ -55,18 +56,18 @@ contains
         integer :: status
 
         call cell%triclinic([12d0, 30d0, 24d0], [90d0, 90d0, 120d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%triclinic")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%lengths(lengths, status=status)
-        call check(status == CHFL_SUCCESS, "cell%lengths")
-        call check(all(lengths == [12.0, 30.0, 24.0]), "cell%lengths")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(lengths == [12.0, 30.0, 24.0]))
 
         call cell%angles(angles, status=status)
-        call check(status == CHFL_SUCCESS, "cell%angles")
-        call check(all(angles == [90.0, 90.0, 120.0]), "cell%angles")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(angles == [90.0, 90.0, 120.0]))
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_orthorhombic()
@@ -76,18 +77,18 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%lengths(lengths, status=status)
-        call check(status == CHFL_SUCCESS, "cell%lengths")
-        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
         call cell%angles(angles, status=status)
-        call check(status == CHFL_SUCCESS, "cell%angles")
-        call check(all(angles == [90.0, 90.0, 90.0]), "cell%angles")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(angles == [90.0, 90.0, 90.0]))
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_volume()
@@ -97,14 +98,14 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%volume(volume, status=status)
-        call check(status == CHFL_SUCCESS, "cell%volume")
-        call check(volume == 2.0*3.0*4.0, "cell%volume")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(volume == 2.0*3.0*4.0)
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_shape()
@@ -114,20 +115,20 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%shape(shape, status=status)
-        call check(status == CHFL_SUCCESS, "cell%type")
-        call check(shape == CHFL_CELL_ORTHORHOMBIC, "cell%type")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(shape == CHFL_CELL_ORTHORHOMBIC)
 
         call cell%set_shape(CHFL_CELL_TRICLINIC, status=status)
-        call check(status == CHFL_SUCCESS, "cell%set_type")
+        CHECK(status == CHFL_SUCCESS)
         call cell%shape(shape, status=status)
-        call check(status == CHFL_SUCCESS, "cell%type")
-        call check(shape == CHFL_CELL_TRICLINIC, "cell%type")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(shape == CHFL_CELL_TRICLINIC)
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_lengths()
@@ -137,21 +138,21 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%lengths(lengths, status=status)
-        call check(status == CHFL_SUCCESS, "cell%lengths")
-        call check(all(lengths == [2.0, 3.0, 4.0]), "cell%lengths")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
         call cell%set_lengths([10d0, 20d0, 30d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%set_lengths")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%lengths(lengths, status=status)
-        call check(status == CHFL_SUCCESS, "cell%lengths")
-        call check(all(lengths == [10.0, 20.0, 30.0]), "cell%lengths")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(lengths == [10.0, 20.0, 30.0]))
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_angles()
@@ -161,22 +162,22 @@ contains
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%set_angles([80d0, 89d0, 100d0], status=status)
-        call check(status /= CHFL_SUCCESS, "cell%set_angles")
+        CHECK(status /= CHFL_SUCCESS)
 
         call cell%set_shape(CHFL_CELL_TRICLINIC, status=status)
-        call check(status == CHFL_SUCCESS, "cell%set_type")
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%set_angles([80d0, 89d0, 100d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%set_angles")
+        CHECK(status == CHFL_SUCCESS)
         call cell%angles(angles, status=status)
-        call check(status == CHFL_SUCCESS, "cell%angles")
-        call check(all(angles == [80.0, 89.0, 100.0]), "cell%angles")
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(angles == [80.0, 89.0, 100.0]))
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_matrix()
@@ -186,20 +187,20 @@ contains
         integer :: status, i, j
 
         call cell%init([10d0, 20d0, 30d0], status=status)
-        call check(status == CHFL_SUCCESS, "cell%init")
+        CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([10, 0, 0, &
                             0, 20, 0, &
                             0, 0, 30], [3, 3])
         call cell%matrix(matrix, status=status)
-        call check(status == CHFL_SUCCESS, "cell%matrix")
+        CHECK(status == CHFL_SUCCESS)
         do i=1,3
             do j=1,3
-                call check(matrix(i, j) - expected(i, j) < 1d-10, "cell%matrix")
+                CHECK(matrix(i, j) - expected(i, j) < 1d-10)
             end do
         end do
 
         call cell%free(status=status)
-        call check(status == CHFL_SUCCESS, "cell%free")
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 end program
