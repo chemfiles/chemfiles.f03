@@ -7,6 +7,8 @@ if(${CMAKE_VERSION} VERSION_GREATER 3.0.0)
     cmake_policy(SET CMP0042 NEW)
 endif()
 
+option(CHFL_FORTRAN_BUILD_TESTS "Build fortran unit tests." OFF)
+
 include(FortanCompilerFlags)
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -39,7 +41,7 @@ function(chfl_fortran_test _file_)
     add_executable(${_name_} ${_file_})
     target_link_libraries(${_name_} chemfilesf03 ${COVERAGE_LIBRARIES})
     set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE Fortran)
-    add_test(NAME ${_name_} COMMAND ${_name_} "${PROJECT_BINARY_DIR}/chemfiles/tests/data")
+    add_test(NAME ${_name_} COMMAND ${_name_} "${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
     if(FC_SUPPORTS_NO_COMPARE_REAL)
         # We are comparing reals in the tests
         set_target_properties(${_name_} PROPERTIES COMPILE_FLAGS "-Wno-compare-reals")
@@ -53,8 +55,8 @@ function(chfl_fortran_example _file_)
     set_target_properties(example-f90-${_name_} PROPERTIES LINKER_LANGUAGE Fortran)
 endfunction()
 
-if(${CHFL_BUILD_TESTS})
-    enable_testing()
+enable_testing()
+if(${CHFL_FORTRAN_BUILD_TESTS})
     file(GLOB f_test_files ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.F90)
 
     foreach(test_file IN LISTS f_test_files)

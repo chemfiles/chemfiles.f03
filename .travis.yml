@@ -15,7 +15,7 @@ addons:
 
 before_install:
   # Setting environement
-  - export CMAKE_ARGS="-DCMAKE_BUILD_TYPE=debug -DCHFL_BUILD_TESTS=ON"
+  - export CMAKE_ARGS="-DCMAKE_BUILD_TYPE=debug -DCHFL_FORTRAN_BUILD_TESTS=ON"
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         export EXTRA_WORK=true
