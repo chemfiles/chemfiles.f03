@@ -7,8 +7,11 @@
     chemfiles. A :f:type:`chfl_trajectory` behave a like a file, allowing to
     read and/or write :f:type:`chfl_frame`.
 
-    The initialization routine for :f:type:`chfl_trajectory` are
-    :f:func:`chfl_trajectory%open` and :f:func:`chfl_trajectory%with_format`.
+    The initialization routine for :f:type:`chfl_trajectory` are:
+
+    - :f:func:`chfl_trajectory%open`;
+    - :f:func:`chfl_trajectory%with_format`.
+
     The memory liberation routine is :f:func:`chfl_trajectory%close`.
 
     :field subroutine open: :f:func:`chfl_trajectory%open`
@@ -27,7 +30,7 @@
     Open the file at the given ``path`` using the given ``mode``.
     Valid modes are ``'r'`` for read, ``'w'`` for write and ``'a'`` for append.
 
-    :argument character path [len=*]: path to the trajectory file
+    :argument character(len=*) path: path to the trajectory file
     :argument character mode: opening mode
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
@@ -45,9 +48,9 @@
     If ``format`` is an empty string, the format will be guessed from the
     extension.
 
-    :argument character path [len=*]: path to the trajectory file
+    :argument character(len=*) path: path to the trajectory file
     :argument character mode: opening mode
-    :argument character format [len=*]: format to use
+    :argument character(len=*) format: format to use
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -107,7 +110,7 @@
     If ``format`` is an empty string or not given, the format will be guessed
     from the extension.
 
-    :argument character path [len=*]: file to read in order to get the new topology
+    :argument character(len=*) path: file to read in order to get the new topology
     :optional string format [optional]: format to use for the topology file
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more

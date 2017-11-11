@@ -12,9 +12,12 @@
     angles (alpha, beta, gamma). The angles are stored in degrees, and the
     lengths in Angstroms.
 
-    The initialization routine for :f:type:`chfl_cell` are
-    :f:func:`chfl_cell%init`, :f:func:`chfl_cell%triclinic`,
-    :f:func:`chfl_cell%from_frame` and :f:func:`chfl_cell%copy`.
+    The initialization routine for :f:type:`chfl_cell` are:
+
+    - :f:func:`chfl_cell%init`;
+    - :f:func:`chfl_cell%triclinic`;
+    - :f:func:`chfl_cell%from_frame`;
+    - :f:func:`chfl_cell%copy`.
 
     :field subroutine init: :f:func:`chfl_cell%init`
     :field subroutine triclinic: :f:func:`chfl_cell%triclinic`
@@ -28,6 +31,7 @@
     :field subroutine shape: :f:func:`chfl_cell%shape`
     :field subroutine set_shape: :f:func:`chfl_cell%set_shape`
     :field subroutine volume: :f:func:`chfl_cell%volume`
+    :field subroutine wrap: :f:func:`chfl_cell%wrap`
     :field subroutine free: :f:func:`chfl_cell%free`
 
 
@@ -141,23 +145,23 @@
 
     Get the unit cell shape in ``shape``.
 
-    :argument integer type [kind=chfl_cell_shape_t]: the shape of the cell
+    :argument integer type [kind=chfl_cellshape]: the shape of the cell
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
 
-    The cell shapes are integers which ``kind`` is the ``chfl_cell_shape_t``
+    The cell shapes are integers which ``kind`` is the ``chfl_cellshape``
     parameter:
 
-    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_ORTHORHOMBIC
+    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_ORTHORHOMBIC
 
         The three angles are 90°
 
-    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_TRICLINIC
+    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_TRICLINIC
 
         The three angles may not be 90°
 
-    .. f:variable:: integer(chfl_cell_shape_t) :: CHFL_CELL_INFINITE
+    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_INFINITE
 
         Cell type when there is no periodic boundary conditions
 
@@ -165,7 +169,17 @@
 
     Set the unit cell shape to ``shape``
 
-    :argument integer type [kind=chfl_cell_shape_t]: the new type of the cell
+    :argument integer type [kind=chfl_cellshape]: the new type of the cell
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_cell%wrap(vector, [status])
+
+    Wrap a ``vector`` in this unit cell so that all its components are beteen
+    ``-L/2`` and ``L/2``.
+
+    :argument real vector(3): new cell angles, in degrees
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.

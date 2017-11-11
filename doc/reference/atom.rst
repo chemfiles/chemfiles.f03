@@ -15,9 +15,11 @@
     atom type will be shared between all particles of the same type: ``H``,
     ``Ow``, ``CH3``.
 
-    The initialization routine for :f:type:`chfl_atom` are
-    :f:func:`chfl_atom%init`, :f:func:`chfl_atom%from_frame` and
-    :f:func:`chfl_atom%from_topology`.
+    The initialization routine for :f:type:`chfl_atom` are:
+
+    - :f:func:`chfl_atom%init`;
+    - :f:func:`chfl_atom%from_frame`;
+    - :f:func:`chfl_atom%from_topology`.
 
     :field subroutine init: :f:func:`chfl_atom%init`
     :field subroutine copy: :f:func:`chfl_atom%copy`
@@ -35,6 +37,7 @@
     :field subroutine vdw_radius: :f:func:`chfl_atom%vdw_radius`
     :field subroutine covalent_radius: :f:func:`chfl_atom%covalent_radius`
     :field subroutine atomic_number: :f:func:`chfl_atom%atomic_number`
+    :field subroutine set_property: :f:func:`chfl_atom%set_property`
     :field subroutine free: :f:func:`chfl_atom%free`
 
 .. f:subroutine:: chfl_atom%init(name, [status])
@@ -42,7 +45,7 @@
     Initialize this atom with the given ``name``, and set the atom type to
     ``name``.
 
-    :argument character name [len=*]: atom name
+    :argument character(len=*) name: atom name
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -123,9 +126,9 @@
     The buffer size must be passed in ``buffsize``. This function will truncate
     the name to fit in the buffer.
 
-    :argument character name [len=buffsize]: string buffer to be filled with
+    :argument character(len=buffsize) name: string buffer to be filled with
         the atom name
-    :argument buffsize: length of the string buffer
+    :argument integer buffsize: length of the string buffer
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -134,7 +137,7 @@
 
     Set the name of an atom to ``name``.
 
-    :argument character name [len=*]: new atom name
+    :argument character(len=*) name: new atom name
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -147,7 +150,7 @@
     The buffer size must be passed in ``buffsize``. This function will truncate
     the name to fit in the buffer.
 
-    :argument character name [len=buffsize]: string buffer to be filled with
+    :argument character(len=buffsize) name: string buffer to be filled with
         the atom full name
     :argument buffsize: length of the string buffer
     :optional integer status [optional, kind=chfl_status]: status code of the
@@ -161,7 +164,7 @@
     The buffer size must be passed in ``buffsize``. This function will truncate
     the type to fit in the buffer.
 
-    :argument character name [len=buffsize]: string buffer to be filled with
+    :argument character(len=buffsize) name: string buffer to be filled with
         the atom type
     :argument buffsize: length of the string buffer
     :optional integer status [optional, kind=chfl_status]: status code of the
@@ -172,7 +175,7 @@
 
     Set the type of an atom to ``type``.
 
-    :argument character name [len=*]: new atom type
+    :argument character(len=*) name: new atom type
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -181,7 +184,7 @@
 
     Get the Van der Waals radius of an atom from the atom type in ``radius``.
 
-    If the radius in unknown, this function set ``radius`` to -1.
+    If the radius in unknown, this function set ``radius`` to 0.
 
     :argument real radius: Van der Waals radius
     :optional integer status [optional, kind=chfl_status]: status code of the
@@ -192,7 +195,7 @@
 
     Get the covalent radius of an atom from the atom type in ``radius``.
 
-    If the radius in unknown, this function set ``radius`` to -1.
+    If the radius in unknown, this function set ``radius`` to 0.
 
     :argument real radius: covalent radius
     :optional integer status [optional, kind=chfl_status]: status code of the
@@ -203,9 +206,22 @@
 
     Get the atomic number of an atom from the atom type in ``number``.
 
-    If the atomic number in unknown, this function set ``number`` to -1.
+    If the atomic number in unknown, this function set ``number`` to 0.
 
     :argument integer number: atomic number
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_atom%set_property(name, property, [status])
+
+    Add a new ``property`` with the given ``name`` to this atom.
+
+    If a property with the same name already exists, this function override the
+    existing property with the new one.
+
+    :argument character(len=*) name: property name
+    :argument type(chfl_property) property: the new property
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.

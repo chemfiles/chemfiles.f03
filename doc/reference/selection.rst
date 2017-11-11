@@ -9,8 +9,10 @@
     ``<selector>[(<variable>)] <operator> <value>`` structure, where
     ``<operator>`` is a comparison operator in ``== != < <= > >=``.
 
-    The initialization routines for :f:type:`chfl_selection` are
-    :f:func:`chfl_selection%init` and :f:func:`chfl_selection%copy`.
+    The initialization routines for :f:type:`chfl_selection` are:
+
+    - :f:func:`chfl_selection%init`;
+    - :f:func:`chfl_selection%copy`.
 
     :field subroutine init: :f:func:`chfl_selection%init`
     :field subroutine copy: :f:func:`chfl_selection%copy`
@@ -29,7 +31,7 @@
 
     .. _selection documentation: http://chemfiles.org/chemfiles/latest/selections.html
 
-    :argument character selection [len=*]: The selection string
+    :argument character(len=*) selection: The selection string
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -68,7 +70,7 @@
     The buffer size must be passed in ``buffsize``. This function will truncate
     the selection string to fit in the buffer.
 
-    :argument character size [len=buffsize]: string buffer to be filled with the
+    :argument character(len=buffsize) size: string buffer to be filled with the
         initial selection string
     :argument integer buffsize: size of the string buffer
     :optional integer status [optional, kind=chfl_status]: status code of the

@@ -23,7 +23,8 @@ module chemfiles
     public :: CHFL_PROPERTY_DOUBLE, CHFL_PROPERTY_BOOL, CHFL_PROPERTY_STRING, CHFL_PROPERTY_VECTOR3D
     public :: chfl_status
     public :: CHFL_SUCCESS, CHFL_MEMORY_ERROR, CHFL_FILE_ERROR, CHFL_FORMAT_ERROR
-    public :: CHFL_SELECTION_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
+    public :: CHFL_SELECTION_ERROR, CHFL_CONFIGURATION_ERROR, CHFL_OUT_OF_BOUNDS
+    public :: CHFL_PROPERTY_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
     ! Export free functions
     public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
     public :: chfl_last_error, chfl_clear_errors

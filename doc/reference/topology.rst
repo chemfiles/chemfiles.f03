@@ -7,9 +7,11 @@
     system, and the liaisons between the atoms (bonds, angles, dihedrals,
     ...). It will also contain all the residues information if it is available.
 
-    The initialization routine for :f:type:`chfl_topology` are
-    :f:func:`chfl_topology%init`, :f:func:`chfl_topology%from_frame` and
-    :f:func:`chfl_topology%copy`.
+    The initialization routine for :f:type:`chfl_topology` are:
+
+    - :f:func:`chfl_topology%init`;
+    - :f:func:`chfl_topology%from_frame`;
+    - :f:func:`chfl_topology%copy`.
 
     :field subroutine init: :f:func:`chfl_topology%init`
     :field subroutine copy: :f:func:`chfl_topology%copy`
@@ -20,15 +22,14 @@
     :field subroutine remove: :f:func:`chfl_topology%remove`
     :field subroutine add_bond: :f:func:`chfl_topology%add_bond`
     :field subroutine remove_bond: :f:func:`chfl_topology%remove_bond`
-    :field subroutine isbond: :f:func:`chfl_topology%isbond`
-    :field subroutine isangle: :f:func:`chfl_topology%isangle`
-    :field subroutine isdihedral: :f:func:`chfl_topology%isdihedral`
     :field subroutine bonds_count: :f:func:`chfl_topology%bonds_count`
     :field subroutine angles_count: :f:func:`chfl_topology%angles_count`
     :field subroutine dihedrals_count: :f:func:`chfl_topology%dihedrals_count`
+    :field subroutine impropers_count: :f:func:`chfl_topology%impropers_count`
     :field subroutine bonds: :f:func:`chfl_topology%bonds`
     :field subroutine angles: :f:func:`chfl_topology%angles`
     :field subroutine dihedrals: :f:func:`chfl_topology%dihedrals`
+    :field subroutine impropers: :f:func:`chfl_topology%impropers`
     :field subroutine residues_count: :f:func:`chfl_topology%residues_count`
     :field subroutine add_residue: :f:func:`chfl_topology%add_residue`
     :field subroutine residues_linked: :f:func:`chfl_topology%residues_linked`
@@ -102,48 +103,6 @@
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: chfl_topology%isbond(i, j, result, [status])
-
-    Check if the atoms at indexes ``i`` and ``j`` are bonded together, and store
-    the result in ``result``.
-
-    :argument integer i: atomic index of the first atom
-    :argument integer j: atomic index of the second atom
-    :argument logical result [kind=1]: ``.true.`` if the atoms are bonded,
-        ``.false.`` otherwise
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_topology%isangle(i, j, k, result, [status])
-
-    Check if the atoms at indexes ``i``, ``j`` and ``k`` form an angle, and
-    store the result in ``result``.
-
-    :argument integer i: atomic index of the first atom
-    :argument integer j: atomic index of the second atom
-    :argument integer k: atomic index of the third atom
-    :argument logical result [kind=1]: ``.true.`` if the atoms form an angle,
-        ``.false.`` otherwise
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_topology%isdihedral(i, j, k, m, result, [status])
-
-    Check if the atoms at indexes ``i``, ``j``, ``k`` and ``m`` form a dihedral
-    angle, and store the result in ``result``.
-
-    :argument integer i: atomic index of the first atom
-    :argument integer j: atomic index of the second atom
-    :argument integer k: atomic index of the third atom
-    :argument integer m: atomic index of the fourth atom
-    :argument logical result [kind=1]: ``.true.`` if the atoms form a dihedral
-        angle, ``.false.`` otherwise
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
 .. f:subroutine:: chfl_topology%bonds_count(nbonds, [status])
 
     Get the number of bonds in the topology in ``nbonds``.
@@ -167,6 +126,15 @@
     Get the number of dihedral angles in the topology in ``ndihedrals``.
 
     :argument integer ndihedrals: number of dihedral angles
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%impropers_count(nimpropers, [status])
+
+    Get the number of improper dihedral angles in the topology in ``nimpropers``.
+
+    :argument integer nimpropers: number of improper dihedral angles
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -215,6 +183,22 @@
         filled with the dihedral angles in the system
     :argument integer ndihedrals: size of the array. This should be equal to
         the value given by :f:func:`chfl_topology%dihedrals_count`.
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_topology%impropers(data, nimpropers, [status])
+
+    Get the list of improper dihedral angles in the topology in the
+    pre-allocated array ``data`` of size ``4 x nimpropers``.
+
+    ``data`` size must be passed in the ``nimpropers`` parameter, and be equal
+    to the result of :f:func:`chfl_topology%impropers_count`.
+
+    :argument integer data(4, nimpropers): ``4 x nimpropers`` array to be
+        filled with the dihedral angles in the system
+    :argument integer nimpropers: size of the array. This should be equal to
+        the value given by :f:func:`chfl_topology%impropers_count`.
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.

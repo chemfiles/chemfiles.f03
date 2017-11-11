@@ -9,8 +9,10 @@
     the system. If some information is missing (topology or velocity or unit
     cell), the corresponding data is filled with a default value.
 
-    The initialization routine for :f:type:`chfl_frame` are
-    :f:func:`chfl_frame%init` and :f:func:`chfl_frame%copy`.
+    The initialization routine for :f:type:`chfl_frame` are:
+
+    - :f:func:`chfl_frame%init`;
+    - :f:func:`chfl_frame%copy`.
 
     :field subroutine init: :f:func:`chfl_frame%init`
     :field subroutine copy: :f:func:`chfl_frame%copy`
@@ -18,6 +20,10 @@
     :field subroutine add_atom: :f:func:`chfl_frame%add_atom`
     :field subroutine remove: :f:func:`chfl_frame%remove`
     :field subroutine resize: :f:func:`chfl_frame%resize`
+    :field subroutine distance: :f:func:`chfl_frame%distance`
+    :field subroutine angle: :f:func:`chfl_frame%angle`
+    :field subroutine dihedral: :f:func:`chfl_frame%dihedral`
+    :field subroutine out_of_plane: :f:func:`chfl_frame%out_of_plane`
     :field subroutine positions: :f:func:`chfl_frame%positions`
     :field subroutine velocities: :f:func:`chfl_frame%velocities`
     :field subroutine add_velocities: :f:func:`chfl_frame%add_velocities`
@@ -27,6 +33,7 @@
     :field subroutine guess_topology: :f:func:`chfl_frame%guess_topology`
     :field subroutine step: :f:func:`chfl_frame%step`
     :field subroutine set_step: :f:func:`chfl_frame%set_step`
+    :field subroutine set_property: :f:func:`chfl_frame%set_property`
     :field subroutine free: :f:func:`chfl_frame%free`
 
 .. f:subroutine:: chfl_frame%init([status])
@@ -92,6 +99,50 @@
     is conserved. This function conserve the presence or absence of velocities.
 
     :argument integer natoms: the new number of atoms in the frame
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%distance(i, j, distance, [status])
+
+    Get the distance between the atoms at indexes ``i`` and ``j`` in this frame,
+    accounting for periodic boundary conditions. The result is placed in
+    ``distance``, and expressed in angstroms.
+
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+
+.. f:subroutine:: chfl_frame%angle(i, j, k, angle, [status])
+
+    Get the angle formed by the atoms at indexes ``i``,  ``j`` and ``k`` in this
+    frame, accounting for periodic boundary conditions. The result is placed in
+    ``angle``, and expressed in radians.
+
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%dihedral(i, j, k, m, dihedral, [status])
+
+    Get the dihedral angle formed by the atoms at indexes ``i``,  ``j``,  ``k``
+    and ``m`` in this frame, accounting for periodic boundary conditions. The
+    result is placed in ``dihedral``, and expressed in radians.
+
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%out_of_plane(i, j, k, m, distance, [status])
+
+    Get the out of plane distance formed by the atoms at indexes ``i``, ``j``, ``k``
+    and ``m`` in this frame, accounting for periodic boundary conditions. The
+    result is placed in `distance` and expressed in angstroms.
+
+    This is the distance betweent the atom j and the ikm plane. The j atom is
+    the center of the improper dihedral angle formed by i, j, k and m.
+
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
@@ -207,6 +258,19 @@
     The bonds are guessed using a distance-based algorithm, and then angles and
     dihedrals are guessed from the bonds.
 
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%set_property(name, property, [status])
+
+    Add a new ``property`` with the given ``name`` to this frame.
+
+    If a property with the same name already exists, this function override the
+    existing property with the new one.
+
+    :argument character(len=*) name: property name
+    :argument type(chfl_property) property: the new property
     :optional integer status [optional, kind=chfl_status]: status code of the
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.

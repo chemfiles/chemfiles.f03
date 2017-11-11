@@ -24,14 +24,14 @@ to build it with another compiler, please tell me so that I can add it here.
     # Get the sources:
     git clone --recursive https://github.com/chemfiles/chemfiles.f03
     cd chemfiles.f03
-    mkdir build
-    # Configure for installation in PREFIX
-    cmake -DCMAKE_INSTALL_PREFIX=<PREFIX> ..
+    mkdir build && cd build
+    # Configure for installation in <PREFIX>
+    cmake -DCMAKE_INSTALL_PREFIX=<PREFIX> -DCHFL_FORTRAN_BUILD_TESTS=ON ..
     # Build
     make
     # run tests (optional, but recommended)
     ctest
-    # install to `PREFIX`
+    # install to <PREFIX>
     make install
 
 Other options are available and documented with the `main C++ library
@@ -40,15 +40,50 @@ Other options are available and documented with the `main C++ library
 Usage
 ^^^^^
 
-To compile your own code using ``chemfiles``, you need to ``use chemfiles`` in
-your program, and add the ``chemfilesf03`` and ``chemfiles`` libraries to the
-linker arguments. On GNU/Linux and OS X, this is done by the ``-lchemfilesf03
--lchemfiles`` flags. If you want to compile ``main.f90`` with gfortran, you need
-to run
+Once you have installed chemfiles to a given ``<PREFIX>``, you can use it in
+your code with the ``use chemfiles`` directive:
+
+.. code-block:: fortran
+
+    program test
+        use chemfiles
+        implicit none
+
+        ! some code
+    end program
+
+Then you can compile this file with your favorite Fortran compiler, here
+assuming gfortran or intel ifort:
 
 .. code-block:: sh
 
-    gfortran main.f90 -o main -lchemfilesf03 -lchemfiles
+    # replace <FC> with your compiler: gfortran, ifort
+    <FC> -c main.f90 -o main.o -I<PREFIX>/include
+
+The ``-I<PREFIX>/include`` might not be needed, depending on where you
+installed chemfiles. This must be the path to the ``chemfiles.mod`` file.
+
+Linking your program into a final executable is a bit trickier, as Chemfiles is
+a C++ library, and both C++ and Fortran have a non-zero runtime (libstc++/libc++
+for C++ and libgfortran/libifort for Fortran). This means that you need to link
+both runtimes in the final executable.
+
+The easiest way to do this is to build chemfiles as a shared library, by
+configuring the code with ``cmake -DBUILD_SHARED_LIBS=ON ..``. Then, you can
+link you final executable with:
+
+.. code-block:: sh
+
+    <FC> main.o -o main -lchemfilesf03 -lchemfiles
+
+The order of the libraries on the command line is important (``-lchemfilesf03
+-lchemfiles`` is not the same as ``-lchemfiles -lchemfilesf03``).
+
+If you want to use static libraries, then you will need to explicitly link the
+C++ and Fortran runtime manually. On OS X, the C++ runtime is linked with
+``-lc++`` and on Linux you need ``-lstdc++``. You can also link gfortran fortran
+runtime with ``-lgfortran``. For intel ifort you should use ifort as a linker
+and whatever C++ library is needed.
 
 User documentation
 ^^^^^^^^^^^^^^^^^^
