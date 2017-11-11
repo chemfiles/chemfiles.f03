@@ -5,17 +5,6 @@ program trajectory_read
     use chemfiles
     implicit none
 
-    character(len=2048) :: DATADIR
-    if (command_argument_count() >= 1) then
-        call get_command_argument(1, DATADIR)
-    else
-        ! Use DATADIR as a temporary to get the program name
-        call get_command_argument(0, DATADIR)
-        DATADIR = "Usage: " // trim(DATADIR) // " path/to/the/DATADIRs"
-        write(*, *) trim(DATADIR)
-        stop 1
-    end if
-
     call test_read()
     call test_open_with_format()
     call test_set_cell()
@@ -34,7 +23,7 @@ contains
         integer(int64) :: natoms, nsteps, i
         integer :: status
 
-        call file%open(trim(DATADIR) // "/water.xyz", "r", status=status)
+        call file%open("data/water.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%nsteps(nsteps, status=status)
@@ -91,7 +80,7 @@ contains
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%with_format(trim(DATADIR) // "/helium.xyz.but.not.really", "r", "XYZ", status=status)
+        call file%with_format("data/helium.xyz.but.not.really", "r", "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%read(frame, status=status)
@@ -119,7 +108,7 @@ contains
         call cell%init([30d0, 30d0, 30d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%open(trim(DATADIR) // "/water.xyz", "r", status=status)
+        call file%open("data/water.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%set_cell(cell, status=status)
@@ -159,7 +148,7 @@ contains
         character(len=32) :: name
         integer :: status, i
 
-        call file%open(trim(DATADIR) // "/water.xyz", "r", status=status)
+        call file%open("data/water.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory by hand
@@ -209,11 +198,11 @@ contains
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%open(trim(DATADIR) // "/trajectory.xyz", "r", status=status)
+        call file%open("data/trajectory.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory from a file
-        call file%topology_file(trim(DATADIR) // "/topology.xyz", "", status=status)
+        call file%topology_file("data/topology.xyz", "", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%read_step(int(1, int64), frame, status=status)
@@ -229,7 +218,7 @@ contains
 
         ! Set the topology associated with a trajectory from a file with a specific
         ! format
-        call file%topology_file(trim(DATADIR) // "/topology.xyz", "XYZ", status=status)
+        call file%topology_file("data/topology.xyz", "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%read_step(int(1, int64), frame, status=status)
@@ -257,7 +246,7 @@ contains
         integer(int64) :: n
         integer :: status
 
-        call file%open(trim(DATADIR) // "/water.xyz", "r", status=status)
+        call file%open("data/water.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call cell%init([40d0, 40d0, 40d0], status=status)

@@ -111,7 +111,9 @@ contains
         implicit none
         type(chfl_residue) :: residue
         logical(1) :: contains
-        integer :: status
+        integer(int64) :: natoms
+        integer(int64), dimension(3) :: atoms, expected
+        integer :: status, i
 
         call residue%init("Foo", status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -130,6 +132,17 @@ contains
         call residue%contains(int(20, int64), contains, status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(contains .eqv. .false.)
+
+        call residue%atoms_count(natoms, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(natoms == 3)
+
+        call residue%atoms(atoms, natoms, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        expected = [0, 1, 2]
+        do i=1,3
+            CHECK(atoms(i) == expected(i))
+        enddo
 
         call residue%free(status=status)
         CHECK(status == CHFL_SUCCESS)

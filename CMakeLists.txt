@@ -46,7 +46,10 @@ function(chfl_fortran_test _file_)
     else()
         set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE CXX)
     endif()
-    add_test(NAME ${_name_} COMMAND ${_name_} "${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
+    add_test(NAME ${_name_}
+        COMMAND ${_name_}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests
+    )
     if(FC_SUPPORTS_NO_COMPARE_REAL)
         # We are comparing reals in the tests
         set_target_properties(${_name_} PROPERTIES COMPILE_FLAGS "-Wno-compare-reals")

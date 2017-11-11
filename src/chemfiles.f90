@@ -14,14 +14,18 @@ module chemfiles
 
     private
     ! Export types
-    public :: chfl_selection, chfl_match, chfl_trajectory
+    public :: chfl_selection, chfl_match, chfl_trajectory, chfl_property
     public :: chfl_frame, chfl_cell, chfl_topology, chfl_residue, chfl_atom
     ! Export enums
-    public :: chfl_cellshape, CHFL_CELL_ORTHORHOMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
-    public :: chfl_status, CHFL_SUCCESS, CHFL_MEMORY_ERROR, CHFL_FILE_ERROR
-    public :: CHFL_FORMAT_ERROR, CHFL_SELECTION_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
+    public :: chfl_cellshape
+    public :: CHFL_CELL_ORTHORHOMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
+    public :: chfl_property_kind
+    public :: CHFL_PROPERTY_DOUBLE, CHFL_PROPERTY_BOOL, CHFL_PROPERTY_STRING, CHFL_PROPERTY_VECTOR3D
+    public :: chfl_status
+    public :: CHFL_SUCCESS, CHFL_MEMORY_ERROR, CHFL_FILE_ERROR, CHFL_FORMAT_ERROR
+    public :: CHFL_SELECTION_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
     ! Export free functions
-    public :: chfl_version, chfl_set_warning_callback
+    public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
     public :: chfl_last_error, chfl_clear_errors
 
     ! Global pointer to the callback procedure

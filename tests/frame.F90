@@ -14,6 +14,8 @@ program frame_test
     call test_cell()
     call test_topology()
     call test_velocities()
+    call test_properties()
+    call test_distances()
 
 contains
     subroutine test_copy()
@@ -282,6 +284,91 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(name == 'Ar')
         call atom%free()
+
+        call frame%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_properties()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_property) :: property
+        real(real64) :: value
+        integer :: status
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%double(42d0, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%set_property("foo", property, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%from_frame(frame, "foo", status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%get_double(value, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(value == 42d0)
+
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_distances()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_atom) :: atom
+        integer(int64) :: natoms
+        real(real64) :: distance, angle, dihedral, out_of_plane
+        real(real64) :: pi = 3.14159265358979323846264338327950288
+        integer :: status
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call atom%init("Zn", status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%add_atom(atom, [1d0, 0d0, 0d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_atom(atom, [0d0, 0d0, 0d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_atom(atom, [0d0, 1d0, 0d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_atom(atom, [0d0, 1d0, 1d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_atom(atom, [0d0, 1d0, 2d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        distance = 0
+        call frame%distance(int(0, int64), int(2, int64), distance, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(distance == sqrt(2d0))
+
+        angle = 0
+        call frame%angle(int(0, int64), int(1, int64), int(2, int64), angle, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(abs(angle - pi / 2d0) < 1d-6)
+
+        dihedral = 0
+        call frame%dihedral(int(0, int64), int(1, int64), int(2, int64), int(3, int64), dihedral, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(abs(dihedral - pi / 2) < 1d-6);
+
+        out_of_plane = 0
+        call frame%out_of_plane(int(1, int64), int(4, int64), int(0, int64), int(2, int64), out_of_plane, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(abs(out_of_plane - 2.0) < 1e-6)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)

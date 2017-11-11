@@ -13,6 +13,7 @@ program cell_test
     call test_lengths()
     call test_angles()
     call test_matrix()
+    call test_wrap()
 
 contains
     subroutine test_copy()
@@ -199,6 +200,27 @@ contains
                 CHECK(matrix(i, j) - expected(i, j) < 1d-10)
             end do
         end do
+
+        call cell%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_wrap()
+        implicit none
+        type(chfl_cell) :: cell
+        real(real64), dimension(3) :: vector
+        integer :: status
+
+        call cell%init([2d0, 3d0, 4d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        vector = [0.8d0, 1.7d0, -6d0]
+        call cell%wrap(vector, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(abs(vector(1) - 0.8) < 1d-6)
+        CHECK(abs(vector(2) + 1.3) < 1d-6)
+        CHECK(abs(vector(3) - 2) < 1d-6)
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)

@@ -11,6 +11,7 @@ program topology_test
     call test_bonds()
     call test_angles()
     call test_dihedrals()
+    call test_impropers()
     call test_residues()
 
 contains
@@ -283,6 +284,52 @@ contains
         call topology%dihedrals_count(n, status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(n == 0)
+
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_impropers()
+        implicit none
+        type(chfl_topology) :: topology
+        type(chfl_atom) :: atom
+        integer(int64) :: n, i
+        integer(int64), dimension(4, 1) :: impropers, expected
+        integer :: status
+
+        call topology%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call atom%init("", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        do i = 1,4
+            call topology%add_atom(atom, status=status)
+            CHECK(status == CHFL_SUCCESS)
+        enddo
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%dihedrals_count(n, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 0)
+
+        call topology%add_bond(int(0, int64), int(1, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(int(0, int64), int(2, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(int(0, int64), int(3, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%impropers_count(n, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 1)
+
+        expected = reshape([1, 0, 2, 3], [4, 1])
+        call topology%impropers(impropers, int(1, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        do i=1,4
+            CHECK(impropers(i, 1) == expected(i, 1))
+        end do
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)

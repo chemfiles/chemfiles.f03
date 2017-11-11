@@ -13,7 +13,7 @@ end module warnings
 
 #include "check.inc"
 
-program errors_test
+program misc_test
     use chemfiles
     use warnings
 
@@ -44,4 +44,7 @@ program errors_test
     CHECK(status == CHFL_SUCCESS)
     error = chfl_last_error()
     CHECK(trim(error) == '')
+
+    call chfl_add_configuration("data/config.toml", status=status)
+    CHECK(status == CHFL_SUCCESS)
 end program
