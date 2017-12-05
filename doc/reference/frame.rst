@@ -20,6 +20,9 @@
     :field subroutine add_atom: :f:func:`chfl_frame%add_atom`
     :field subroutine remove: :f:func:`chfl_frame%remove`
     :field subroutine resize: :f:func:`chfl_frame%resize`
+    :field subroutine add_bond: :f:func:`chfl_frame%add_bond`
+    :field subroutine remove_bond: :f:func:`chfl_frame%remove_bond`
+    :field subroutine add_residue: :f:func:`chfl_frame%add_residue`
     :field subroutine distance: :f:func:`chfl_frame%distance`
     :field subroutine angle: :f:func:`chfl_frame%angle`
     :field subroutine dihedral: :f:func:`chfl_frame%dihedral`
@@ -103,6 +106,42 @@
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
 
+.. f:subroutine:: chfl_frame%add_bond(i, j, [status])
+
+    Add a bond between the atoms at indexes ``i`` and ``j`` in the frame's
+    topology.
+
+    :argument integer i: atomic index of the first atom of the bond
+    :argument integer j: atomic index of the second atom of the bond
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%remove_bond(i, j, [status])
+
+    Remove any existing bond between the atoms at indexes ``i`` and ``j`` in the
+    frame's topology.
+
+    This function does nothing if there is no bond between ``i`` and ``j``.
+
+    :argument integer i: The atomic index of the first atom
+    :argument integer j: The atomic index of the second atom
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
+.. f:subroutine:: chfl_frame%add_residue(residue, [status])
+
+    Add a copy of ``residue`` to this frame's topology.
+
+    The residue id must not already be in the topology, and the residue must
+    contain only atoms that are not already in another residue.
+
+    :argument chfl_residue residue: residue to add in the topology
+    :optional integer status [optional, kind=chfl_status]: status code of the
+        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
+        about the error by using ``chfl_last_error``.
+
 .. f:subroutine:: chfl_frame%distance(i, j, distance, [status])
 
     Get the distance between the atoms at indexes ``i`` and ``j`` in this frame,
@@ -140,7 +179,7 @@
     and ``m`` in this frame, accounting for periodic boundary conditions. The
     result is placed in `distance` and expressed in angstroms.
 
-    This is the distance betweent the atom j and the ikm plane. The j atom is
+    This is the distance between the atom j and the ikm plane. The j atom is
     the center of the improper dihedral angle formed by i, j, k and m.
 
     :optional integer status [optional, kind=chfl_status]: status code of the

@@ -16,6 +16,8 @@ program frame_test
     call test_velocities()
     call test_properties()
     call test_distances()
+    call test_bonds()
+    call test_residues()
 
 contains
     subroutine test_copy()
@@ -369,6 +371,130 @@ contains
         call frame%out_of_plane(int(1, int64), int(4, int64), int(0, int64), int(2, int64), out_of_plane, status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(abs(out_of_plane - 2.0) < 1e-6)
+
+        call frame%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_bonds()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_atom) :: atom
+        type(chfl_topology) :: topology
+        integer(int64) :: n
+        integer(int64), dimension(2, 3) :: bonds, expected
+        integer :: status, i, j
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call atom%init("", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        do i = 1,5
+            call frame%add_atom(atom, [1d0, 0d0, 0d0], status=status)
+            CHECK(status == CHFL_SUCCESS)
+        enddo
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%add_bond(int(0, int64), int(2, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_bond(int(1, int64), int(2, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_bond(int(3, int64), int(0, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%from_frame(frame, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%bonds_count(n, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 3)
+
+        expected = reshape([0, 2, 0, 3, 1, 2], [2, 3])
+        call topology%bonds(bonds, int(3, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        do i=1,2
+            do j=1,3
+                CHECK(bonds(i, j) == expected(i, j))
+            end do
+        end do
+
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%remove_bond(int(3, int64), int(0, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        ! Non existant bonds, to check that this is fine to do
+        call frame%remove_bond(int(3, int64), int(0, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%remove_bond(int(2, int64), int(3, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%from_frame(frame, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%bonds_count(n, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 2)
+
+        expected = reshape([0, 2, 1, 2, -1, -1], [2, 3])
+        call topology%bonds(bonds, int(2, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        do i=1,2
+            do j=1,2
+                CHECK(bonds(i, j) == expected(i, j))
+            end do
+        end do
+
+        call frame%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_residues()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_residue) :: residue
+        type(chfl_topology) :: topology
+        integer(int64) :: n
+        character(len=32) :: name
+        integer :: status
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%init("foobar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%add_residue(residue, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_residue(residue, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%add_residue(residue, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%from_frame(frame, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%residues_count(n, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(n == 3)
+
+        call residue%from_topology(topology, int(0, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%name(name, len(name, int64), status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(name == 'foobar')
+
+        call residue%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)

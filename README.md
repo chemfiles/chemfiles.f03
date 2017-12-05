@@ -26,11 +26,11 @@ program example
     integer :: status
 
     call trajectory%open("filename.xyz", "r", status=status)
-    if status /= 0 stop "Error while opening file"
+    if (status /= 0) stop "Error while opening file"
     call frame%init()
 
     call trajectory%read(frame, status=status)
-    if status /= 0 stop "Error while reading file"
+    if (status /= 0) stop "Error while reading file"
 
     call frame%atoms_count(natoms)
     write(*, *) "There are ", natoms, "atoms in the frame"
