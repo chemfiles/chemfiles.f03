@@ -87,14 +87,14 @@ subroutine chfl_topology_atoms_count(this, size, status)
     end if
 end subroutine
 
-subroutine chfl_topology_resize(this, n, status)
+subroutine chfl_topology_resize(this, natoms, status)
     implicit none
     class(chfl_topology) :: this
-    integer(kind=c_int64_t), value :: n
+    integer(kind=c_int64_t), value :: natoms
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_topology_resize(this%ptr, n)
+    status_tmp_ = c_chfl_topology_resize(this%ptr, natoms)
     
     if (present(status)) then
         status = status_tmp_
@@ -275,14 +275,14 @@ subroutine chfl_topology_remove_bond(this, i, j, status)
     end if
 end subroutine
 
-subroutine chfl_topology_residues_count(this, nresidues, status)
+subroutine chfl_topology_residues_count(this, residues, status)
     implicit none
     class(chfl_topology), intent(in) :: this
-    integer(kind=c_int64_t) :: nresidues
+    integer(kind=c_int64_t) :: residues
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_topology_residues_count(this%ptr, nresidues)
+    status_tmp_ = c_chfl_topology_residues_count(this%ptr, residues)
     
     if (present(status)) then
         status = status_tmp_

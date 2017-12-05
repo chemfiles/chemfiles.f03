@@ -52,14 +52,14 @@ subroutine chfl_frame_copy_init_(this, frame, status)
     end if
 end subroutine
 
-subroutine chfl_frame_atoms_count(this, n, status)
+subroutine chfl_frame_atoms_count(this, size, status)
     implicit none
     class(chfl_frame), intent(in) :: this
-    integer(kind=c_int64_t) :: n
+    integer(kind=c_int64_t) :: size
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_frame_atoms_count(this%ptr, n)
+    status_tmp_ = c_chfl_frame_atoms_count(this%ptr, size)
     
     if (present(status)) then
         status = status_tmp_
@@ -347,6 +347,50 @@ subroutine chfl_frame_get_property_init_(this, frame, name, status)
         status_tmp_ = CHFL_SUCCESS
     end if
 
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_add_bond(this, i, j, status)
+    implicit none
+    class(chfl_frame) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_add_bond(this%ptr, i, j)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_remove_bond(this, i, j, status)
+    implicit none
+    class(chfl_frame) :: this
+    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: j
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_remove_bond(this%ptr, i, j)
+    
+    if (present(status)) then
+        status = status_tmp_
+    end if
+end subroutine
+
+subroutine chfl_frame_add_residue(this, residue, status)
+    implicit none
+    class(chfl_frame) :: this
+    class(chfl_residue), intent(in) :: residue
+    integer(chfl_status), optional :: status
+    integer(chfl_status) :: status_tmp_
+
+    status_tmp_ = c_chfl_frame_add_residue(this%ptr, residue%ptr)
     
     if (present(status)) then
         status = status_tmp_

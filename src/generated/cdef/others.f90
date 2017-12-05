@@ -11,7 +11,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_version", at types.h:144:14
+! Function "chfl_version", at types.h:145
 function c_chfl_version() bind(C, name="chfl_version")
     use iso_c_binding
     
@@ -20,7 +20,7 @@ function c_chfl_version() bind(C, name="chfl_version")
 
 end function
 
-! Function "chfl_last_error", at misc.h:16:14
+! Function "chfl_last_error", at misc.h:19
 function c_chfl_last_error() bind(C, name="chfl_last_error")
     use iso_c_binding
     
@@ -29,7 +29,7 @@ function c_chfl_last_error() bind(C, name="chfl_last_error")
 
 end function
 
-! Function "chfl_clear_errors", at misc.h:23:14
+! Function "chfl_clear_errors", at misc.h:29
 function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
     use iso_c_binding
     import chfl_status
@@ -39,7 +39,7 @@ function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
 
 end function
 
-! Function "chfl_set_warning_callback", at misc.h:32:14
+! Function "chfl_set_warning_callback", at misc.h:38
 function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_callback")
     use iso_c_binding
     import chfl_status
@@ -49,7 +49,7 @@ function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_ca
     type(c_funptr), value :: callback
 end function
 
-! Function "chfl_add_configuration", at misc.h:47:14
+! Function "chfl_add_configuration", at misc.h:53
 function c_chfl_add_configuration(path) bind(C, name="chfl_add_configuration")
     use iso_c_binding
     import chfl_status

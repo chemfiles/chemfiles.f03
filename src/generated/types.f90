@@ -95,6 +95,9 @@ contains
     procedure :: dihedral => chfl_frame_dihedral
     procedure :: out_of_plane => chfl_frame_out_of_plane
     procedure :: set_property => chfl_frame_set_property
+    procedure :: add_bond => chfl_frame_add_bond
+    procedure :: remove_bond => chfl_frame_remove_bond
+    procedure :: add_residue => chfl_frame_add_residue
     procedure :: free => chfl_frame_free
 end type
 

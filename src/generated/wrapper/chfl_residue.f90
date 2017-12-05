@@ -133,15 +133,15 @@ subroutine chfl_residue_atoms_count(this, size, status)
     end if
 end subroutine
 
-subroutine chfl_residue_atoms(this, atoms, n, status)
+subroutine chfl_residue_atoms(this, atoms, natoms, status)
     implicit none
     class(chfl_residue), intent(in) :: this
     integer(kind=c_int64_t), dimension(:), target :: atoms
-    integer(kind=c_int64_t), value :: n
+    integer(kind=c_int64_t), value :: natoms
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_residue_atoms(this%ptr, c_loc(atoms), n)
+    status_tmp_ = c_chfl_residue_atoms(this%ptr, c_loc(atoms), natoms)
     
     if (present(status)) then
         status = status_tmp_

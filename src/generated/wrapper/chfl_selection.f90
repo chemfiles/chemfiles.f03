@@ -82,30 +82,30 @@ subroutine chfl_selection_string(this, string, buffsize, status)
     end if
 end subroutine
 
-subroutine chfl_selection_evaluate(this, frame, nmatches, status)
+subroutine chfl_selection_evaluate(this, frame, n_matches, status)
     implicit none
     class(chfl_selection) :: this
     class(chfl_frame), intent(in) :: frame
-    integer(kind=c_int64_t) :: nmatches
+    integer(kind=c_int64_t) :: n_matches
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_selection_evaluate(this%ptr, frame%ptr, nmatches)
+    status_tmp_ = c_chfl_selection_evaluate(this%ptr, frame%ptr, n_matches)
     
     if (present(status)) then
         status = status_tmp_
     end if
 end subroutine
 
-subroutine chfl_selection_matches(this, matches, nmatches, status)
+subroutine chfl_selection_matches(this, matches, n_matches, status)
     implicit none
     class(chfl_selection), intent(in) :: this
     type(chfl_match), dimension(:), target :: matches
-    integer(kind=c_int64_t), value :: nmatches
+    integer(kind=c_int64_t), value :: n_matches
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_selection_matches(this%ptr, c_loc(matches), nmatches)
+    status_tmp_ = c_chfl_selection_matches(this%ptr, c_loc(matches), n_matches)
     
     if (present(status)) then
         status = status_tmp_

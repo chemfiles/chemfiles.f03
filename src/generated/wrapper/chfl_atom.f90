@@ -53,15 +53,15 @@ subroutine chfl_atom_copy_init_(this, atom, status)
     end if
 end subroutine
 
-subroutine chfl_atom_from_frame_init_(this, frame, i, status)
+subroutine chfl_atom_from_frame_init_(this, frame, index, status)
     implicit none
     class(chfl_atom) :: this
     class(chfl_frame), intent(in) :: frame
-    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: index
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    this%ptr = c_chfl_atom_from_frame(frame%ptr, i)
+    this%ptr = c_chfl_atom_from_frame(frame%ptr, index)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = CHFL_MEMORY_ERROR
@@ -75,15 +75,15 @@ subroutine chfl_atom_from_frame_init_(this, frame, i, status)
     end if
 end subroutine
 
-subroutine chfl_atom_from_topology_init_(this, topology, i, status)
+subroutine chfl_atom_from_topology_init_(this, topology, index, status)
     implicit none
     class(chfl_atom) :: this
     class(chfl_topology), intent(in) :: topology
-    integer(kind=c_int64_t), value :: i
+    integer(kind=c_int64_t), value :: index
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    this%ptr = c_chfl_atom_from_topology(topology%ptr, i)
+    this%ptr = c_chfl_atom_from_topology(topology%ptr, index)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = CHFL_MEMORY_ERROR

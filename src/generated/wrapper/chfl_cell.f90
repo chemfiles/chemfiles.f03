@@ -11,14 +11,14 @@
 ! =========================================================================== !
 
 
-subroutine chfl_cell_init_(this, lenghts, status)
+subroutine chfl_cell_init_(this, lengths, status)
     implicit none
     class(chfl_cell) :: this
-    real(kind=c_double), dimension(3), intent(in) :: lenghts
+    real(kind=c_double), dimension(3), intent(in) :: lengths
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    this%ptr = c_chfl_cell(lenghts)
+    this%ptr = c_chfl_cell(lengths)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = CHFL_MEMORY_ERROR
@@ -32,15 +32,15 @@ subroutine chfl_cell_init_(this, lenghts, status)
     end if
 end subroutine
 
-subroutine chfl_cell_triclinic_init_(this, lenghts, angles, status)
+subroutine chfl_cell_triclinic_init_(this, lengths, angles, status)
     implicit none
     class(chfl_cell) :: this
-    real(kind=c_double), dimension(3), intent(in) :: lenghts
+    real(kind=c_double), dimension(3), intent(in) :: lengths
     real(kind=c_double), dimension(3), intent(in) :: angles
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    this%ptr = c_chfl_cell_triclinic(lenghts, angles)
+    this%ptr = c_chfl_cell_triclinic(lengths, angles)
 
     if (.not. c_associated(this%ptr)) then
         status_tmp_ = CHFL_MEMORY_ERROR
@@ -124,14 +124,14 @@ subroutine chfl_cell_lengths(this, lengths, status)
     end if
 end subroutine
 
-subroutine chfl_cell_set_lengths(this, lenghts, status)
+subroutine chfl_cell_set_lengths(this, lengths, status)
     implicit none
     class(chfl_cell) :: this
-    real(kind=c_double), dimension(3), intent(in) :: lenghts
+    real(kind=c_double), dimension(3), intent(in) :: lengths
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_cell_set_lengths(this%ptr, lenghts)
+    status_tmp_ = c_chfl_cell_set_lengths(this%ptr, lengths)
     
     if (present(status)) then
         status = status_tmp_

@@ -11,7 +11,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_trajectory_open", at trajectory.h:22:19
+! Function "chfl_trajectory_open", at trajectory.h:22
 function c_chfl_trajectory_open(path, mode) bind(C, name="chfl_trajectory_open")
     use iso_c_binding
     
@@ -21,7 +21,7 @@ function c_chfl_trajectory_open(path, mode) bind(C, name="chfl_trajectory_open")
     character, value :: mode
 end function
 
-! Function "chfl_trajectory_with_format", at trajectory.h:39:19
+! Function "chfl_trajectory_with_format", at trajectory.h:39
 function c_chfl_trajectory_with_format(path, mode, format) bind(C, name="chfl_trajectory_with_format")
     use iso_c_binding
     
@@ -32,7 +32,7 @@ function c_chfl_trajectory_with_format(path, mode, format) bind(C, name="chfl_tr
     character(len=1, kind=c_char), dimension(*), intent(in) :: format
 end function
 
-! Function "chfl_trajectory_read", at trajectory.h:51:14
+! Function "chfl_trajectory_read", at trajectory.h:51
 function c_chfl_trajectory_read(trajectory, frame) bind(C, name="chfl_trajectory_read")
     use iso_c_binding
     import chfl_status
@@ -43,7 +43,7 @@ function c_chfl_trajectory_read(trajectory, frame) bind(C, name="chfl_trajectory
     type(c_ptr), value :: frame
 end function
 
-! Function "chfl_trajectory_read_step", at trajectory.h:63:14
+! Function "chfl_trajectory_read_step", at trajectory.h:63
 function c_chfl_trajectory_read_step(trajectory, step, frame) bind(C, name="chfl_trajectory_read_step")
     use iso_c_binding
     import chfl_status
@@ -55,7 +55,7 @@ function c_chfl_trajectory_read_step(trajectory, step, frame) bind(C, name="chfl
     type(c_ptr), value :: frame
 end function
 
-! Function "chfl_trajectory_write", at trajectory.h:72:14
+! Function "chfl_trajectory_write", at trajectory.h:72
 function c_chfl_trajectory_write(trajectory, frame) bind(C, name="chfl_trajectory_write")
     use iso_c_binding
     import chfl_status
@@ -66,7 +66,7 @@ function c_chfl_trajectory_write(trajectory, frame) bind(C, name="chfl_trajector
     type(c_ptr), value, intent(in) :: frame
 end function
 
-! Function "chfl_trajectory_set_topology", at trajectory.h:83:14
+! Function "chfl_trajectory_set_topology", at trajectory.h:83
 function c_chfl_trajectory_set_topology(trajectory, topology) bind(C, name="chfl_trajectory_set_topology")
     use iso_c_binding
     import chfl_status
@@ -77,7 +77,7 @@ function c_chfl_trajectory_set_topology(trajectory, topology) bind(C, name="chfl
     type(c_ptr), value, intent(in) :: topology
 end function
 
-! Function "chfl_trajectory_topology_file", at trajectory.h:97:14
+! Function "chfl_trajectory_topology_file", at trajectory.h:97
 function c_chfl_trajectory_topology_file(trajectory, path, format) bind(C, name="chfl_trajectory_topology_file")
     use iso_c_binding
     import chfl_status
@@ -89,7 +89,7 @@ function c_chfl_trajectory_topology_file(trajectory, path, format) bind(C, name=
     character(len=1, kind=c_char), dimension(*), intent(in) :: format
 end function
 
-! Function "chfl_trajectory_set_cell", at trajectory.h:107:14
+! Function "chfl_trajectory_set_cell", at trajectory.h:107
 function c_chfl_trajectory_set_cell(trajectory, cell) bind(C, name="chfl_trajectory_set_cell")
     use iso_c_binding
     import chfl_status
@@ -100,7 +100,7 @@ function c_chfl_trajectory_set_cell(trajectory, cell) bind(C, name="chfl_traject
     type(c_ptr), value, intent(in) :: cell
 end function
 
-! Function "chfl_trajectory_nsteps", at trajectory.h:117:14
+! Function "chfl_trajectory_nsteps", at trajectory.h:117
 function c_chfl_trajectory_nsteps(trajectory, nsteps) bind(C, name="chfl_trajectory_nsteps")
     use iso_c_binding
     import chfl_status
@@ -111,7 +111,7 @@ function c_chfl_trajectory_nsteps(trajectory, nsteps) bind(C, name="chfl_traject
     integer(kind=c_int64_t) :: nsteps
 end function
 
-! Function "chfl_trajectory_close", at trajectory.h:128:14
+! Function "chfl_trajectory_close", at trajectory.h:128
 function c_chfl_trajectory_close(trajectory) bind(C, name="chfl_trajectory_close")
     use iso_c_binding
     import chfl_status

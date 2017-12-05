@@ -11,7 +11,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_residue", at residue.h:20:16
+! Function "chfl_residue", at residue.h:20
 function c_chfl_residue(name) bind(C, name="chfl_residue")
     use iso_c_binding
     
@@ -20,7 +20,7 @@ function c_chfl_residue(name) bind(C, name="chfl_residue")
     character(len=1, kind=c_char), dimension(*), intent(in) :: name
 end function
 
-! Function "chfl_residue_with_id", at residue.h:30:16
+! Function "chfl_residue_with_id", at residue.h:30
 function c_chfl_residue_with_id(name, resid) bind(C, name="chfl_residue_with_id")
     use iso_c_binding
     
@@ -30,7 +30,7 @@ function c_chfl_residue_with_id(name, resid) bind(C, name="chfl_residue_with_id"
     integer(kind=c_int64_t), value :: resid
 end function
 
-! Function "chfl_residue_from_topology", at residue.h:46:16
+! Function "chfl_residue_from_topology", at residue.h:46
 function c_chfl_residue_from_topology(topology, i) bind(C, name="chfl_residue_from_topology")
     use iso_c_binding
     
@@ -40,7 +40,7 @@ function c_chfl_residue_from_topology(topology, i) bind(C, name="chfl_residue_fr
     integer(kind=c_int64_t), value :: i
 end function
 
-! Function "chfl_residue_for_atom", at residue.h:62:16
+! Function "chfl_residue_for_atom", at residue.h:62
 function c_chfl_residue_for_atom(topology, i) bind(C, name="chfl_residue_for_atom")
     use iso_c_binding
     
@@ -50,7 +50,7 @@ function c_chfl_residue_for_atom(topology, i) bind(C, name="chfl_residue_for_ato
     integer(kind=c_int64_t), value :: i
 end function
 
-! Function "chfl_residue_copy", at residue.h:74:16
+! Function "chfl_residue_copy", at residue.h:74
 function c_chfl_residue_copy(residue) bind(C, name="chfl_residue_copy")
     use iso_c_binding
     
@@ -59,7 +59,7 @@ function c_chfl_residue_copy(residue) bind(C, name="chfl_residue_copy")
     type(c_ptr), value, intent(in) :: residue
 end function
 
-! Function "chfl_residue_atoms_count", at residue.h:81:14
+! Function "chfl_residue_atoms_count", at residue.h:81
 function c_chfl_residue_atoms_count(residue, size) bind(C, name="chfl_residue_atoms_count")
     use iso_c_binding
     import chfl_status
@@ -70,8 +70,8 @@ function c_chfl_residue_atoms_count(residue, size) bind(C, name="chfl_residue_at
     integer(kind=c_int64_t) :: size
 end function
 
-! Function "chfl_residue_atoms", at residue.h:95:14
-function c_chfl_residue_atoms(residue, atoms, n) bind(C, name="chfl_residue_atoms")
+! Function "chfl_residue_atoms", at residue.h:95
+function c_chfl_residue_atoms(residue, atoms, natoms) bind(C, name="chfl_residue_atoms")
     use iso_c_binding
     import chfl_status
 
@@ -79,10 +79,10 @@ function c_chfl_residue_atoms(residue, atoms, n) bind(C, name="chfl_residue_atom
     integer(kind=chfl_status) :: c_chfl_residue_atoms
     type(c_ptr), value, intent(in) :: residue
     type(c_ptr), value :: atoms
-    integer(kind=c_int64_t), value :: n
+    integer(kind=c_int64_t), value :: natoms
 end function
 
-! Function "chfl_residue_id", at residue.h:108:14
+! Function "chfl_residue_id", at residue.h:108
 function c_chfl_residue_id(residue, id) bind(C, name="chfl_residue_id")
     use iso_c_binding
     import chfl_status
@@ -93,7 +93,7 @@ function c_chfl_residue_id(residue, id) bind(C, name="chfl_residue_id")
     integer(kind=c_int64_t) :: id
 end function
 
-! Function "chfl_residue_name", at residue.h:120:14
+! Function "chfl_residue_name", at residue.h:120
 function c_chfl_residue_name(residue, name, buffsize) bind(C, name="chfl_residue_name")
     use iso_c_binding
     import chfl_status
@@ -105,7 +105,7 @@ function c_chfl_residue_name(residue, name, buffsize) bind(C, name="chfl_residue
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_residue_add_atom", at residue.h:129:14
+! Function "chfl_residue_add_atom", at residue.h:129
 function c_chfl_residue_add_atom(residue, i) bind(C, name="chfl_residue_add_atom")
     use iso_c_binding
     import chfl_status
@@ -116,7 +116,7 @@ function c_chfl_residue_add_atom(residue, i) bind(C, name="chfl_residue_add_atom
     integer(kind=c_int64_t), value :: i
 end function
 
-! Function "chfl_residue_contains", at residue.h:139:14
+! Function "chfl_residue_contains", at residue.h:139
 function c_chfl_residue_contains(residue, i, result) bind(C, name="chfl_residue_contains")
     use iso_c_binding
     import chfl_status
@@ -128,7 +128,7 @@ function c_chfl_residue_contains(residue, i, result) bind(C, name="chfl_residue_
     logical(kind=c_bool) :: result
 end function
 
-! Function "chfl_residue_free", at residue.h:147:14
+! Function "chfl_residue_free", at residue.h:147
 function c_chfl_residue_free(residue) bind(C, name="chfl_residue_free")
     use iso_c_binding
     import chfl_status

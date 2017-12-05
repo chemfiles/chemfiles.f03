@@ -109,28 +109,28 @@ subroutine chfl_property_get_kind(this, kind, status)
     end if
 end subroutine
 
-subroutine chfl_property_get_bool(this, data, status)
+subroutine chfl_property_get_bool(this, value, status)
     implicit none
     class(chfl_property), intent(in) :: this
-    logical(kind=c_bool) :: data
+    logical(kind=c_bool) :: value
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_property_get_bool(this%ptr, data)
+    status_tmp_ = c_chfl_property_get_bool(this%ptr, value)
     
     if (present(status)) then
         status = status_tmp_
     end if
 end subroutine
 
-subroutine chfl_property_get_double(this, data, status)
+subroutine chfl_property_get_double(this, value, status)
     implicit none
     class(chfl_property), intent(in) :: this
-    real(kind=c_double) :: data
+    real(kind=c_double) :: value
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_property_get_double(this%ptr, data)
+    status_tmp_ = c_chfl_property_get_double(this%ptr, value)
     
     if (present(status)) then
         status = status_tmp_
@@ -152,14 +152,14 @@ subroutine chfl_property_get_string(this, buffer, buffsize, status)
     end if
 end subroutine
 
-subroutine chfl_property_get_vector3d(this, data, status)
+subroutine chfl_property_get_vector3d(this, value, status)
     implicit none
     class(chfl_property), intent(in) :: this
-    real(kind=c_double), dimension(3) :: data
+    real(kind=c_double), dimension(3) :: value
     integer(chfl_status), optional :: status
     integer(chfl_status) :: status_tmp_
 
-    status_tmp_ = c_chfl_property_get_vector3d(this%ptr, data)
+    status_tmp_ = c_chfl_property_get_vector3d(this%ptr, value)
     
     if (present(status)) then
         status = status_tmp_
