@@ -1,65 +1,71 @@
-!* File select.f90, example for the chemfiles library
-!* Any copyright is dedicated to the Public Domain.
-!* http://creativecommons.org/publicdomain/zero/1.0/
+! This file is an example for the chemfiles library
+! Any copyright is dedicated to the Public Domain.
+! http://creativecommons.org/publicdomain/zero/1.0/
 program select
     use iso_fortran_env, only: int64
     use chemfiles
     implicit none
 
-    type(chfl_trajectory) :: file
+    type(chfl_trajectory) :: input, output
     type(chfl_frame) :: frame
     type(chfl_selection) :: selection
     type(chfl_match), allocatable, dimension(:) :: matches
-    integer(int64) :: matching, i
+    integer(int64), allocatable, dimension(:) :: to_remove
+    integer(int64) :: matching, i, nsteps, step
     integer :: status
 
-    call file%open("filename.xyz", "r")
+    call input%open("input.arc", 'r')
+    call output%open("output.pdb", 'w')
     call frame%init()
-    call file%read(frame, status=status)
-    if (status /= 0) then
-        ! handle error
-    endif
+    call selection%init("name Zn or name N")
 
-    ! Create a selection for all atoms with "Zn" name
-    call selection%init("name Zn")
-    matching = 0
+    nsteps = 0
+    call input%nsteps(nsteps)
 
-    ! Get the number of matching atoms from the frame
-    call selection%evaluate(frame, matching)
-    print *, "We have ", matching, " zinc in the frame"
-    allocate(matches(matching))
+    do step=1,nsteps
+        call input%read(frame)
 
-    ! Get the matching atoms
-    call selection%matches(matches, matching)
-    do i=1, matching
-        print *, matches(i)%atoms(1), "is a zinc"
+        matching = 0
+        call selection%evaluate(frame, matching)
+        allocate(matches(matching))
+        call selection%matches(matches, matching)
+
+        allocate(to_remove(matching))
+        do i=1,matching
+            to_remove(i) = matches(i)%atoms(1)
+        end do
+
+        call sort(to_remove)
+        do i = matching - 1, 0, -1
+            call frame%remove(to_remove(i))
+        end do
+
+        call output%write(frame)
+        deallocate(matches, to_remove)
     end do
 
     call selection%free()
-    deallocate(matches)
-
-    ! Create a selection for multiple atoms
-    call selection%init("angles: name($1) H and name($2) O and name($3) H")
-    call selection%evaluate(frame, matching)
-    print *, "We have ", matching, " water in the frame"
-    allocate(matches(matching))
-
-    ! Get the matching atoms
-    call selection%matches(matches, matching)
-    do i=1, matching
-        print *, i, "is a zinc"
-    end do
-
-    ! Get the matching atoms
-    call selection%matches(matches, matching)
-    do i=1, matching
-        print *, matches(i)%atoms(1), "-", &
-                 matches(i)%atoms(2), "-", &
-                 matches(i)%atoms(3),  " is a water molecule"
-    end do
-
-    call selection%free()
-    call file%close()
     call frame%free()
-    deallocate(matches)
+    call input%close()
+    call output%close()
+
+contains
+    ! A very simple and ineficient sorting routine
+    subroutine sort(array)
+        integer(int64), intent(inout) :: array(:)
+        integer(int64) :: i, j, min, pos, tmp
+        do i = 1, size(array) - 1
+            min = array(i)
+            pos = i
+            do j = i, size(array)
+                if (array(j) < min) then
+                    min = array(j)
+                    pos = j
+                end if
+            end do
+            tmp = array(i)
+            array(i) = min
+            array(pos) = tmp
+        end do
+    end subroutine
 end program

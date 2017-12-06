@@ -13,6 +13,7 @@ sys.path.append(ROOT)
 # ones.
 extensions = [
     'fortran_domain',
+    'htmlhidden'
 ]
 
 # The suffix of source filenames.

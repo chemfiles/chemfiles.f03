@@ -94,7 +94,7 @@ interface reference for all the types and subroutines in chemfiles.
 .. toctree::
    :maxdepth: 3
 
-   examples
+   tutorial
    reference/index
 
 
