@@ -24,7 +24,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Fortran interface to chemfiles'
-copyright = u'2015, Guillaume Fraux — MPLv2 licence'
+copyright = u'2015-2017, Guillaume Fraux — BSD licence'
 
 
 def version():
@@ -37,6 +37,7 @@ def version():
         release += "-dev"
         version += "-dev"
     return (version, release)
+
 
 version, release = version()
 
