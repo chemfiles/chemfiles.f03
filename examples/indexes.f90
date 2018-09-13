@@ -10,8 +10,8 @@ program indexes
     type(chfl_frame) :: frame
     real(real64), dimension(:, :), pointer :: positions
     integer(int64), dimension(:), allocatable :: less_than_five
-    integer(int64) :: natoms = 0
-    integer :: i, matched
+    integer(int64) :: i, natoms = 0
+    integer :: matched
 
     call file%open("filename.xyz", 'r')
     call frame%init()

@@ -219,11 +219,12 @@ selection and an array of matches.
    :lines: 9-15
    :dedent: 4
 
-Then we can open the two trajectories we need
+Then we can open the two trajectories we need, aborting if we can not open the
+input trajectory.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 17-18
+   :lines: 17-20
    :dedent: 4
 
 We create a :f:type:`chfl_frame` and a :f:type:`chfl_selection` object to
@@ -231,21 +232,21 @@ filter the atoms we want to keep.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 19-20
+   :lines: 22-23
    :dedent: 4
 
 Then we get the number of steps in the trajectory
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 22-23
+   :lines: 25-26
    :dedent: 4
 
 And iterate over the frames in the trajectory
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 25-26
+   :lines: 28-29
    :dedent: 4
 
 From here, we need to use the selection to get the atoms we want to remove. This
@@ -254,7 +255,7 @@ matches
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 28-29
+   :lines: 31-32
    :dedent: 8
 
 Second we allocate some memory and get all the matches (represented as
@@ -262,14 +263,14 @@ Second we allocate some memory and get all the matches (represented as
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 30-31
+   :lines: 33-34
    :dedent: 8
 
 We can get the index of atoms in a `to_remove` array
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 33-36
+   :lines: 36-39
    :dedent: 8
 
 In order to remove the atoms from the frame, we need to sort ``to_remove`` in
@@ -279,7 +280,7 @@ frame.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 38-41
+   :lines: 42-44
    :dedent: 8
 
 Finally, we can write the cleaned frame to the output file, and free the memory
@@ -287,14 +288,14 @@ we allocated:
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 43-44
+   :lines: 46-47
    :dedent: 8
 
 The ``sort`` function we used to sort the matches is defined as follow:
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 53-70
+   :lines: 56-73
    :dedent: 4
 
 .. htmlhidden::

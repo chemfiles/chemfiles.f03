@@ -327,7 +327,6 @@ contains
         implicit none
         type(chfl_frame) :: frame
         type(chfl_atom) :: atom
-        integer(int64) :: natoms
         real(real64) :: distance, angle, dihedral, out_of_plane
         real(real64) :: pi = 3.14159265358979323846264338327950288
         integer :: status

@@ -94,24 +94,4 @@ contains
             status = status_tmp_
         end if
     end subroutine chfl_set_warning_callback
-
-    function chfl_atom_get_property_manual_(atom, name, status) result(property)
-        implicit none
-        type(chfl_property) :: property
-        class(chfl_atom), intent(in) :: atom
-        character(len=*), intent(in) :: name
-        integer(chfl_status), optional :: status
-
-        call chfl_atom_get_property_init_(property, atom, name, status)
-    end function
-
-    function chfl_frame_get_property_manual_(frame, name, status) result(property)
-        implicit none
-        type(chfl_property) :: property
-        class(chfl_frame), intent(in) :: frame
-        character(len=*), intent(in) :: name
-        integer(chfl_status), optional :: status
-
-        call chfl_frame_get_property_init_(property, frame, name, status)
-    end function
 end module
