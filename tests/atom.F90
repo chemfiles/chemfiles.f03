@@ -18,62 +18,53 @@ contains
     subroutine test_copy()
         implicit none
         type(chfl_atom) :: atom, cloned
-        character(len=32) :: name
         integer :: status
 
         call atom%init('He', status=status)
-        CHECK(status == 0)
-        call cloned%copy(atom, status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
+        call cloned%init(atom, status=status)
+        CHECK(status == CHFL_SUCCESS)
 
-        call atom%name(name, len(name, int64), status=status)
-        CHECK(status == 0)
-        CHECK(name == 'He')
-        name = ''
-        call cloned%name(name, len(name, int64), status=status)
-        CHECK(status == 0)
-        CHECK(name == 'He')
+        CHECK(atom%name(status=status) == 'He')
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(cloned%name(status=status) == 'He')
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%set_name('Zn', status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
 
-        call atom%name(name, len(name, int64), status=status)
-        CHECK(status == 0)
-        CHECK(name == 'Zn')
-        name = ''
-        call cloned%name(name, len(name, int64), status=status)
-        CHECK(status == 0)
-        CHECK(name == 'He')
+        CHECK(atom%name(status=status) == 'Zn')
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(cloned%name(status=status) == 'He')
+        CHECK(status == CHFL_SUCCESS)
 
         call atom%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_name()
         implicit none
         type(chfl_atom) :: atom
-        character(len=32) :: name
         integer :: status
 
         call atom%init('He', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%name(name, len(name, int64), status=status)
+        CHECK(atom%name(status=status) == 'He')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'He')
 
-        call atom%full_name(name, len(name, int64), status=status)
+        CHECK(atom%full_name(status=status) == 'Helium')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'Helium')
 
         call atom%set_name('Zn', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%name(name, len(name, int64), status=status)
+        CHECK(atom%name(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'Zn')
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -82,26 +73,22 @@ contains
     subroutine test_type()
         implicit none
         type(chfl_atom) :: atom
-        character(len=32) :: name, atom_type
         integer :: status
 
         call atom%init('He', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%type(atom_type, len(atom_type, int64), status=status)
+        CHECK(atom%type(status=status) == 'He')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(atom_type == 'He')
 
         call atom%set_type('Zn', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%type(atom_type, len(atom_type, int64), status=status)
+        CHECK(atom%type(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(atom_type == 'Zn')
 
-        call atom%full_name(name, len(name, int64), status=status)
+        CHECK(atom%full_name(status=status) == 'Zinc')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'Zinc')
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -110,22 +97,19 @@ contains
     subroutine test_mass()
         implicit none
         type(chfl_atom) :: atom
-        real(real64) :: mass = 0
         integer :: status
 
         call atom%init('He', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%mass(mass, status=status)
+        CHECK(atom%mass(status=status) == 4.002602d0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(mass - 4.002602) < 1d-6)
 
         call atom%set_mass(678.0d0, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%mass(mass, status=status)
+        CHECK(atom%mass(status=status) == 678.0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(mass == 678.0)
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -134,22 +118,19 @@ contains
     subroutine test_charge()
         implicit none
         type(chfl_atom) :: atom
-        real(real64) :: charge = 0
         integer :: status
 
         call atom%init('He', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%charge(charge, status=status)
+        CHECK(atom%charge(status=status) == 0.0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(charge == 0.0)
 
         call atom%set_charge(-1.5d0, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%charge(charge, status=status)
+        CHECK(atom%charge(status=status) == -1.5)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(charge == -1.5)
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -158,19 +139,16 @@ contains
     subroutine test_radius()
         implicit none
         type(chfl_atom) :: atom
-        real(real64) :: radius = 0.0
         integer :: status
 
         call atom%init('Zn', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%vdw_radius(radius, status=status)
+        CHECK(atom%vdw_radius(status=status) == 2.1d0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(radius - 2.1) < 1d-6)
 
-        call atom%covalent_radius(radius, status=status)
+        CHECK(atom%covalent_radius(status=status) == 1.31d0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(radius - 1.31) < 1d-6)
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -179,15 +157,13 @@ contains
     subroutine test_atomic_number()
         implicit none
         type(chfl_atom) :: atom
-        integer(int64) :: number = 0
         integer :: status
 
         call atom%init('Zn', status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%atomic_number(number, status=status)
+        CHECK(atom%atomic_number(status=status) == 30)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(number == 30)
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)

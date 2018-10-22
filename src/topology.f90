@@ -113,7 +113,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_topology_add_atom(this%ptr, atom%ptr)
+        status_tmp_ = c_chfl_topology_add_atom(this%ptr, atom%as_const_ptr())
 
         if (present(status)) then
             status = status_tmp_
