@@ -8,6 +8,9 @@ module chemfiles_topology
     use chemfiles_residue
     implicit none
 
+    private
+    public :: chfl_topology
+
     type chfl_topology
         type(c_ptr) :: ptr = c_null_ptr
     contains

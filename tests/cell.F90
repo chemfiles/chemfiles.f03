@@ -19,53 +19,47 @@ contains
     subroutine test_copy()
         implicit none
         type(chfl_cell) :: cell, cloned
-        real(real64), dimension(3) :: lengths
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
-        CHECK(status == 0)
-        call cloned%copy(cell, status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
+        call cloned%init(cell, status=status)
+        CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
-        CHECK(status == 0)
-        CHECK(all(lengths == [2.0, 3.0, 4.0]))
-        call cloned%lengths(lengths, status=status)
-        CHECK(status == 0)
-        CHECK(all(lengths == [2.0, 3.0, 4.0]))
+        CHECK(all(cell%lengths(status=status) == [2.0, 3.0, 4.0]))
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cloned%lengths(status=status) == [2.0, 3.0, 4.0]))
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%set_lengths([34d0, 33d0, 35d0], status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
-        CHECK(status == 0)
-        CHECK(all(lengths == [34.0, 33.0, 35.0]))
-        call cloned%lengths(lengths, status=status)
-        CHECK(status == 0)
-        CHECK(all(lengths == [2.0, 3.0, 4.0]))
+        CHECK(all(cell%lengths(status=status) == [34.0, 33.0, 35.0]))
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cloned%lengths(status=status) == [2.0, 3.0, 4.0]))
+        CHECK(status == CHFL_SUCCESS)
 
         call cell%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_triclinic()
         implicit none
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: lengths, angles
         integer :: status
 
-        call cell%triclinic([12d0, 30d0, 24d0], [90d0, 90d0, 120d0], status=status)
+        call cell%init([12d0, 30d0, 24d0], [90d0, 90d0, 120d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
+        CHECK(all(cell%lengths(status=status) == [12.0, 30.0, 24.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(lengths == [12.0, 30.0, 24.0]))
 
-        call cell%angles(angles, status=status)
+        CHECK(all(cell%angles(status=status) == [90.0, 90.0, 120.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(angles == [90.0, 90.0, 120.0]))
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -74,19 +68,16 @@ contains
     subroutine test_orthorhombic()
         implicit none
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: lengths, angles
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
+        CHECK(all(cell%lengths(status=status) == [2.0, 3.0, 4.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
-        call cell%angles(angles, status=status)
+        CHECK(all(cell%angles( status=status) == [90.0, 90.0, 90.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(angles == [90.0, 90.0, 90.0]))
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -95,15 +86,13 @@ contains
     subroutine test_volume()
         implicit none
         type(chfl_cell) :: cell
-        real(real64) :: volume = 0.0
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%volume(volume, status=status)
+        CHECK(cell%volume(status=status) == 2.0 * 3.0 * 4.0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(volume == 2.0*3.0*4.0)
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -112,21 +101,19 @@ contains
     subroutine test_shape()
         implicit none
         type(chfl_cell) :: cell
-        integer(chfl_cellshape) :: shape
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%shape(shape, status=status)
+        CHECK(cell%shape(status=status) == CHFL_CELL_ORTHORHOMBIC)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(shape == CHFL_CELL_ORTHORHOMBIC)
 
         call cell%set_shape(CHFL_CELL_TRICLINIC, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cell%shape(shape, status=status)
+
+        CHECK(cell%shape(status=status) == CHFL_CELL_TRICLINIC)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(shape == CHFL_CELL_TRICLINIC)
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -135,22 +122,19 @@ contains
     subroutine test_lengths()
         implicit none
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: lengths
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
+        CHECK(all(cell%lengths(status=status) == [2.0, 3.0, 4.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(lengths == [2.0, 3.0, 4.0]))
 
         call cell%set_lengths([10d0, 20d0, 30d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%lengths(lengths, status=status)
+        CHECK(all(cell%lengths(status=status) == [10.0, 20.0, 30.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(lengths == [10.0, 20.0, 30.0]))
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -159,10 +143,12 @@ contains
     subroutine test_angles()
         implicit none
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: angles
         integer :: status
 
         call cell%init([2d0, 3d0, 4d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cell%angles(status=status) == [90.0, 90.0, 90.0]))
         CHECK(status == CHFL_SUCCESS)
 
         call cell%set_angles([80d0, 89d0, 100d0], status=status)
@@ -173,9 +159,9 @@ contains
 
         call cell%set_angles([80d0, 89d0, 100d0], status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cell%angles(angles, status=status)
+
+        CHECK(all(cell%angles(status=status) == [80.0, 89.0, 100.0]))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(angles == [80.0, 89.0, 100.0]))
 
         call cell%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -193,7 +179,7 @@ contains
         expected = reshape([10, 0, 0, &
                             0, 20, 0, &
                             0, 0, 30], [3, 3])
-        call cell%matrix(matrix, status=status)
+        matrix = cell%matrix(status=status)
         CHECK(status == CHFL_SUCCESS)
         do i=1,3
             do j=1,3

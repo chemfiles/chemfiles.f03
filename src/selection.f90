@@ -7,6 +7,9 @@ module chemfiles_selection
     use chemfiles_frame
     implicit none
 
+    private
+    public :: chfl_selection
+
     type chfl_selection
         private
         type(c_ptr) :: ptr = c_null_ptr

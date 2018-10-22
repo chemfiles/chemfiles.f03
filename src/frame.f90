@@ -6,9 +6,13 @@ module chemfiles_frame
     use chemfiles_strings
     use chemfiles_atom
     use chemfiles_cell
+    use chemfiles_residue
     use chemfiles_topology
     use chemfiles_property
     implicit none
+
+    private
+    public :: chfl_frame
 
     type chfl_frame
         type(c_ptr) :: ptr = c_null_ptr
@@ -219,7 +223,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_frame_set_cell(this%ptr, cell%ptr)
+        status_tmp_ = c_chfl_frame_set_cell(this%ptr, cell%unsafe_const_ptr())
 
         if (present(status)) then
             status = status_tmp_

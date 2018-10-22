@@ -6,6 +6,9 @@ module chemfiles_property
     use chemfiles_strings
     implicit none
 
+    private
+    public :: chfl_property
+
     type chfl_property
         type(c_ptr) :: ptr = c_null_ptr
     contains

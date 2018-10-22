@@ -6,6 +6,9 @@ module chemfiles_atom
     use chemfiles_strings
     implicit none
 
+    private
+    public :: chfl_atom
+
     type chfl_atom
         private
         type(c_ptr) :: ptr = c_null_ptr
