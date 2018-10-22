@@ -33,7 +33,7 @@
     :field subroutine has_velocities: :f:func:`chfl_frame%has_velocities`
     :field subroutine set_cell: :f:func:`chfl_frame%set_cell`
     :field subroutine set_topology: :f:func:`chfl_frame%set_topology`
-    :field subroutine guess_topology: :f:func:`chfl_frame%guess_topology`
+    :field subroutine guess_bonds: :f:func:`chfl_frame%guess_bonds`
     :field subroutine step: :f:func:`chfl_frame%step`
     :field subroutine set_step: :f:func:`chfl_frame%set_step`
     :field subroutine set_property: :f:func:`chfl_frame%set_property`
@@ -290,7 +290,7 @@
         operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
         about the error by using ``chfl_last_error``.
 
-.. f:subroutine:: chfl_frame%guess_topology([status])
+.. f:subroutine:: chfl_frame%guess_bonds([status])
 
     Guess the bonds, angles and dihedrals in the frame.
 

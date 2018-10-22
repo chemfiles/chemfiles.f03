@@ -18,7 +18,20 @@ endif()
 
 add_subdirectory(chemfiles)
 
-set(sources src/strings.f90 src/chemfiles.f90)
+set(sources
+    src/cdef.f90
+    src/strings.f90
+    src/atom.f90
+    src/cell.f90
+    src/frame.f90
+    src/property.f90
+    src/residue.f90
+    src/selection.f90
+    src/topology.f90
+    src/trajectory.f90
+    src/chemfiles.f90
+)
+
 add_library(chemfilesf03 ${sources})
 target_link_libraries(chemfilesf03 chemfiles ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
 set_property(TARGET chemfilesf03 PROPERTY VERSION ${CHEMFILES_VERSION})

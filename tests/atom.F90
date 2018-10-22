@@ -12,7 +12,7 @@ program atom_test
     call test_charge()
     call test_radius()
     call test_atomic_number()
-    call test_properties()
+    ! call test_properties()
 
 contains
     subroutine test_copy()
@@ -193,35 +193,35 @@ contains
         CHECK(status == CHFL_SUCCESS)
     end subroutine
 
-    subroutine test_properties()
-        implicit none
-        type(chfl_atom) :: atom
-        type(chfl_property) :: property
-        real(real64) :: value
-        integer :: status
-
-        call atom%init('He', status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call property%double(42d0, status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call atom%set_property("foo", property, status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call property%from_atom(atom, "foo", status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call property%get_double(value, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(value == 42d0)
-
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-    end subroutine
+    ! subroutine test_properties()
+    !     implicit none
+    !     type(chfl_atom) :: atom
+    !     type(chfl_property) :: property
+    !     real(real64) :: value
+    !     integer :: status
+    !
+    !     call atom%init('He', status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !
+    !     call property%double(42d0, status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !
+    !     call atom%set_property("foo", property, status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !
+    !     call property%free(status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !
+    !     call property%from_atom(atom, "foo", status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !
+    !     call property%get_double(value, status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !     CHECK(value == 42d0)
+    !
+    !     call property%free(status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    !     call atom%free(status=status)
+    !     CHECK(status == CHFL_SUCCESS)
+    ! end subroutine
 end program
