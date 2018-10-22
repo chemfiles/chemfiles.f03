@@ -6,6 +6,9 @@ module chemfiles_residue
     use chemfiles_strings
     implicit none
 
+    private
+    public :: chfl_residue
+
     type chfl_residue
         type(c_ptr) :: ptr = c_null_ptr
     contains

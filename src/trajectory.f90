@@ -4,8 +4,13 @@ module chemfiles_trajectory
     use iso_c_binding
     use chemfiles_cdef
     use chemfiles_strings
+    use chemfiles_cell
     use chemfiles_frame
+    use chemfiles_topology
     implicit none
+
+    private
+    public :: chfl_trajectory
 
     type chfl_trajectory
         private
@@ -164,7 +169,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_trajectory_set_cell(this%ptr, cell%ptr)
+        status_tmp_ = c_chfl_trajectory_set_cell(this%ptr, cell%unsafe_const_ptr())
 
         if (present(status)) then
             status = status_tmp_

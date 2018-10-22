@@ -5,6 +5,7 @@ module chemfiles
     use chemfiles_cdef
     use chemfiles_strings
     use chemfiles_selection
+    use chemfiles_property
     use chemfiles_atom
     use chemfiles_cell
     use chemfiles_residue
