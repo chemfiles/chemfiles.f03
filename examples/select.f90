@@ -14,9 +14,7 @@ program select
     integer(int64) :: matching, i, nsteps, step
     integer :: status
 
-    call input%open("input.arc", 'r', status=status)
-    if (status /= CHFL_SUCCESS) stop
-
+    call input%open("input.arc", 'r')
     call output%open("output.pdb", 'w')
 
     call frame%init()

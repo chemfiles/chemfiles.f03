@@ -1,13 +1,10 @@
 ! Chemfiles, an efficient IO library for chemistry file formats
-! Copyright (C) 2015-2017 Guillaume Fraux -- BSD licence
+! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
 !
 ! =========================================================================== !
 ! !!!! AUTO-GENERATED FILE !!!! Do not edit. See bindgen repository for the
 ! generating code (https://github.com/chemfiles/bindgen).
 ! This file contains Fortran 2003 ISO C Binding interface to the C API
-!
-! This file is not compilable on his own, but should be 'include'd in another
-! fortran compilation unit.
 ! =========================================================================== !
 
 
@@ -25,6 +22,19 @@ enum, bind(C)
 end enum
 
 integer, parameter :: chfl_status = kind(CHFL_SUCCESS)
+
+enum, bind(C)
+    enumerator :: CHFL_BOND_UNKNOWN = 0
+    enumerator :: CHFL_BOND_SINGLE = 1
+    enumerator :: CHFL_BOND_DOUBLE = 2
+    enumerator :: CHFL_BOND_TRIPLE = 3
+    enumerator :: CHFL_BOND_QUADRUPLE = 4
+    enumerator :: CHFL_BOND_QINTUPLET = 5
+    enumerator :: CHFL_BOND_AMIDE = 254
+    enumerator :: CHFL_BOND_AROMATIC = 255
+end enum
+
+integer, parameter :: chfl_bond_order = kind(CHFL_BOND_UNKNOWN)
 
 enum, bind(C)
     enumerator :: CHFL_PROPERTY_BOOL = 0

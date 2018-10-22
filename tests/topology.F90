@@ -109,14 +109,14 @@ contains
         call O%free()
         call H%free()
 
-        call atom%from_topology(topology, int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call atom%name(name, len(name, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'O')
-
-        call atom%free()
+        ! call atom%from_topology(topology, int(2, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        !
+        ! call atom%name(name, len(name, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! CHECK(name == 'O')
+        !
+        ! call atom%free()
 
         call topology%remove(int(3, int64), status=status)
         call topology%atoms_count(natoms, status=status)
@@ -397,39 +397,38 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(n == 2)
 
-        call first%from_topology(topology, int(0, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call first%name(name, len(name, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'foo')
-
-        call second%for_atom(topology, int(3, int64), status=status)
-        CHECK(status /= CHFL_SUCCESS)
-
-        call second%for_atom(topology, int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call second%name(name, len(name, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(name == 'bar')
-
-        call topology%residues_linked(first, second, linked, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(linked .eqv. .false.)
-
-        call topology%add_bond(int(1, int64), int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-
-        call topology%residues_linked(first, second, linked, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(linked .eqv. .true.)
-
-
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call first%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call second%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        ! call first%from_topology(topology, int(0, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        !
+        ! call first%name(name, len(name, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! CHECK(name == 'foo')
+        !
+        ! call second%for_atom(topology, int(3, int64), status=status)
+        ! CHECK(status /= CHFL_SUCCESS)
+        !
+        ! call second%for_atom(topology, int(2, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! call second%name(name, len(name, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! CHECK(name == 'bar')
+        !
+        ! call topology%residues_linked(first, second, linked, status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! CHECK(linked .eqv. .false.)
+        !
+        ! call topology%add_bond(int(1, int64), int(2, int64), status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        !
+        ! call topology%residues_linked(first, second, linked, status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! CHECK(linked .eqv. .true.)
+        !
+        ! call first%free(status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! call second%free(status=status)
+        ! CHECK(status == CHFL_SUCCESS)
+        ! call topology%free(status=status)
+        ! CHECK(status == CHFL_SUCCESS)
     end subroutine
 end program

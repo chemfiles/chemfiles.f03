@@ -1,4 +1,7 @@
-module strings
+! chemfiles, an efficient IO library for chemistry file formats
+! Copyright (C) 2015-2019 Guillaume Fraux - BSD License
+
+module chemfiles_strings
     use iso_c_binding
     implicit none
     private
