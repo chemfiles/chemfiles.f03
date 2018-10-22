@@ -5,8 +5,8 @@ module chemfiles_strings
     use iso_c_binding
     implicit none
     private
-    public c_to_f_str, rm_null_in_str, f_to_c_str
-    integer, parameter :: STRING_LENGTH = 1024
+    public c_to_f_str, rm_null_in_str, f_to_c_str, CHFL_STRING_LENGTH
+    integer, parameter :: CHFL_STRING_LENGTH = 1024
 
     interface rm_null_in_str
         module procedure rm_null_in_c_str, rm_null_in_f_str
@@ -18,9 +18,9 @@ contains
         implicit none
         type(c_ptr), target, intent(in) :: c_string
         character(len=1), dimension(:), pointer :: tmp
-        character(len=STRING_LENGTH) :: f_string
+        character(len=CHFL_STRING_LENGTH) :: f_string
 
-        call c_f_pointer(c_string, tmp, shape=[STRING_LENGTH])
+        call c_f_pointer(c_string, tmp, shape=[CHFL_STRING_LENGTH])
         f_string = rm_null_in_str(tmp)
     end function
 
@@ -28,7 +28,7 @@ contains
     function rm_null_in_c_str(c_string) result(f_string)
         implicit none
         character(len=1), dimension(:), intent(in) :: c_string
-        character(len=STRING_LENGTH) :: f_string
+        character(len=CHFL_STRING_LENGTH) :: f_string
         integer :: str_len, i
 
         str_len = 1
@@ -40,7 +40,7 @@ contains
         do i=1, str_len
             f_string(i:i) = c_string(i)
         end do
-        do i=str_len+1, STRING_LENGTH
+        do i=str_len+1, CHFL_STRING_LENGTH
             f_string(i:i) = " "
         end do
     end function

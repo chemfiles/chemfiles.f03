@@ -150,7 +150,7 @@ contains
         else
             velocity_tmp_ = [0.0, 0.0, 0.0]
         end if
-        status_tmp_ = c_chfl_frame_add_atom(this%ptr, atom%ptr, position, velocity_tmp_)
+        status_tmp_ = c_chfl_frame_add_atom(this%ptr, atom%unsafe_const_ptr(), position, velocity_tmp_)
 
         if (present(status)) then
             status = status_tmp_
