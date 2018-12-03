@@ -10,186 +10,182 @@ module chemfiles_property
     public :: chfl_property
 
     type chfl_property
+        private
         type(c_ptr) :: ptr = c_null_ptr
     contains
-        procedure :: bool => chfl_property_bool_init_
-        procedure :: double => chfl_property_double_init_
-        procedure :: string => chfl_property_string_init_
-        procedure :: vector3d => chfl_property_vector3d_init_
-        procedure :: get_kind => chfl_property_get_kind
-        procedure :: get_bool => chfl_property_get_bool
-        procedure :: get_double => chfl_property_get_double
-        procedure :: get_string => chfl_property_get_string
-        procedure :: get_vector3d => chfl_property_get_vector3d
-        procedure :: free => chfl_property_free
+        procedure :: unsafe_set_ptr
+        procedure :: unsafe_ptr
+        procedure :: unsafe_const_ptr
+
+        generic :: init => bool_init, double_init, string_init, vector3d_init
+        procedure, private :: bool_init, double_init, string_init, vector3d_init
+
+        procedure :: get_kind
+        procedure :: bool
+        procedure :: double
+        procedure :: string
+        procedure :: vector3d
+        procedure :: free
     end type
 
 contains
-    subroutine chfl_property_bool_init_(this, value, status)
+    subroutine unsafe_set_ptr(this, ptr, status)
         implicit none
-        class(chfl_property) :: this
-        logical(kind=c_bool), value :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_property), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: dummy
 
-        this%ptr = c_chfl_property_bool(value)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
+        if (c_associated(this%unsafe_ptr())) then
+            print*, "Trying to reset an allocated chfl_property. Call chfl_property%free first."
+            ! free the allocated memory
+            dummy = c_chfl_property_free(ptr)
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
         end if
 
+        this%ptr = ptr
 
         if (present(status)) then
-            status = status_tmp_
+            if (.not. c_associated(this%unsafe_ptr())) then
+                status = CHFL_MEMORY_ERROR
+            else
+                status = CHFL_SUCCESS
+            end if
         end if
     end subroutine
 
-    subroutine chfl_property_double_init_(this, value, status)
+    type(c_ptr) function unsafe_ptr(this)
         implicit none
-        class(chfl_property) :: this
-        real(kind=c_double), value :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_property), intent(inout) :: this
+        unsafe_ptr = this%ptr
+    end function
 
-        this%ptr = c_chfl_property_double(value)
+    type(c_ptr) function unsafe_const_ptr(this)
+        implicit none
+        class(chfl_property), intent(in) :: this
+        unsafe_const_ptr = this%ptr
+    end function
 
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
+    subroutine bool_init(this, value, status)
+        implicit none
+        class(chfl_property), intent(out) :: this
+        logical, intent(in) :: value
+        integer(chfl_status), optional, intent(out) :: status
 
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
+        call this%unsafe_set_ptr(c_chfl_property_bool(logical(value, c_bool)), status)
     end subroutine
 
-    subroutine chfl_property_string_init_(this, value, status)
+    subroutine double_init(this, value, status)
         implicit none
-        class(chfl_property) :: this
+        class(chfl_property), intent(inout) :: this
+        real(kind=c_double), intent(in) :: value
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(c_chfl_property_double(value), status)
+    end subroutine
+
+    subroutine string_init(this, value, status)
+        implicit none
+        class(chfl_property), intent(inout) :: this
         character(len=*), intent(in) :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        this%ptr = c_chfl_property_string(f_to_c_str(value))
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
+        call this%unsafe_set_ptr(c_chfl_property_string(f_to_c_str(value)), status)
     end subroutine
 
-    subroutine chfl_property_vector3d_init_(this, value, status)
+    subroutine vector3d_init(this, value, status)
         implicit none
-        class(chfl_property) :: this
+        class(chfl_property), intent(inout) :: this
         real(kind=c_double), dimension(3), intent(in) :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        this%ptr = c_chfl_property_vector3d(value)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
+        call this%unsafe_set_ptr(c_chfl_property_vector3d(value), status)
     end subroutine
 
-    subroutine chfl_property_get_kind(this, kind, status)
+    function get_kind(this, status)
         implicit none
         class(chfl_property), intent(in) :: this
-        integer(chfl_property_kind) :: kind
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_property_kind) :: get_kind
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_property_get_kind(this%ptr, kind)
+        status_tmp = c_chfl_property_get_kind(this%unsafe_const_ptr(), get_kind)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_property_get_bool(this, value, status)
+    logical function bool(this, status)
         implicit none
         class(chfl_property), intent(in) :: this
-        logical(kind=c_bool) :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_property_get_bool(this%ptr, value)
+        integer(chfl_status) :: status_tmp
+        logical(c_bool) :: value_tmp
+
+        status_tmp = c_chfl_property_get_bool(this%unsafe_const_ptr(), value_tmp)
+        bool = logical(value_tmp)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_property_get_double(this, value, status)
+    real(kind=c_double) function double(this, status)
         implicit none
         class(chfl_property), intent(in) :: this
-        real(kind=c_double) :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_property_get_double(this%ptr, value)
+        status_tmp = c_chfl_property_get_double(this%unsafe_const_ptr(), double)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_property_get_string(this, buffer, buffsize, status)
+    character(len=CHFL_STRING_LENGTH) function string(this, status)
         implicit none
         class(chfl_property), intent(in) :: this
-        character(len=*) :: buffer
-        integer(kind=c_int64_t), value :: buffsize
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_property_get_string(this%ptr, buffer, buffsize)
-        buffer = rm_null_in_str(buffer)
+        status_tmp = c_chfl_property_get_string(this%unsafe_const_ptr(), string, int(CHFL_STRING_LENGTH, c_int64_t))
+        string = rm_null_in_str(string)
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_property_get_vector3d(this, value, status)
+    function vector3d(this, status)
         implicit none
         class(chfl_property), intent(in) :: this
-        real(kind=c_double), dimension(3) :: value
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        real(kind=c_double), dimension(3) :: vector3d
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_property_get_vector3d(this%ptr, value)
+        status_tmp = c_chfl_property_get_vector3d(this%unsafe_const_ptr(), vector3d)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_property_free(this, status)
+    subroutine free(this, status)
         implicit none
-        class(chfl_property), intent(in) :: this
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_property), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_property_free(this%ptr)
+        status_tmp = c_chfl_property_free(this%unsafe_ptr())
+        this%ptr = c_null_ptr
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 end module

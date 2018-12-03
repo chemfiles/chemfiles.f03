@@ -383,42 +383,42 @@ contains
     !     end if
     ! end subroutine
 
-    subroutine chfl_frame_set_property(this, name, property, status)
-        implicit none
-        class(chfl_frame) :: this
-        character(len=*), intent(in) :: name
-        class(chfl_property), intent(in) :: property
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_frame_set_property(this%ptr, f_to_c_str(name), property%ptr)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_frame_get_property_init_(this, frame, name, status)
-        implicit none
-        class(chfl_property) :: this
-        class(chfl_frame), intent(in) :: frame
-        character(len=*), intent(in) :: name
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        this%ptr = c_chfl_frame_get_property(frame%ptr, f_to_c_str(name))
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
+    ! subroutine chfl_frame_set_property(this, name, property, status)
+    !     implicit none
+    !     class(chfl_frame) :: this
+    !     character(len=*), intent(in) :: name
+    !     class(chfl_property), intent(in) :: property
+    !     integer(chfl_status), optional :: status
+    !     integer(chfl_status) :: status_tmp_
+    !
+    !     status_tmp_ = c_chfl_frame_set_property(this%ptr, f_to_c_str(name), property%ptr)
+    !
+    !     if (present(status)) then
+    !         status = status_tmp_
+    !     end if
+    ! end subroutine
+    !
+    ! subroutine chfl_frame_get_property_init_(this, frame, name, status)
+    !     implicit none
+    !     class(chfl_property) :: this
+    !     class(chfl_frame), intent(in) :: frame
+    !     character(len=*), intent(in) :: name
+    !     integer(chfl_status), optional :: status
+    !     integer(chfl_status) :: status_tmp_
+    !
+    !     this%ptr = c_chfl_frame_get_property(frame%ptr, f_to_c_str(name))
+    !
+    !     if (.not. c_associated(this%ptr)) then
+    !         status_tmp_ = CHFL_MEMORY_ERROR
+    !     else
+    !         status_tmp_ = CHFL_SUCCESS
+    !     end if
+    !
+    !
+    !     if (present(status)) then
+    !         status = status_tmp_
+    !     end if
+    ! end subroutine
 
     subroutine chfl_frame_add_bond(this, i, j, status)
         implicit none
