@@ -10,18 +10,23 @@ module chemfiles_residue
     public :: chfl_residue
 
     type chfl_residue
+        private
         type(c_ptr) :: ptr = c_null_ptr
     contains
-        procedure :: init => chfl_residue_init_
-        procedure :: with_id => chfl_residue_with_id_init_
-        procedure :: copy => chfl_residue_copy_init_
-        procedure :: atoms_count => chfl_residue_atoms_count
-        procedure :: atoms => chfl_residue_atoms
-        procedure :: id => chfl_residue_id
-        procedure :: name => chfl_residue_name
-        procedure :: add_atom => chfl_residue_add_atom
-        procedure :: contains => chfl_residue_contains
-        procedure :: free => chfl_residue_free
+        procedure :: unsafe_set_ptr
+        procedure :: unsafe_const_ptr
+        procedure :: unsafe_ptr
+
+        generic :: init => create, copy
+        procedure, private :: create, copy
+
+        procedure :: atoms_count
+        procedure :: atoms
+        procedure :: id
+        procedure :: name
+        procedure :: add_atom
+        procedure :: contains
+        procedure :: free
         ! procedure :: properties_count => chfl_residue_properties_count
         ! procedure :: list_properties => chfl_residue_list_properties
         ! procedure :: set_property => chfl_residue_set_property
@@ -29,233 +34,233 @@ module chemfiles_residue
     end type
 
 contains
-    subroutine chfl_residue_init_(this, name, status)
+    subroutine unsafe_set_ptr(this, ptr, status)
         implicit none
-        class(chfl_residue) :: this
-        character(len=*), intent(in) :: name
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_residue), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: dummy
 
-        this%ptr = c_chfl_residue(f_to_c_str(name))
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
+        if (c_associated(this%unsafe_ptr())) then
+            print*, "Trying to reset an allocated chfl_residue. Call chfl_residue%free first."
+            ! free the allocated memory
+            dummy = c_chfl_residue_free(ptr)
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
         end if
 
+        this%ptr = ptr
 
         if (present(status)) then
-            status = status_tmp_
+            if (.not. c_associated(this%unsafe_ptr())) then
+                status = CHFL_MEMORY_ERROR
+            else
+                status = CHFL_SUCCESS
+            end if
         end if
     end subroutine
 
-    subroutine chfl_residue_with_id_init_(this, name, resid, status)
+    type(c_ptr) function unsafe_ptr(this)
         implicit none
-        class(chfl_residue) :: this
+        class(chfl_residue), intent(inout) :: this
+        unsafe_ptr = this%ptr
+    end function
+
+    type(c_ptr) function unsafe_const_ptr(this)
+        implicit none
+        class(chfl_residue), intent(in) :: this
+        unsafe_const_ptr = this%ptr
+    end function
+
+    subroutine create(this, name, resid, status)
+        implicit none
+        class(chfl_residue), intent(inout) :: this
         character(len=*), intent(in) :: name
-        integer(kind=c_int64_t), value :: resid
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), optional :: resid
+        integer(chfl_status), intent(out), optional :: status
 
-        this%ptr = c_chfl_residue_with_id(f_to_c_str(name), resid)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
+        if (present(resid)) then
+            call this%unsafe_set_ptr(c_chfl_residue_with_id(f_to_c_str(name), resid), status)
         else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
+            call this%unsafe_set_ptr(c_chfl_residue(f_to_c_str(name)), status)
         end if
     end subroutine
 
-    subroutine chfl_residue_copy_init_(this, residue, status)
+    subroutine copy(this, residue, status)
         implicit none
-        class(chfl_residue) :: this
+        class(chfl_residue), intent(inout) :: this
         class(chfl_residue), intent(in) :: residue
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        this%ptr = c_chfl_residue_copy(residue%ptr)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
+        call this%unsafe_set_ptr(c_chfl_residue_copy(residue%unsafe_const_ptr()), status)
     end subroutine
 
-    subroutine chfl_residue_atoms_count(this, count, status)
+    integer(kind=c_int64_t) function atoms_count(this, status)
         implicit none
         class(chfl_residue), intent(in) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_residue_atoms_count(this%unsafe_const_ptr(), atoms_count)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end function
+
+    subroutine atoms(this, data, status)
+        implicit none
+        class(chfl_residue), intent(in) :: this
+        integer(kind=c_int64_t), intent(out), dimension(:), target :: data
+        integer(chfl_status), intent(out), optional :: status
+
+        integer(chfl_status) :: status_tmp
         integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_residue_atoms_count(this%ptr, count)
+        count = size(data, 1, c_int64_t)
+        status_tmp = c_chfl_residue_atoms(this%unsafe_const_ptr(), c_loc(data), count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_residue_atoms(this, atoms, natoms, status)
+    integer(kind=c_int64_t) function id(this, status)
         implicit none
         class(chfl_residue), intent(in) :: this
-        integer(kind=c_int64_t), value :: natoms
-        integer(kind=c_int64_t), dimension(natoms), target :: atoms
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_residue_atoms(this%ptr, c_loc(atoms), natoms)
+        status_tmp = c_chfl_residue_id(this%unsafe_const_ptr(), id)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_residue_id(this, id, status)
+    character(len=CHFL_STRING_LENGTH) function name(this, status)
         implicit none
         class(chfl_residue), intent(in) :: this
-        integer(kind=c_int64_t) :: id
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_residue_id(this%ptr, id)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_residue_name(this, name, buffsize, status)
-        implicit none
-        class(chfl_residue), intent(in) :: this
-        character(len=*) :: name
-        integer(kind=c_int64_t), value :: buffsize
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_residue_name(this%ptr, name, buffsize)
+        status_tmp = c_chfl_residue_name(this%unsafe_const_ptr(), name, int(CHFL_STRING_LENGTH, c_int64_t))
         name = rm_null_in_str(name)
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_residue_add_atom(this, i, status)
+    subroutine add_atom(this, index, status)
         implicit none
-        class(chfl_residue) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_residue), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: index
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_residue_add_atom(this%ptr, i)
+        status_tmp = c_chfl_residue_add_atom(this%unsafe_ptr(), index)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_residue_contains(this, i, result, status)
-        implicit none
-        class(chfl_residue), intent(in) :: this
-        integer(kind=c_int64_t), value :: i
-        logical(kind=c_bool) :: result
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_residue_contains(this%ptr, i, result)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_residue_properties_count(this, count, status)
+    logical function contains(this, index, status)
         implicit none
         class(chfl_residue), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(in) :: index
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_residue_properties_count(this%ptr, count)
+        integer(chfl_status) :: status_tmp
+        logical(c_bool) :: result
+
+        status_tmp = c_chfl_residue_contains(this%unsafe_const_ptr(), index, result)
+        contains = logical(result)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    ! subroutine chfl_residue_list_properties(this, names, count, status)
+    ! subroutine properties_count(this, count, status)
+    !     implicit none
+    !     class(chfl_residue), intent(in) :: this
+    !     integer(kind=c_int64_t) :: count
+    !     integer(chfl_status), intent(out), optional :: status
+    !     integer(chfl_status) :: status_tmp
+    !
+    !     status_tmp = c_chfl_residue_properties_count(this%unsafe_ptr(), count)
+    !
+    !     if (present(status)) then
+    !         status = status_tmp
+    !     end if
+    ! end subroutine
+
+    ! subroutine list_properties(this, names, count, status)
     !     implicit none
     !     class(chfl_residue), intent(in) :: this
     !     character, intent(in), dimension(:, :), target :: names
-    !     integer(kind=c_int64_t), value :: count
-    !     integer(chfl_status), optional :: status
-    !     integer(chfl_status) :: status_tmp_
+    !     integer(kind=c_int64_t), intent(in) :: count
+    !     integer(chfl_status), intent(out), optional :: status
+    !     integer(chfl_status) :: status_tmp
     !
-    !     status_tmp_ = c_chfl_residue_list_properties(this%ptr, c_loc(names), count)
+    !     status_tmp = c_chfl_residue_list_properties(this%unsafe_ptr(), c_loc(names), count)
     !
     !     if (present(status)) then
-    !         status = status_tmp_
+    !         status = status_tmp
     !     end if
     ! end subroutine
 
-    ! subroutine chfl_residue_set_property(this, name, property, status)
+    ! subroutine set_property(this, name, property, status)
     !     implicit none
-    !     class(chfl_residue) :: this
+    !     class(chfl_residue), intent(inout) :: this
     !     character(len=*), intent(in) :: name
     !     class(chfl_property), intent(in) :: property
-    !     integer(chfl_status), optional :: status
-    !     integer(chfl_status) :: status_tmp_
+    !     integer(chfl_status), intent(out), optional :: status
+    !     integer(chfl_status) :: status_tmp
     !
-    !     status_tmp_ = c_chfl_residue_set_property(this%ptr, f_to_c_str(name), property%ptr)
+    !     status_tmp = c_chfl_residue_set_property(this%unsafe_ptr(), f_to_c_str(name), property%unsafe_ptr())
     !
     !     if (present(status)) then
-    !         status = status_tmp_
+    !         status = status_tmp
     !     end if
     ! end subroutine
     !
-    ! subroutine chfl_residue_get_property_init_(this, residue, name, status)
+    ! subroutine get_property_init_(this, residue, name, status)
     !     implicit none
     !     class(chfl_property) :: this
     !     class(chfl_residue), intent(in) :: residue
     !     character(len=*), intent(in) :: name
-    !     integer(chfl_status), optional :: status
-    !     integer(chfl_status) :: status_tmp_
+    !     integer(chfl_status), intent(out), optional :: status
+    !     integer(chfl_status) :: status_tmp
     !
-    !     this%ptr = c_chfl_residue_get_property(residue%ptr, f_to_c_str(name))
+    !     this%unsafe_ptr() = c_chfl_residue_get_property(residue%unsafe_ptr(), f_to_c_str(name))
     !
-    !     if (.not. c_associated(this%ptr)) then
-    !         status_tmp_ = CHFL_MEMORY_ERROR
+    !     if (.not. c_associated(this%unsafe_ptr())) then
+    !         status_tmp = CHFL_MEMORY_ERROR
     !     else
-    !         status_tmp_ = CHFL_SUCCESS
+    !         status_tmp = CHFL_SUCCESS
     !     end if
     !
     !
     !     if (present(status)) then
-    !         status = status_tmp_
+    !         status = status_tmp
     !     end if
     ! end subroutine
 
-    subroutine chfl_residue_free(this, status)
+    subroutine free(this, status)
         implicit none
-        class(chfl_residue), intent(in) :: this
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_residue), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_residue_free(this%ptr)
+        status_tmp = c_chfl_residue_free(this%unsafe_ptr())
+        this%ptr = c_null_ptr
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 end module
