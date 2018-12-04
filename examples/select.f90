@@ -11,8 +11,7 @@ program select
     type(chfl_selection) :: selection
     type(chfl_match), allocatable, dimension(:) :: matches
     integer(int64), allocatable, dimension(:) :: to_remove
-    integer(int64) :: matching, i, nsteps, step
-    integer :: status
+    integer(int64) :: count, i, nsteps, step
 
     call input%open("input.arc", 'r')
     call output%open("output.pdb", 'w')
@@ -26,18 +25,18 @@ program select
     do step=1,nsteps
         call input%read(frame)
 
-        matching = 0
-        call selection%evaluate(frame, matching)
-        allocate(matches(matching))
-        call selection%matches(matches, matching)
+        count = 0
+        call selection%evaluate(frame, count)
+        allocate(matches(count))
+        call selection%matches(matches)
 
-        allocate(to_remove(matching))
-        do i=1,matching
+        allocate(to_remove(count))
+        do i = 1, count
             to_remove(i) = matches(i)%atoms(1)
         end do
 
         call sort(to_remove)
-        do i = matching - 1, 0, -1
+        do i = count - 1, 0, -1
             call frame%remove(to_remove(i))
         end do
 

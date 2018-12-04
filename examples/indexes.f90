@@ -10,7 +10,7 @@ program indexes
     type(chfl_frame) :: frame
     real(real64), dimension(:, :), pointer :: positions
     integer(int64), dimension(:), allocatable :: less_than_five
-    integer(int64) :: i, natoms = 0
+    integer(int64) :: i, natoms
     integer :: matched
 
     call file%open("filename.xyz", 'r')
@@ -21,7 +21,7 @@ program indexes
     allocate(less_than_five(natoms))
 
     matched = 0
-    do i = 1,natoms
+    do i = 1, natoms
         if (positions(0, i) .lt. 5) then
             less_than_five(matched) = i
             matched = matched + 1
