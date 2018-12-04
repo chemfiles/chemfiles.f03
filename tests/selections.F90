@@ -18,45 +18,41 @@ contains
         integer :: status
 
         call selection%init("name O", status=status)
-        CHECK(status == 0)
-        call cloned%copy(selection, status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
+        call cloned%init(selection, status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call selection%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_string()
         implicit none
         type(chfl_selection) :: selection
-        character(len=32) :: string
         integer :: status
 
         call selection%init('name O', status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
 
-        call selection%string(string, len(string, int64), status=status)
-        CHECK(status == 0)
-        CHECK(string == 'name O')
+        CHECK(selection%string(status=status) == 'name O')
+        CHECK(status == CHFL_SUCCESS)
 
         call selection%free(status=status)
-        CHECK(status == 0)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_size()
         implicit none
         type(chfl_selection) :: selection
-        integer(kind=int64) :: size
         integer :: status
 
         call selection%init("name O", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%size(size, status=status)
+        CHECK(selection%size(status=status) == 1)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(size == 1)
 
         call selection%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -64,9 +60,8 @@ contains
         call selection%init("pairs: name(#1) Zn and name(#2) Ar", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%size(size, status=status)
+        CHECK(selection%size(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(size == 2)
 
         call selection%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -77,7 +72,7 @@ contains
         type(chfl_frame) :: frame
         type(chfl_selection) :: selection
         type(chfl_match), dimension(:), allocatable :: matches
-        integer(kind=int64) :: n_matches
+        integer(kind=int64) :: count
         integer :: status
 
         frame = testing_frame()
@@ -85,14 +80,14 @@ contains
         call selection%init("name O", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%evaluate(frame, n_matches, status=status)
+        call selection%evaluate(frame, count, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n_matches == 2)
+        CHECK(count == 2)
 
-        allocate(matches(n_matches), stat=status)
+        allocate(matches(count), stat=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%matches(matches, n_matches, status=status)
+        call selection%matches(matches, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(matches(1)%size == 1)
@@ -114,7 +109,7 @@ contains
         type(chfl_frame) :: frame
         type(chfl_selection) :: selection
         type(chfl_match), dimension(:), allocatable :: matches
-        integer(kind=int64) :: n_matches
+        integer(kind=int64) :: count
         integer :: status
 
         frame = testing_frame()
@@ -122,14 +117,14 @@ contains
         call selection%init("angles: all", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%evaluate(frame, n_matches, status=status)
+        call selection%evaluate(frame, count, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n_matches == 2)
+        CHECK(count == 2)
 
-        allocate(matches(n_matches), stat=status)
+        allocate(matches(count), stat=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%matches(matches, n_matches, status=status)
+        call selection%matches(matches, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(matches(1)%size == 3)
