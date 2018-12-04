@@ -18,35 +18,25 @@ contains
     subroutine test_copy()
         implicit none
         type(chfl_topology) :: topology, cloned
-        integer(int64) :: natoms
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call topology%resize(int(90, int64), status=status)
+        call cloned%init(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cloned%copy(topology, status=status)
+        CHECK(topology%atoms_count(status=status) == 0)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%atoms_count(natoms, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 90)
-        natoms = 0
-        call cloned%atoms_count(natoms, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 90)
-
-        call topology%resize(int(10, int64), status=status)
+        call topology%resize(10_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%atoms_count(natoms, status=status)
+        CHECK(topology%atoms_count(status=status) == 10)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 10)
-        natoms = 0
-        call cloned%atoms_count(natoms, status=status)
+        CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 90)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -57,22 +47,19 @@ contains
     subroutine test_size()
         implicit none
         type(chfl_topology) :: topology
-        integer(int64) :: natoms = 100
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%atoms_count(natoms, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 0)
-
-        call topology%resize(int(90, int64), status=status)
+        CHECK(topology%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%atoms_count(natoms, status=status)
+        call topology%resize(90_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 90)
+
+        CHECK(topology%atoms_count(status=status) == 90)
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -82,8 +69,6 @@ contains
         implicit none
         type(chfl_topology) :: topology
         type(chfl_atom) :: O, H, atom
-        integer(int64) :: natoms = 0
-        character(len=32) :: name
         integer :: status
 
         call topology%init(status=status)
@@ -102,26 +87,25 @@ contains
         call topology%add_atom(H, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%atoms_count(natoms, status=status)
+        CHECK(topology%atoms_count(status=status) == 4)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 4)
 
         call O%free()
         call H%free()
 
-        ! call atom%from_topology(topology, int(2, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'O')
-        !
-        ! call atom%free()
-
-        call topology%remove(int(3, int64), status=status)
-        call topology%atoms_count(natoms, status=status)
+        atom = topology%atom(2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 3)
+
+        CHECK(atom%name(status=status) == 'O')
+        CHECK(status == CHFL_SUCCESS)
+
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%remove(3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%atoms_count(status=status) == 3)
+        CHECK(status == CHFL_SUCCESS)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -130,52 +114,36 @@ contains
     subroutine test_bonds()
         implicit none
         type(chfl_topology) :: topology
-        type(chfl_atom) :: atom
-        integer(int64) :: n, i, j
         integer(int64), dimension(2, 3) :: bonds, expected
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-
-        call atom%init("", status=status)
-        CHECK(status == CHFL_SUCCESS)
-        do i = 1,4
-            call topology%add_atom(atom, status=status)
-            CHECK(status == CHFL_SUCCESS)
-        enddo
-        call atom%free(status=status)
+        call topology%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%bonds_count(n, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
-
-        call topology%add_bond(int(0, int64), int(1, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(1, int64), int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(2, int64), int(3, int64), status=status)
+        CHECK(topology%bonds_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%bonds_count(n, status=status)
+        call topology%add_bond(0_int64, 1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 3)
+        call topology%add_bond(1_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(2_int64, 3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%bonds_count(status=status) == 3)
+        CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 1, 1, 2, 2, 3], [2, 3])
-        call topology%bonds(bonds, int(3, int64), status=status)
+        call topology%bonds(bonds, status=status)
         CHECK(status == CHFL_SUCCESS)
-        do i=1,2
-            do j=1,3
-                CHECK(bonds(i, j) == expected(i, j))
-            end do
-        end do
+        CHECK(all(bonds == expected))
 
-        call topology%remove_bond(int(2, int64), int(3, int64), status=status)
+        call topology%remove_bond(2_int64, 3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call topology%bonds_count(n, status=status)
+        CHECK(topology%bonds_count(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 2)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -184,53 +152,37 @@ contains
     subroutine test_angles()
         implicit none
         type(chfl_topology) :: topology
-        type(chfl_atom) :: atom
-        integer(int64) :: n, i, j
         integer(int64), dimension(3, 2) :: angles, expected
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-
-        call atom%init("", status=status)
-        CHECK(status == CHFL_SUCCESS)
-        do i = 1,4
-            call topology%add_atom(atom, status=status)
-            CHECK(status == CHFL_SUCCESS)
-        enddo
-        call atom%free(status=status)
+        call topology%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%angles_count(n, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
-
-        call topology%add_bond(int(0, int64), int(1, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(1, int64), int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(2, int64), int(3, int64), status=status)
+        CHECK(topology%angles_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%angles_count(n, status=status)
+        call topology%add_bond(0_int64, 1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 2)
+        call topology%add_bond(1_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(2_int64, 3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%angles_count(status=status) == 2)
+        CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 1, 2, 1, 2, 3], [3, 2])
-        call topology%angles(angles, int(2, int64), status=status)
+        call topology%angles(angles, status=status)
         CHECK(status == CHFL_SUCCESS)
-        do i=1,3
-            do j=1,2
-                CHECK(angles(i, j) == expected(i, j))
-            end do
-        end do
+        CHECK(all(angles == expected))
 
-        call topology%remove_bond(int(2, int64), int(3, int64), status=status)
+        call topology%remove_bond(2_int64, 3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%angles_count(n, status=status)
+        CHECK(topology%angles_count(status=status) == 1)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 1)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -239,51 +191,37 @@ contains
     subroutine test_dihedrals()
         implicit none
         type(chfl_topology) :: topology
-        type(chfl_atom) :: atom
-        integer(int64) :: n, i
         integer(int64), dimension(4, 1) :: dihedrals, expected
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-
-        call atom%init("", status=status)
-        CHECK(status == CHFL_SUCCESS)
-        do i = 1,4
-            call topology%add_atom(atom, status=status)
-            CHECK(status == CHFL_SUCCESS)
-        enddo
-        call atom%free(status=status)
+        call topology%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%dihedrals_count(n, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
-
-        call topology%add_bond(int(0, int64), int(1, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(1, int64), int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(2, int64), int(3, int64), status=status)
+        CHECK(topology%dihedrals_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%dihedrals_count(n, status=status)
+        call topology%add_bond(0_int64, 1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 1)
+        call topology%add_bond(1_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(2_int64, 3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%dihedrals_count(status=status) == 1)
+        CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 1, 2, 3], [4, 1])
-        call topology%dihedrals(dihedrals, int(1, int64), status=status)
+        call topology%dihedrals(dihedrals, status=status)
         CHECK(status == CHFL_SUCCESS)
-        do i=1,4
-            CHECK(dihedrals(i, 1) == expected(i, 1))
-        end do
+        CHECK(all(dihedrals == expected))
 
-        call topology%remove_bond(int(2, int64), int(3, int64), status=status)
+        call topology%remove_bond(2_int64, 3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%dihedrals_count(n, status=status)
+        CHECK(topology%dihedrals_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -292,44 +230,31 @@ contains
     subroutine test_impropers()
         implicit none
         type(chfl_topology) :: topology
-        type(chfl_atom) :: atom
-        integer(int64) :: n, i
         integer(int64), dimension(4, 1) :: impropers, expected
         integer :: status
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-
-        call atom%init("", status=status)
-        CHECK(status == CHFL_SUCCESS)
-        do i = 1,4
-            call topology%add_atom(atom, status=status)
-            CHECK(status == CHFL_SUCCESS)
-        enddo
-        call atom%free(status=status)
+        call topology%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%dihedrals_count(n, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
-
-        call topology%add_bond(int(0, int64), int(1, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(0, int64), int(2, int64), status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%add_bond(int(0, int64), int(3, int64), status=status)
+        CHECK(topology%impropers_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%impropers_count(n, status=status)
+        call topology%add_bond(0_int64, 1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 1)
+        call topology%add_bond(0_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(0_int64, 3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%impropers_count(status=status) == 1)
+        CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([1, 0, 2, 3], [4, 1])
-        call topology%impropers(impropers, int(1, int64), status=status)
+        call topology%impropers(impropers, status=status)
         CHECK(status == CHFL_SUCCESS)
-        do i=1,4
-            CHECK(impropers(i, 1) == expected(i, 1))
-        end do
+        CHECK(all(impropers == expected))
 
         call topology%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -340,9 +265,6 @@ contains
         type(chfl_topology) :: topology
         type(chfl_atom) :: atom
         type(chfl_residue) :: residue, first, second
-        logical(1) :: linked
-        character(len=32) :: name
-        integer(int64) :: n
         integer :: status
 
         call atom%init("X", status=status)
@@ -351,9 +273,8 @@ contains
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%residues_count(n, status=status)
+        CHECK(topology%residues_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 0)
 
         call topology%add_atom(atom, status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -370,9 +291,9 @@ contains
         call residue%init("foo", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%add_atom(int(0, int64), status=status)
+        call residue%add_atom(0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call residue%add_atom(int(1, int64), status=status)
+        call residue%add_atom(1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call topology%add_residue(residue, status=status)
@@ -384,7 +305,7 @@ contains
         call residue%init("bar", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%add_atom(int(2, int64), status=status)
+        call residue%add_atom(2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call topology%add_residue(residue, status=status)
@@ -393,42 +314,38 @@ contains
         call residue%free(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%residues_count(n, status=status)
+        CHECK(topology%residues_count(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(n == 2)
 
-        ! call first%from_topology(topology, int(0, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call first%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'foo')
-        !
-        ! call second%for_atom(topology, int(3, int64), status=status)
-        ! CHECK(status /= CHFL_SUCCESS)
-        !
-        ! call second%for_atom(topology, int(2, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! call second%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'bar')
-        !
-        ! call topology%residues_linked(first, second, linked, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(linked .eqv. .false.)
-        !
-        ! call topology%add_bond(int(1, int64), int(2, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%residues_linked(first, second, linked, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(linked .eqv. .true.)
-        !
-        ! call first%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! call second%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        first = topology%residue(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(first%name(status=status) == 'foo')
+        CHECK(status == CHFL_SUCCESS)
+
+        second = topology%residue_for_atom(3_int64, status=status)
+        CHECK(status /= CHFL_SUCCESS)
+
+        second = topology%residue_for_atom(2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(second%name(status=status) == 'bar')
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%residues_linked(first, second, status=status) .eqv. .false.)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%add_bond(1_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%residues_linked(first, second, status=status) .eqv. .true.)
+        CHECK(status == CHFL_SUCCESS)
+
+        call first%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call second%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 end program

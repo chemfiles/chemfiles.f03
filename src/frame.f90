@@ -237,7 +237,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_frame_set_topology(this%ptr, topology%ptr)
+        status_tmp_ = c_chfl_frame_set_topology(this%ptr, topology%unsafe_const_ptr())
 
         if (present(status)) then
             status = status_tmp_

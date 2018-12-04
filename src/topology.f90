@@ -12,424 +12,464 @@ module chemfiles_topology
     public :: chfl_topology
 
     type chfl_topology
+        private
         type(c_ptr) :: ptr = c_null_ptr
     contains
-        procedure :: init => chfl_topology_init_
-        procedure :: copy => chfl_topology_copy_init_
-        procedure :: atoms_count => chfl_topology_atoms_count
-        procedure :: resize => chfl_topology_resize
-        procedure :: add_atom => chfl_topology_add_atom
-        procedure :: remove => chfl_topology_remove
-        procedure :: bonds_count => chfl_topology_bonds_count
-        procedure :: angles_count => chfl_topology_angles_count
-        procedure :: dihedrals_count => chfl_topology_dihedrals_count
-        procedure :: impropers_count => chfl_topology_impropers_count
-        procedure :: bonds => chfl_topology_bonds
-        procedure :: angles => chfl_topology_angles
-        procedure :: dihedrals => chfl_topology_dihedrals
-        procedure :: impropers => chfl_topology_impropers
-        procedure :: add_bond => chfl_topology_add_bond
-        procedure :: remove_bond => chfl_topology_remove_bond
-        procedure :: residues_count => chfl_topology_residues_count
-        procedure :: add_residue => chfl_topology_add_residue
-        procedure :: residues_linked => chfl_topology_residues_linked
-        procedure :: bond_with_order => chfl_topology_bond_with_order
-        procedure :: bond_orders => chfl_topology_bond_orders
-        procedure :: bond_order => chfl_topology_bond_order
-        procedure :: free => chfl_topology_free
+        procedure :: unsafe_set_ptr
+        procedure :: unsafe_ptr
+        procedure :: unsafe_const_ptr
+
+        generic, public :: init => create, copy
+        procedure, private :: create, copy
+
+        procedure :: atoms_count
+        procedure :: resize
+        procedure :: atom
+        procedure :: add_atom
+        procedure :: remove
+        procedure :: bonds_count
+        procedure :: angles_count
+        procedure :: dihedrals_count
+        procedure :: impropers_count
+        procedure :: bonds
+        procedure :: angles
+        procedure :: dihedrals
+        procedure :: impropers
+        procedure :: add_bond
+        procedure :: remove_bond
+        procedure :: residues_count
+        procedure :: residue
+        procedure :: residue_for_atom
+        procedure :: add_residue
+        procedure :: residues_linked
+        procedure :: bond_orders
+        procedure :: bond_order
+        procedure :: free
     end type
 
 contains
-    subroutine chfl_topology_init_(this, status)
+    subroutine unsafe_set_ptr(this, ptr, status)
         implicit none
-        class(chfl_topology) :: this
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_topology), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), optional, intent(out) :: status
+        integer(chfl_status) :: dummy
 
-        this%ptr = c_chfl_topology()
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
+        if (c_associated(this%unsafe_ptr())) then
+            print*, "Trying to reset an allocated chfl_topology. Call chfl_topology%free first."
+            ! free the allocated memory
+            dummy = c_chfl_topology_free(ptr)
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
         end if
 
+        this%ptr = ptr
 
         if (present(status)) then
-            status = status_tmp_
+            if (.not. c_associated(this%unsafe_ptr())) then
+                status = CHFL_MEMORY_ERROR
+            else
+                status = CHFL_SUCCESS
+            end if
         end if
     end subroutine
 
-    subroutine chfl_topology_copy_init_(this, topology, status)
+    type(c_ptr) function unsafe_ptr(this)
         implicit none
-        class(chfl_topology) :: this
+        class(chfl_topology), intent(inout) :: this
+        unsafe_ptr = this%ptr
+    end function
+
+    type(c_ptr) function unsafe_const_ptr(this)
+        implicit none
+        class(chfl_topology), intent(in) :: this
+        unsafe_const_ptr = this%ptr
+    end function
+
+    subroutine create(this, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(c_chfl_topology(), status)
+    end subroutine
+
+    subroutine copy(this, topology, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
         class(chfl_topology), intent(in) :: topology
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        this%ptr = c_chfl_topology_copy(topology%ptr)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
+        call this%unsafe_set_ptr(c_chfl_topology_copy(topology%unsafe_const_ptr()), status)
     end subroutine
 
-    subroutine chfl_topology_atoms_count(this, count, status)
+    function atoms_count(this, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t) :: atoms_count
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_atoms_count(this%ptr, count)
+        status_tmp = c_chfl_topology_atoms_count(this%unsafe_const_ptr(), atoms_count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
+        end if
+    end function
+
+    subroutine resize(this, natoms, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: natoms
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_topology_resize(this%unsafe_ptr(), natoms)
+
+        if (present(status)) then
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_resize(this, natoms, status)
+    type(chfl_atom) function atom(this, i, status)
         implicit none
-        class(chfl_topology) :: this
-        integer(kind=c_int64_t), value :: natoms
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_topology), intent(inout) :: this
+        integer(c_int64_t), intent(in) :: i
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_resize(this%ptr, natoms)
+        call atom%unsafe_set_ptr(c_chfl_atom_from_topology(this%unsafe_ptr(), i), status)
+    end function
 
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_topology_add_atom(this, atom, status)
+    subroutine add_atom(this, atom, status)
         implicit none
-        class(chfl_topology) :: this
+        class(chfl_topology), intent(inout) :: this
         class(chfl_atom), intent(in) :: atom
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_add_atom(this%ptr, atom%as_const_ptr())
+        status_tmp = c_chfl_topology_add_atom(this%unsafe_ptr(), atom%unsafe_const_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_remove(this, i, status)
+    subroutine remove(this, i, status)
         implicit none
-        class(chfl_topology) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_topology), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: i
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_remove(this%ptr, i)
+        status_tmp = c_chfl_topology_remove(this%unsafe_ptr(), i)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_bonds_count(this, count, status)
-        implicit none
-        class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_topology_bonds_count(this%ptr, count)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_topology_angles_count(this, count, status)
+    function bonds_count(this, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t) :: bonds_count
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_angles_count(this%ptr, count)
+        status_tmp = c_chfl_topology_bonds_count(this%unsafe_const_ptr(), bonds_count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_dihedrals_count(this, count, status)
+    function angles_count(this, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t) :: angles_count
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_dihedrals_count(this%ptr, count)
+        status_tmp = c_chfl_topology_angles_count(this%unsafe_const_ptr(), angles_count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_impropers_count(this, count, status)
+    function dihedrals_count(this, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t) :: dihedrals_count
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_impropers_count(this%ptr, count)
+        status_tmp = c_chfl_topology_dihedrals_count(this%unsafe_const_ptr(), dihedrals_count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_bonds(this, data, count, status)
+    function impropers_count(this, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: count
-        integer(kind=c_int64_t), dimension(count, 2), target :: data
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t) :: impropers_count
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_bonds(this%ptr, c_loc(data), count)
+        status_tmp = c_chfl_topology_impropers_count(this%unsafe_const_ptr(), impropers_count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_angles(this, data, count, status)
+    subroutine bonds(this, data, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: count
-        integer(kind=c_int64_t), dimension(count, 3), target :: data
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(out), dimension(:, :), target :: data
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_angles(this%ptr, c_loc(data), count)
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t), dimension(2) :: data_shape
+
+        data_shape = shape(data, c_int64_t)
+        if (data_shape(1) /= 2) then
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
+        end if
+        status_tmp = c_chfl_topology_bonds(this%unsafe_const_ptr(), c_loc(data), data_shape(2))
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_dihedrals(this, data, count, status)
+    subroutine angles(this, data, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: count
-        integer(kind=c_int64_t), dimension(count, 4), target :: data
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(out), dimension(:, :), target :: data
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_dihedrals(this%ptr, c_loc(data), count)
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t), dimension(2) :: data_shape
+
+        data_shape = shape(data, c_int64_t)
+        if (data_shape(1) /= 3) then
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
+        end if
+
+        status_tmp = c_chfl_topology_angles(this%unsafe_const_ptr(), c_loc(data), data_shape(2))
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_impropers(this, data, count, status)
+    subroutine dihedrals(this, data, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: count
-        integer(kind=c_int64_t), dimension(count, 4), target :: data
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(out), dimension(:, :), target :: data
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_impropers(this%ptr, c_loc(data), count)
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t), dimension(2) :: data_shape
+
+        data_shape = shape(data, c_int64_t)
+        if (data_shape(1) /= 4) then
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
+        end if
+        status_tmp = c_chfl_topology_dihedrals(this%unsafe_const_ptr(), c_loc(data), data_shape(2))
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_add_bond(this, i, j, status)
-        implicit none
-        class(chfl_topology) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(kind=c_int64_t), value :: j
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_topology_add_bond(this%ptr, i, j)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_topology_remove_bond(this, i, j, status)
-        implicit none
-        class(chfl_topology) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(kind=c_int64_t), value :: j
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_topology_remove_bond(this%ptr, i, j)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_topology_residues_count(this, count, status)
+    subroutine impropers(this, data, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t) :: count
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(out), dimension(:, :), target :: data
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_residues_count(this%ptr, count)
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t), dimension(2) :: data_shape
+
+        data_shape = shape(data, c_int64_t)
+        if (data_shape(1) /= 4) then
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
+        end if
+
+        status_tmp = c_chfl_topology_impropers(this%unsafe_const_ptr(), c_loc(data), data_shape(2))
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_add_residue(this, residue, status)
+    subroutine add_bond(this, i, j, bond_order, status)
         implicit none
-        class(chfl_topology) :: this
+        class(chfl_topology), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: i
+        integer(kind=c_int64_t), intent(in) :: j
+        integer(chfl_bond_order), intent(in), optional :: bond_order
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        if (present(bond_order)) then
+            status_tmp = c_chfl_topology_bond_with_order(this%unsafe_ptr(), i, j, bond_order)
+        else
+            status_tmp = c_chfl_topology_add_bond(this%unsafe_ptr(), i, j)
+        end if
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine remove_bond(this, i, j, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: i
+        integer(kind=c_int64_t), intent(in) :: j
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_topology_remove_bond(this%unsafe_ptr(), i, j)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    integer(kind=c_int64_t) function residues_count(this, status)
+        implicit none
+        class(chfl_topology), intent(in) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_topology_residues_count(this%unsafe_const_ptr(), residues_count)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end function
+
+    type(chfl_residue) function residue(this, i, status)
+        implicit none
+        class(chfl_topology), intent(in) :: this
+        integer(c_int64_t), intent(in) :: i
+        integer(chfl_status), intent(out), optional :: status
+
+        call residue%unsafe_set_const_ptr(                                    &
+            c_chfl_residue_from_topology(this%unsafe_const_ptr(), i), status  &
+        )
+    end function
+
+    type(chfl_residue) function residue_for_atom(this, i, status)
+        implicit none
+        class(chfl_topology), intent(in) :: this
+        integer(c_int64_t), intent(in) :: i
+        integer(chfl_status), intent(out), optional :: status
+
+        call residue_for_atom%unsafe_set_const_ptr(                           &
+            c_chfl_residue_for_atom(this%unsafe_const_ptr(), i), status       &
+        )
+    end function
+
+    subroutine add_residue(this, residue, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
         class(chfl_residue), intent(in) :: residue
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_add_residue(this%ptr, residue%as_const_ptr())
+        status_tmp = c_chfl_topology_add_residue(this%unsafe_ptr(), residue%unsafe_const_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_residues_linked(this, first, second, result, status)
+    logical function residues_linked(this, first, second, status)
         implicit none
         class(chfl_topology), intent(in) :: this
         class(chfl_residue), intent(in) :: first
         class(chfl_residue), intent(in) :: second
-        logical(kind=c_bool) :: result
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_residues_linked(                      &
-            this%ptr, first%as_const_ptr(), second%as_const_ptr(), result   &
+        integer(chfl_status) :: status_tmp
+        logical(c_bool) :: result
+
+        status_tmp = c_chfl_topology_residues_linked(                         &
+            this%unsafe_const_ptr(),                                              &
+            first%unsafe_const_ptr(),                                             &
+            second%unsafe_const_ptr(),                                            &
+            result                                                            &
         )
+        residues_linked = logical(result)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_bond_with_order(this, i, j, bond_order, status)
-        implicit none
-        class(chfl_topology) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(kind=c_int64_t), value :: j
-        integer(chfl_bond_order), value :: bond_order
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_topology_bond_with_order(this%ptr, i, j, bond_order)
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_topology_bond_orders(this, orders, nbonds, status)
+    subroutine bond_orders(this, data, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: nbonds
-        integer(chfl_bond_order), dimension(nbonds), target :: orders
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_bond_order), intent(out), dimension(:), target :: data
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_topology_bond_orders(this%ptr, c_loc(orders), nbonds)
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t) :: count
+
+        count = size(data, 1, c_int64_t)
+        status_tmp = c_chfl_topology_bond_orders(this%unsafe_const_ptr(), c_loc(data), count)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_topology_bond_order(this, i, j, order, status)
+    integer(chfl_bond_order) function bond_order(this, i, j, status)
         implicit none
         class(chfl_topology), intent(in) :: this
-        integer(kind=c_int64_t), value :: i
-        integer(kind=c_int64_t), value :: j
-        integer(chfl_bond_order) :: order
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(kind=c_int64_t), intent(in) :: i
+        integer(kind=c_int64_t), intent(in) :: j
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_bond_order(this%ptr, i, j, order)
+        status_tmp = c_chfl_topology_bond_order(this%unsafe_const_ptr(), i, j, bond_order)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_topology_free(this, status)
+    subroutine free(this, status)
         implicit none
-        class(chfl_topology), intent(in) :: this
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_topology), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_topology_free(this%ptr)
+        status_tmp = c_chfl_topology_free(this%unsafe_ptr())
+        this%ptr = c_null_ptr
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
-
-    ! subroutine chfl_residue_from_topology_init_(this, topology, i, status)
-    !     implicit none
-    !     class(chfl_residue) :: this
-    !     class(chfl_topology), intent(in) :: topology
-    !     integer(kind=c_int64_t), value :: i
-    !     integer(chfl_status), optional :: status
-    !     integer(chfl_status) :: status_tmp_
-    !
-    !     this%ptr = c_chfl_residue_from_topology(topology%ptr, i)
-    !
-    !     if (.not. c_associated(this%ptr)) then
-    !         status_tmp_ = CHFL_MEMORY_ERROR
-    !     else
-    !         status_tmp_ = CHFL_SUCCESS
-    !     end if
-    !
-    !
-    !     if (present(status)) then
-    !         status = status_tmp_
-    !     end if
-    ! end subroutine
-    !
-    ! subroutine chfl_residue_for_atom_init_(this, topology, i, status)
-    !     implicit none
-    !     class(chfl_residue) :: this
-    !     class(chfl_topology), intent(in) :: topology
-    !     integer(kind=c_int64_t), value :: i
-    !     integer(chfl_status), optional :: status
-    !     integer(chfl_status) :: status_tmp_
-    !
-    !     this%ptr = c_chfl_residue_for_atom(topology%ptr, i)
-    !
-    !     if (.not. c_associated(this%ptr)) then
-    !         status_tmp_ = CHFL_MEMORY_ERROR
-    !     else
-    !         status_tmp_ = CHFL_SUCCESS
-    !     end if
-    !
-    !
-    !     if (present(status)) then
-    !         status = status_tmp_
-    !     end if
-    ! end subroutine
 end module
