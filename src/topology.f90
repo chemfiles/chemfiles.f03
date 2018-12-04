@@ -304,7 +304,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_topology_add_residue(this%ptr, residue%ptr)
+        status_tmp_ = c_chfl_topology_add_residue(this%ptr, residue%as_const_ptr())
 
         if (present(status)) then
             status = status_tmp_
@@ -320,7 +320,9 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_topology_residues_linked(this%ptr, first%ptr, second%ptr, result)
+        status_tmp_ = c_chfl_topology_residues_linked(                      &
+            this%ptr, first%as_const_ptr(), second%as_const_ptr(), result   &
+        )
 
         if (present(status)) then
             status = status_tmp_
