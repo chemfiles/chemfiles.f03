@@ -49,7 +49,7 @@ contains
     function chfl_version() result(string)
         implicit none
 
-        character(len=1024) :: string
+        character(len=CHFL_STRING_LENGTH) :: string
         type(c_ptr) :: c_string
 
         c_string = c_chfl_version()
@@ -59,7 +59,7 @@ contains
     function chfl_last_error() result(string)
         implicit none
 
-        character(len=1024) :: string
+        character(len=CHFL_STRING_LENGTH) :: string
         type(c_ptr) :: c_string
 
         c_string = c_chfl_last_error()
