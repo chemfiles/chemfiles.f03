@@ -11,7 +11,7 @@ program select
     type(chfl_selection) :: selection
     type(chfl_match), allocatable, dimension(:) :: matches
     integer(int64), allocatable, dimension(:) :: to_remove
-    integer(int64) :: count, i, nsteps, step
+    integer(int64) :: count, i, step
 
     call input%open("input.arc", 'r')
     call output%open("output.pdb", 'w')
@@ -19,10 +19,7 @@ program select
     call frame%init()
     call selection%init("name Zn or name N")
 
-    nsteps = 0
-    call input%nsteps(nsteps)
-
-    do step=1,nsteps
+    do step=1,input%nsteps()
         call input%read(frame)
 
         count = 0

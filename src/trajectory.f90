@@ -16,190 +16,208 @@ module chemfiles_trajectory
         private
         type(c_ptr) :: ptr = c_null_ptr
     contains
-        procedure :: open => chfl_trajectory_open_init_
-        procedure :: with_format => chfl_trajectory_with_format_init_
-        procedure :: path => chfl_trajectory_path
-        procedure :: read => chfl_trajectory_read
-        procedure :: read_step => chfl_trajectory_read_step
-        procedure :: write => chfl_trajectory_write
-        procedure :: set_topology => chfl_trajectory_set_topology
-        procedure :: topology_file => chfl_trajectory_topology_file
-        procedure :: set_cell => chfl_trajectory_set_cell
-        procedure :: nsteps => chfl_trajectory_nsteps
-        procedure :: close => chfl_trajectory_close
+        procedure :: unsafe_set_ptr
+        procedure :: unsafe_ptr
+        procedure :: unsafe_const_ptr
+
+        procedure :: open
+        procedure :: path
+        procedure :: read
+        procedure :: read_step
+        procedure :: write
+        procedure :: set_topology
+        procedure :: topology_file
+        procedure :: set_cell
+        procedure :: nsteps
+        procedure :: close
     end type
 
 contains
-    subroutine chfl_trajectory_open_init_(this, path, mode, status)
+    subroutine unsafe_set_ptr(this, ptr, status)
         implicit none
-        class(chfl_trajectory) :: this
-        character(len=*), intent(in) :: path
-        character, value :: mode
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: dummy
 
-        this%ptr = c_chfl_trajectory_open(f_to_c_str(path), mode)
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
+        if (c_associated(this%unsafe_ptr())) then
+            print*, "Trying to reset an allocated chfl_trajectory. Call chfl_trajectory%free first."
+            ! free the allocated memory
+            dummy = c_chfl_trajectory_close(ptr)
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
         end if
 
+        this%ptr = ptr
 
         if (present(status)) then
-            status = status_tmp_
+            if (.not. c_associated(this%unsafe_ptr())) then
+                status = CHFL_MEMORY_ERROR
+            else
+                status = CHFL_SUCCESS
+            end if
         end if
     end subroutine
 
-    subroutine chfl_trajectory_with_format_init_(this, path, mode, format, status)
+    type(c_ptr) function unsafe_ptr(this)
         implicit none
-        class(chfl_trajectory) :: this
-        character(len=*), intent(in) :: path
-        character, value :: mode
-        character(len=*), intent(in) :: format
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        unsafe_ptr = this%ptr
+    end function
 
-        this%ptr = c_chfl_trajectory_with_format(f_to_c_str(path), mode, f_to_c_str(format))
-
-        if (.not. c_associated(this%ptr)) then
-            status_tmp_ = CHFL_MEMORY_ERROR
-        else
-            status_tmp_ = CHFL_SUCCESS
-        end if
-
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_trajectory_path(this, path, status)
+    type(c_ptr) function unsafe_const_ptr(this)
         implicit none
         class(chfl_trajectory), intent(in) :: this
-        character, intent(in), dimension(:), pointer :: path
-        integer(chfl_status), optional :: status
-        type(c_ptr), target :: c_path_
-        integer(chfl_status) :: status_tmp_
+        unsafe_const_ptr = this%ptr
+    end function
 
-        status_tmp_ = c_chfl_trajectory_path(this%ptr, c_loc(c_path_))
+    subroutine open(this, path, mode, format, status)
+        implicit none
+        class(chfl_trajectory), intent(inout) :: this
+        character(len=*), intent(in) :: path
+        character, value :: mode
+        character(len=*), intent(in), optional :: format
+        integer(chfl_status), intent(out), optional :: status
 
-        if (present(status)) then
-            status = status_tmp_
+        if (present(format)) then
+            call this%unsafe_set_ptr(                                                      &
+                c_chfl_trajectory_with_format(f_to_c_str(path), mode, f_to_c_str(format)), &
+                status=status                                                              &
+            )
+        else
+            call this%unsafe_set_ptr(c_chfl_trajectory_open(f_to_c_str(path), mode), status)
         end if
     end subroutine
 
-    subroutine chfl_trajectory_read(this, frame, status)
+    function path(this, status)
         implicit none
-        class(chfl_trajectory) :: this
-        class(chfl_frame) :: frame
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        character(len=CHFL_STRING_LENGTH) :: path
+        class(chfl_trajectory), intent(in) :: this
+        integer(chfl_status), intent(out), optional :: status
 
-        status_tmp_ = c_chfl_trajectory_read(this%ptr, frame%unsafe_ptr())
+        type(c_ptr), target :: c_path
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_trajectory_path(this%unsafe_const_ptr(), c_loc(c_path))
+        path = c_to_f_str(c_path)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
+        end if
+    end function
+
+    subroutine read(this, frame, status)
+        implicit none
+        class(chfl_trajectory), intent(inout) :: this
+        type(chfl_frame), intent(inout) :: frame
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_trajectory_read(this%unsafe_ptr(), frame%unsafe_ptr())
+
+        if (present(status)) then
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_read_step(this, step, frame, status)
+    subroutine read_step(this, step, frame, status)
         implicit none
-        class(chfl_trajectory) :: this
-        integer(kind=c_int64_t), value :: step
-        class(chfl_frame) :: frame
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        integer(kind=c_int64_t), intent(in) :: step
+        type(chfl_frame) :: frame
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_read_step(this%ptr, step, frame%unsafe_ptr())
+        status_tmp = c_chfl_trajectory_read_step(this%unsafe_ptr(), step, frame%unsafe_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_write(this, frame, status)
+    subroutine write(this, frame, status)
         implicit none
-        class(chfl_trajectory) :: this
-        class(chfl_frame), intent(in) :: frame
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        type(chfl_frame), intent(in) :: frame
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_write(this%ptr, frame%unsafe_const_ptr())
+        status_tmp = c_chfl_trajectory_write(this%unsafe_ptr(), frame%unsafe_const_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_set_topology(this, topology, status)
+    subroutine set_topology(this, topology, status)
         implicit none
-        class(chfl_trajectory) :: this
-        class(chfl_topology), intent(in) :: topology
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        type(chfl_topology), intent(in) :: topology
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_set_topology(this%ptr, topology%unsafe_const_ptr())
+        status_tmp = c_chfl_trajectory_set_topology(this%unsafe_ptr(), topology%unsafe_const_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_topology_file(this, path, format, status)
+    subroutine topology_file(this, path, format, status)
         implicit none
-        class(chfl_trajectory) :: this
+        class(chfl_trajectory), intent(inout) :: this
         character(len=*), intent(in) :: path
         character(len=*), intent(in) :: format
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_topology_file(this%ptr, f_to_c_str(path), f_to_c_str(format))
+        status_tmp = c_chfl_trajectory_topology_file(this%unsafe_ptr(), f_to_c_str(path), f_to_c_str(format))
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_set_cell(this, cell, status)
+    subroutine set_cell(this, cell, status)
         implicit none
-        class(chfl_trajectory) :: this
-        class(chfl_cell), intent(in) :: cell
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        type(chfl_cell), intent(in) :: cell
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_set_cell(this%ptr, cell%unsafe_const_ptr())
+        status_tmp = c_chfl_trajectory_set_cell(this%unsafe_ptr(), cell%unsafe_const_ptr())
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 
-    subroutine chfl_trajectory_nsteps(this, nsteps, status)
+    integer(kind=c_int64_t) function nsteps(this, status)
         implicit none
-        class(chfl_trajectory) :: this
-        integer(kind=c_int64_t) :: nsteps
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_nsteps(this%ptr, nsteps)
+        status_tmp = c_chfl_trajectory_nsteps(this%unsafe_ptr(), nsteps)
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
-    end subroutine
+    end function
 
-    subroutine chfl_trajectory_close(this, status)
+    subroutine close(this, status)
         implicit none
-        class(chfl_trajectory), intent(in) :: this
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
+        class(chfl_trajectory), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
 
-        status_tmp_ = c_chfl_trajectory_close(this%ptr)
+        status_tmp = c_chfl_trajectory_close(this%unsafe_ptr())
+        this%ptr = c_null_ptr
 
         if (present(status)) then
-            status = status_tmp_
+            status = status_tmp
         end if
     end subroutine
 end module

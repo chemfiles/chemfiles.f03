@@ -20,15 +20,17 @@ contains
         type(chfl_frame) :: frame
         real(real64) :: pos_1(3), pos_125(3)
         real(real64), pointer :: positions(:, :)
-        integer(int64) :: nsteps, i
+        integer :: i
         integer :: status
 
         call file%open("data/water.xyz", "r", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%nsteps(nsteps, status=status)
+        CHECK(file%path(status=status) == 'data/water.xyz')
         CHECK(status == CHFL_SUCCESS)
-        CHECK(nsteps == 100)
+
+        CHECK(file%nsteps(status=status) == 100)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -78,7 +80,7 @@ contains
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%with_format("data/helium.xyz.but.not.really", "r", "XYZ", status=status)
+        call file%open("data/helium.xyz.but.not.really", "r", "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call file%read(frame, status=status)
