@@ -17,7 +17,8 @@ program indexes
     call frame%init()
     call file%read(frame)
 
-    call frame%positions(positions, natoms)
+    positions => frame%positions()
+    natoms = size(positions, 2)
     allocate(less_than_five(natoms))
 
     matched = 0

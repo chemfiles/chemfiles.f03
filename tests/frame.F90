@@ -23,30 +23,25 @@ contains
     subroutine test_copy()
         implicit none
         type(chfl_frame) :: frame, cloned
-        integer(int64) :: natoms
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%copy(frame, status=status)
+        call cloned%init(frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        CHECK(frame%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 0)
-        call cloned%atoms_count(natoms, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 0)
-
-        call frame%resize(int(10, int64), status=status)
+        CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        call frame%resize(10_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 10)
-        call cloned%atoms_count(natoms, status=status)
+
+        CHECK(frame%atoms_count(status=status) == 10)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 0)
+        CHECK(cloned%atoms_count(status=status) == 0)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -57,22 +52,19 @@ contains
     subroutine test_natoms()
         implicit none
         type(chfl_frame) :: frame
-        integer(int64) :: natoms
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        CHECK(frame%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 0)
 
         call frame%resize(int(10, int64), status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        CHECK(frame%atoms_count(status=status) == 10)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 10)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -81,22 +73,19 @@ contains
     subroutine test_step()
         implicit none
         type(chfl_frame) :: frame
-        integer(int64) :: step
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%step(step, status=status)
+        CHECK(frame%step(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(step == 0)
 
         call frame%set_step(42_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%step(step, status=status)
+        CHECK(frame%step(status=status) == 42)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(step == 42)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -106,7 +95,6 @@ contains
         implicit none
         type(chfl_frame) :: frame
         type(chfl_atom) :: atom
-        integer(int64) :: natoms
         integer :: status
 
         call frame%init(status=status)
@@ -120,20 +108,26 @@ contains
         call frame%add_atom(atom, [10d0, 20d0, 30d0], [10d0, 20d0, 30d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
-        CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 2)
-
-        call frame%remove(int(0, int64), status=status)
+        call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        CHECK(frame%atoms_count(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 1)
 
-        call frame%free(status=status)
+        call frame%remove(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(frame%atoms_count(status=status) == 1)
+        CHECK(status == CHFL_SUCCESS)
+
+        atom = frame%atom(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(atom%name(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
         call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine
 
@@ -141,28 +135,28 @@ contains
         implicit none
         type(chfl_frame) :: frame
         real(real64), dimension(:, :), pointer :: positions, set_positions
-        integer(int64) :: natoms, i, j
+        integer :: i, j
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%resize(int(4, int64), status=status)
+        call frame%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%positions(set_positions, natoms, status=status)
+        set_positions => frame%positions(status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 4)
+        CHECK(all(shape(set_positions) == [3, 4]))
         do i=1,3
             do j=1,4
                 set_positions(i, j) = real(i * j)
             end do
         end do
 
-        call frame%positions(positions, natoms, status=status)
+        positions => frame%positions(status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 4)
+        CHECK(all(shape(positions) == [3, 4]))
         do i=1,3
-            do j=1,natoms
+            do j=1,4
                 CHECK(abs(positions(i, j) - real(i * j)) < 1e-9)
             end do
         end do
@@ -175,39 +169,37 @@ contains
         implicit none
         type(chfl_frame) :: frame
         real(real64), dimension(:, :), pointer :: velocities, set_velocities
-        integer(int64) :: natoms, i, j
-        logical(1) :: has_velocities = .true.
+        integer :: i, j
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%resize(int(4, int64), status=status)
+        call frame%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%has_velocities(has_velocities, status=status)
+        CHECK(frame%has_velocities(status=status) .eqv. .false.)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(has_velocities .eqv. .false.)
 
         call frame%add_velocities(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%has_velocities(has_velocities, status=status)
+        CHECK(frame%has_velocities(status=status) .eqv. .true.)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(has_velocities .eqv. .true.)
 
-        call frame%velocities(set_velocities, natoms, status=status)
+        set_velocities => frame%velocities(status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 4)
+        CHECK(all(shape(set_velocities) == [3, 4]))
         do i=1,3
             do j=1,4
                 set_velocities(i, j) = real(i * j)
             end do
         end do
 
-        call frame%velocities(velocities, natoms, status=status)
+        velocities => frame%velocities(status=status)
         CHECK(status == CHFL_SUCCESS)
+        CHECK(all(shape(velocities) == [3, 4]))
         do i=1,3
-            do j=1,natoms
+            do j=1,4
                 CHECK(abs(velocities(i, j) - real(i * j)) < 1e-9)
             end do
         end do
@@ -220,7 +212,6 @@ contains
         implicit none
         type(chfl_frame) :: frame
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: lengths
         integer :: status
 
         call frame%init(status=status)
@@ -231,11 +222,12 @@ contains
         CHECK(status == CHFL_SUCCESS)
         call cell%free()
 
-        ! call cell%from_frame(frame)
-        ! call cell%lengths(lengths)
-        ! CHECK(all(lengths == [3.0, 4.0, 5.0]))
-        ! call cell%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        cell = frame%cell(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(cell%lengths(status=status) == [3.0, 4.0, 5.0]))
+        CHECK(status == CHFL_SUCCESS)
+        call cell%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -245,50 +237,36 @@ contains
         implicit none
         type(chfl_frame) :: frame
         type(chfl_topology) :: topology
-        type(chfl_atom) :: Zn, Ar, atom
-        character(len=32) :: name
         integer :: status
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%resize(int(4, int64), status=status)
+        call frame%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%init()
-        call Zn%init("Zn")
-        call Ar%init("Ar")
-        call topology%add_atom(Zn)
-        call topology%add_atom(Zn)
-        call topology%add_atom(Ar)
-        call topology%add_atom(Ar)
+        call topology%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%resize(4_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(1_int64, 2_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%add_bond(1_int64, 3_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%set_topology(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free()
-        call Zn%free()
-        call Ar%free()
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
-        ! call topology%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call atom%from_topology(topology, 0_int64, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'Zn')
-        ! call atom%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call atom%from_frame(frame, 3_int64, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'Ar')
-        ! call atom%free()
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%bonds_count(status=status) == 2)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%atoms_count(status=status) == 4)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -330,8 +308,7 @@ contains
         implicit none
         type(chfl_frame) :: frame
         type(chfl_atom) :: atom
-        real(real64) :: distance, angle, dihedral, out_of_plane
-        real(real64) :: pi = 3.14159265358979323846264338327950288
+        real(real64), parameter :: pi = 3.14159265358979323846264338327950288d0
         integer :: status
 
         call frame%init(status=status)
@@ -354,25 +331,17 @@ contains
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        distance = 0
-        call frame%distance(int(0, int64), int(2, int64), distance, status=status)
+        CHECK(frame%distance(0_int64, 2_int64, status=status) == sqrt(2d0))
         CHECK(status == CHFL_SUCCESS)
-        CHECK(distance == sqrt(2d0))
 
-        angle = 0
-        call frame%angle(int(0, int64), int(1, int64), int(2, int64), angle, status=status)
+        CHECK(frame%angle(0_int64, 1_int64, 2_int64, status=status) == pi / 2d0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(angle - pi / 2d0) < 1d-6)
 
-        dihedral = 0
-        call frame%dihedral(int(0, int64), int(1, int64), int(2, int64), int(3, int64), dihedral, status=status)
+        CHECK(frame%dihedral(0_int64, 1_int64, 2_int64, 3_int64, status=status) == pi / 2d0);
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(dihedral - pi / 2) < 1d-6);
 
-        out_of_plane = 0
-        call frame%out_of_plane(int(1, int64), int(4, int64), int(0, int64), int(2, int64), out_of_plane, status=status)
+        CHECK(frame%out_of_plane(1_int64, 4_int64, 0_int64, 2_int64, status=status) == 2d0)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(abs(out_of_plane - 2.0) < 1e-6)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -383,7 +352,6 @@ contains
         type(chfl_frame) :: frame
         type(chfl_atom) :: atom
         type(chfl_topology) :: topology
-        integer(int64) :: n
         integer(int64), dimension(2, 3) :: bonds, expected
         integer :: status, i, j
 
@@ -399,57 +367,51 @@ contains
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%add_bond(int(0, int64), int(2, int64), status=status)
+        call frame%add_bond(0_int64, 2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%add_bond(int(1, int64), int(2, int64), status=status)
+        call frame%add_bond(1_int64, 2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%add_bond(int(3, int64), int(0, int64), status=status)
+        call frame%add_bond(3_int64, 0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call topology%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%bonds_count(n, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(n == 3)
-        !
-        ! expected = reshape([0, 2, 0, 3, 1, 2], [2, 3])
-        ! call topology%bonds(bonds, int(3, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! do i=1,2
-        !     do j=1,3
-        !         CHECK(bonds(i, j) == expected(i, j))
-        !     end do
-        ! end do
-        !
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
-        call frame%remove_bond(int(3, int64), int(0, int64), status=status)
+        expected = reshape([0, 2, 0, 3, 1, 2], [2, 3])
+        call topology%bonds(bonds, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(shape(bonds) == [2, 3]))
+        do i=1,2
+            do j=1,3
+                CHECK(bonds(i, j) == expected(i, j))
+            end do
+        end do
+
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%remove_bond(3_int64, 0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
         ! Non existant bonds, to check that this is fine to do
-        call frame%remove_bond(int(3, int64), int(0, int64), status=status)
+        call frame%remove_bond(3_int64, 0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%remove_bond(int(2, int64), int(3, int64), status=status)
+        call frame%remove_bond(2_int64, 3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call topology%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%bonds_count(n, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(n == 2)
-        !
-        ! expected = reshape([0, 2, 1, 2, -1, -1], [2, 3])
-        ! call topology%bonds(bonds, int(2, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! do i=1,2
-        !     do j=1,2
-        !         CHECK(bonds(i, j) == expected(i, j))
-        !     end do
-        ! end do
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        expected = reshape([0, 2, 1, 2, -1, -1], [2, 3])
+        call topology%bonds(bonds, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(shape(bonds) == [2, 2]))
+        do i=1,2
+            do j=1,2
+                CHECK(bonds(i, j) == expected(i, j))
+            end do
+        end do
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -460,8 +422,6 @@ contains
         type(chfl_frame) :: frame
         type(chfl_residue) :: residue
         type(chfl_topology) :: topology
-        integer(int64) :: n
-        character(len=32) :: name
         integer :: status
 
         call frame%init(status=status)
@@ -480,26 +440,19 @@ contains
         call residue%free(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call topology%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%residues_count(n, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(n == 3)
-        !
-        ! call residue%from_topology(topology, int(0, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call residue%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'foobar')
-        !
-        ! call residue%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
+        residue = topology%residue(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(residue%name(status=status) == 'foobar')
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine

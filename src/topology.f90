@@ -14,7 +14,9 @@ module chemfiles_topology
     type chfl_topology
         private
         type(c_ptr) :: ptr = c_null_ptr
+        logical :: is_const = .false.
     contains
+        procedure :: unsafe_set_const_ptr
         procedure :: unsafe_set_ptr
         procedure :: unsafe_ptr
         procedure :: unsafe_const_ptr
@@ -48,6 +50,17 @@ module chemfiles_topology
     end type
 
 contains
+
+    subroutine unsafe_set_const_ptr(this, ptr, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(ptr, status)
+        this%is_const = .true.
+    end subroutine
+
     subroutine unsafe_set_ptr(this, ptr, status)
         implicit none
         class(chfl_topology), intent(inout) :: this
@@ -79,6 +92,9 @@ contains
     type(c_ptr) function unsafe_ptr(this)
         implicit none
         class(chfl_topology), intent(inout) :: this
+        if (this%is_const) then
+            stop "can not write data to a const chfl_topology"
+        end if
         unsafe_ptr = this%ptr
     end function
 
@@ -467,6 +483,7 @@ contains
 
         status_tmp = c_chfl_topology_free(this%unsafe_ptr())
         this%ptr = c_null_ptr
+        this%is_const = .false.
 
         if (present(status)) then
             status = status_tmp
