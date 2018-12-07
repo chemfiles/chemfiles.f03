@@ -97,7 +97,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_trajectory_read(this%ptr, frame%ptr)
+        status_tmp_ = c_chfl_trajectory_read(this%ptr, frame%unsafe_ptr())
 
         if (present(status)) then
             status = status_tmp_
@@ -112,7 +112,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_trajectory_read_step(this%ptr, step, frame%ptr)
+        status_tmp_ = c_chfl_trajectory_read_step(this%ptr, step, frame%unsafe_ptr())
 
         if (present(status)) then
             status = status_tmp_
@@ -126,7 +126,7 @@ contains
         integer(chfl_status), optional :: status
         integer(chfl_status) :: status_tmp_
 
-        status_tmp_ = c_chfl_trajectory_write(this%ptr, frame%ptr)
+        status_tmp_ = c_chfl_trajectory_write(this%ptr, frame%unsafe_const_ptr())
 
         if (present(status)) then
             status = status_tmp_

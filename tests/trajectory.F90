@@ -20,7 +20,7 @@ contains
         type(chfl_frame) :: frame
         real(real64) :: pos_1(3), pos_125(3)
         real(real64), pointer :: positions(:, :)
-        integer(int64) :: natoms, nsteps, i
+        integer(int64) :: nsteps, i
         integer :: status
 
         call file%open("data/water.xyz", "r", status=status)
@@ -40,9 +40,9 @@ contains
         ! Check positions in the first frame
         pos_1 = [0.417219, 8.303366, 11.737172]
         pos_125 = [5.099554, -0.045104, 14.153846]
-        call frame%positions(positions, natoms, status=status)
+        positions => frame%positions(status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 297)
+        CHECK(all(shape(positions) == [3, 297]))
 
         do i=1,3
             CHECK(abs(pos_1(i) - positions(i, 1)) < 1d-6)
@@ -53,12 +53,11 @@ contains
         call file%read_step(int(41, int64), frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        pos_1(1) = 0.761277;  pos_1(2) = 8.106125;   pos_1(3) = 10.622949;
-        pos_125(1) = 5.13242; pos_125(2) = 0.079862; pos_125(3) = 14.194161;
+        pos_1(:) = [0.761277d0, 8.106125d0, 10.622949d0]
+        pos_125(:) = [5.13242d0, 0.079862d0, 14.194161d0]
 
-        call frame%positions(positions, natoms, status=status)
+        positions => frame%positions(status=status)
         CHECK(status == CHFL_SUCCESS)
-
         do i=1,3
             CHECK(abs(pos_1(i) - positions(i, 1)) < 1d-6)
             CHECK(abs(pos_125(i) - positions(i, 125)) < 1d-6)
@@ -74,7 +73,6 @@ contains
         implicit none
         type(chfl_trajectory) :: file
         type(chfl_frame) :: frame
-        integer(int64) :: natoms
         integer :: status
 
         call frame%init(status=status)
@@ -86,9 +84,8 @@ contains
         call file%read(frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%atoms_count(natoms, status=status)
+        CHECK(frame%atoms_count(status=status) == 125)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 125)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -101,7 +98,6 @@ contains
         type(chfl_trajectory) :: file
         type(chfl_frame) :: frame
         type(chfl_cell) :: cell
-        real(real64), dimension(3) :: lengths
         integer :: status
 
         ! Set the cell associated with a trajectory
@@ -124,17 +120,16 @@ contains
         CHECK(status == CHFL_SUCCESS)
 
         ! Check that the cell was set
-        ! call cell%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call cell%lengths(lengths, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(all(lengths == [30.0, 30.0, 30.0]))
+        cell = frame%cell(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cell%lengths(status=status) == [30.0, 30.0, 30.0]))
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
-        ! call cell%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        call cell%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine
@@ -145,7 +140,6 @@ contains
         type(chfl_frame) :: frame
         type(chfl_topology) :: topology
         type(chfl_atom) :: atom
-        character(len=32) :: name
         integer :: status, i
 
         call file%open("data/water.xyz", "r", status=status)
@@ -174,12 +168,11 @@ contains
         call file%read_step(int(10, int64), frame, status=status)
         CHECK(status ==0)
 
-        ! call atom%from_frame(frame, int(1, int64))
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'Cs')
-        ! call atom%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        atom = frame%atom(1_int64)
+        CHECK(atom%name(status=status) == 'Cs')
+        CHECK(status == CHFL_SUCCESS)
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -192,7 +185,6 @@ contains
         type(chfl_trajectory) :: file
         type(chfl_frame) :: frame
         type(chfl_atom) :: atom
-        character(len=32) :: name
         integer :: status
 
         call frame%init(status=status)
@@ -205,25 +197,25 @@ contains
         call file%topology_file("data/topology.xyz", "", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%read_step(int(1, int64), frame, status=status)
+        call file%read_step(1_int64, frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call atom%from_frame(frame, int(0, int64));
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'Zn')
-        ! call atom%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        atom = frame%atom(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(atom%name(status=status) == 'Zn')
+        CHECK(status == CHFL_SUCCESS)
+        call atom%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
 
         ! Set the topology associated with a trajectory from a file with a specific
         ! format
         call file%topology_file("data/topology.xyz", "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%read_step(int(1, int64), frame, status=status)
+        call file%read_step(1_int64, frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call atom%from_frame(frame, int(0, int64));
+        ! call atom%from_frame(frame, 0_int64)
         ! call atom%name(name, len(name, int64), status=status)
         ! CHECK(status == CHFL_SUCCESS)
         ! CHECK(name == 'Zn')
@@ -242,7 +234,6 @@ contains
         type(chfl_frame) :: frame
         type(chfl_cell) :: cell
         type(chfl_topology) :: topology
-        integer(int64) :: n
         integer :: status
 
         call file%open("data/water.xyz", "r", status=status)
@@ -266,19 +257,17 @@ contains
         call frame%guess_bonds(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call topology%from_frame(frame, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        !
-        ! call topology%bonds_count(n, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(n == 186)
-        !
-        ! call topology%angles_count(n, status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(n == 87)
-        !
-        ! call topology%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%bonds_count(status=status) == 186)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%angles_count(status=status) == 87)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
@@ -291,7 +280,6 @@ contains
         type(chfl_frame) :: frame
 
         real(real64), dimension(:, :), pointer :: positions
-        integer(int64) :: natoms
         character(len=2048) :: EXPECTED, content
         character :: EOL = char(10)
         integer :: status, i, j
@@ -306,12 +294,12 @@ contains
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%resize(int(4, int64), status=status)
+        call frame%resize(4_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%positions(positions, natoms, status=status)
+        positions => frame%positions(status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(natoms == 4)
+        CHECK(all(shape(positions) == [3, 4]))
         do i=1,3
             do j=1,4
                 positions(i, j) = real(i)

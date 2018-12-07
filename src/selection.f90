@@ -123,7 +123,7 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_selection_evaluate(this%unsafe_ptr(), frame%ptr, count)
+        status_tmp = c_chfl_selection_evaluate(this%unsafe_ptr(), frame%unsafe_const_ptr(), count)
 
         if (present(status)) then
             status = status_tmp

@@ -12,7 +12,6 @@ program generate
     type(chfl_cell) :: cell
     type(chfl_trajectory) :: trajectory
     real(real64), dimension(:, :), pointer :: positions
-    integer(int64) :: natoms
 
     call topology%init()
     call H%init("H")
@@ -31,7 +30,7 @@ program generate
     call frame%set_topology(topology)
     call topology%free()
 
-    call frame%positions(positions, natoms)
+    positions => frame%positions()
     positions(:, 1) = [1d0, 0d0, 0d0]
     positions(:, 2) = [0d0, 0d0, 0d0]
     positions(:, 3) = [0d0, 1d0, 0d0]
