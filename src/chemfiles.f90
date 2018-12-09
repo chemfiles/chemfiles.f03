@@ -34,6 +34,8 @@ module chemfiles
     ! Export free functions
     public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
     public :: chfl_last_error, chfl_clear_errors
+    ! Export others
+    public :: CHFL_STRING_LENGTH
 
     ! Global pointer to the callback procedure
     procedure(chfl_warning_callback), pointer :: warning_callback
