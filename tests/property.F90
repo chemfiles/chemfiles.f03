@@ -27,6 +27,9 @@ contains
 
         call property%free(status=status)
         CHECK(status == CHFL_SUCCESS)
+        ! Call free twice to check that it works
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
     end subroutine
 
     subroutine test_double()

@@ -42,6 +42,9 @@ contains
 
         call atom%free(status=status)
         CHECK(status == CHFL_SUCCESS)
+        ! Call free twice to check that it works
+        call cloned%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine

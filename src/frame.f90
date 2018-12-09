@@ -64,8 +64,8 @@ contains
         integer(chfl_status), optional, intent(out) :: status
         integer(chfl_status) :: dummy
 
-        if (c_associated(this%unsafe_ptr())) then
-            print*, "Trying to reset an allocated chfl_frame. Call chfl_frame%free first."
+        if (c_associated(this%ptr)) then
+            write(*, *) "Trying to reset an allocated chfl_frame. Call chfl_frame%free first."
             ! free the allocated memory
             dummy = c_chfl_frame_free(ptr)
             if (present(status)) then
@@ -77,7 +77,7 @@ contains
         this%ptr = ptr
 
         if (present(status)) then
-            if (.not. c_associated(this%unsafe_ptr())) then
+            if (.not. c_associated(this%ptr)) then
                 status = CHFL_MEMORY_ERROR
             else
                 status = CHFL_SUCCESS
@@ -88,12 +88,22 @@ contains
     type(c_ptr) function unsafe_ptr(this)
         implicit none
         class(chfl_frame), intent(inout) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_frame. Call chfl_frame%init first."
+            stop 1
+        end if
         unsafe_ptr = this%ptr
     end function
 
     type(c_ptr) function unsafe_const_ptr(this)
         implicit none
         class(chfl_frame), intent(in) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_frame. Call chfl_frame%init first."
+            stop 1
+        end if
         unsafe_const_ptr = this%ptr
     end function
 
@@ -530,55 +540,11 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_frame_free(this%unsafe_ptr())
+        status_tmp = c_chfl_frame_free(this%ptr)
         this%ptr = c_null_ptr
 
         if (present(status)) then
             status = status_tmp
         end if
     end subroutine
-
-    ! subroutine chfl_atom_from_frame_init_(this, frame, index, status)
-    !     implicit none
-    !     class(chfl_atom) :: this
-    !     class(chfl_frame), intent(inout) :: frame
-    !     integer(kind=c_int64_t), intent(in) :: index
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     this%unsafe_ptr() = c_chfl_atom_from_frame(frame%unsafe_ptr(), index)
-    !
-    !     if (.not. c_associated(this%unsafe_ptr())) then
-    !         status_tmp = CHFL_MEMORY_ERROR
-    !     else
-    !         status_tmp = CHFL_SUCCESS
-    !     end if
-    !
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
-
-    ! subroutine chfl_atom_from_topology_init_(this, topology, index, status)
-    !     implicit none
-    !     class(chfl_atom), intent(inout) :: this
-    !     class(chfl_topology), intent(inout) :: topology
-    !     integer(kind=c_int64_t), intent(in) :: index
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     this%unsafe_ptr() = c_chfl_atom_from_topology(topology%unsafe_ptr(), index)
-    !
-    !     if (.not. c_associated(this%unsafe_ptr())) then
-    !         status_tmp = CHFL_MEMORY_ERROR
-    !     else
-    !         status_tmp = CHFL_SUCCESS
-    !     end if
-    !
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
 end module

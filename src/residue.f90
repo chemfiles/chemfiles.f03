@@ -53,8 +53,8 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: dummy
 
-        if (c_associated(this%unsafe_ptr())) then
-            print*, "Trying to reset an allocated chfl_residue. Call chfl_residue%free first."
+        if (c_associated(this%ptr)) then
+            write(*, *) "Trying to reset an allocated chfl_residue. Call chfl_residue%free first."
             ! free the allocated memory
             dummy = c_chfl_residue_free(ptr)
             if (present(status)) then
@@ -66,7 +66,7 @@ contains
         this%ptr = ptr
 
         if (present(status)) then
-            if (.not. c_associated(this%unsafe_ptr())) then
+            if (.not. c_associated(this%ptr)) then
                 status = CHFL_MEMORY_ERROR
             else
                 status = CHFL_SUCCESS
@@ -77,8 +77,13 @@ contains
     type(c_ptr) function unsafe_ptr(this)
         implicit none
         class(chfl_residue), intent(inout) :: this
-        if (this%is_const) then
-            stop "can not write data to a const chfl_residue"
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_residue. Call chfl_residue%init first."
+            stop 1
+        elseif (this%is_const) then
+            write(*, *) "Can not write data to a const chfl_residue"
+            stop 1
         end if
         unsafe_ptr = this%ptr
     end function
@@ -86,6 +91,11 @@ contains
     type(c_ptr) function unsafe_const_ptr(this)
         implicit none
         class(chfl_residue), intent(in) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_residue. Call chfl_residue%init first."
+            stop 1
+        end if
         unsafe_const_ptr = this%ptr
     end function
 
@@ -271,7 +281,7 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_residue_free(this%unsafe_ptr())
+        status_tmp = c_chfl_residue_free(this%ptr)
         this%ptr = c_null_ptr
         this%is_const = .false.
 

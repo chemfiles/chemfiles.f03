@@ -45,6 +45,9 @@ contains
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
+        ! Call free twice to check that it works
+        call cloned%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call cloned%free(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine
@@ -402,9 +405,8 @@ contains
         CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 2, 1, 2, -1, -1], [2, 3])
-        call topology%bonds(bonds, status=status)
+        call topology%bonds(bonds(:, 1:2), status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(all(shape(bonds) == [2, 2]))
         do i=1,2
             do j=1,2
                 CHECK(bonds(i, j) == expected(i, j))

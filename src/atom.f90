@@ -47,8 +47,8 @@ contains
         integer(chfl_status), optional, intent(out) :: status
         integer(chfl_status) :: dummy
 
-        if (c_associated(this%unsafe_ptr())) then
-            print*, "Trying to reset an allocated chfl_atom. Call chfl_atom%free first."
+        if (c_associated(this%ptr)) then
+            write(*, *) "Trying to reset an allocated chfl_atom. Call chfl_atom%free first."
             ! free the allocated memory
             dummy = c_chfl_atom_free(ptr)
             if (present(status)) then
@@ -60,7 +60,7 @@ contains
         this%ptr = ptr
 
         if (present(status)) then
-            if (.not. c_associated(this%unsafe_ptr())) then
+            if (.not. c_associated(this%ptr)) then
                 status = CHFL_MEMORY_ERROR
             else
                 status = CHFL_SUCCESS
@@ -71,12 +71,22 @@ contains
     type(c_ptr) function unsafe_ptr(this)
         implicit none
         class(chfl_atom), intent(inout) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_atom. Call chfl_atom%init first."
+            stop 1
+        end if
         unsafe_ptr = this%ptr
     end function
 
     type(c_ptr) function unsafe_const_ptr(this)
         implicit none
         class(chfl_atom), intent(in) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_atom. Call chfl_atom%init first."
+            stop 1
+        end if
         unsafe_const_ptr = this%ptr
     end function
 
@@ -331,7 +341,7 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_atom_free(this%unsafe_ptr())
+        status_tmp = c_chfl_atom_free(this%ptr)
         this%ptr = c_null_ptr
 
         if (present(status)) then

@@ -67,6 +67,9 @@ contains
 
         call frame%free(status=status)
         CHECK(status == CHFL_SUCCESS)
+        ! Call close twice to check that it works
+        call file%close(status=status)
+        CHECK(status == CHFL_SUCCESS)
         call file%close(status=status)
         CHECK(status == CHFL_SUCCESS)
     end subroutine
