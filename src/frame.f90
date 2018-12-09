@@ -49,10 +49,12 @@ module chemfiles_frame
         procedure :: remove_bond
         procedure :: add_residue
         procedure :: free
-        ! procedure :: properties_count => chfl_frame_properties_count
-        ! procedure :: list_properties => chfl_frame_list_properties
-        ! procedure :: set_property => chfl_frame_set_property
-        ! procedure :: get_property => chfl_frame_get_property_init_
+
+        generic :: set => set_property, set_bool, set_double, set_string, set_vector3d
+        procedure, private :: set_property, set_bool, set_double, set_string, set_vector3d
+        procedure :: properties_count
+        procedure :: list_properties
+        procedure :: get
     end type
 
 contains
@@ -419,72 +421,6 @@ contains
         end if
     end function
 
-    ! subroutine properties_count(this, count, status)
-    !     implicit none
-    !     class(chfl_frame), intent(in) :: this
-    !     integer(kind=c_int64_t) :: count
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     status_tmp = c_chfl_frame_properties_count(this%unsafe_ptr(), count)
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
-
-    ! subroutine list_properties(this, names, count, status)
-    !     implicit none
-    !     class(chfl_frame), intent(in) :: this
-    !     character, intent(in), dimension(:, :), target :: names
-    !     integer(kind=c_int64_t), intent(in) :: count
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     status_tmp = c_chfl_frame_list_properties(this%unsafe_ptr(), c_loc(names), count)
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
-
-    ! subroutine set_property(this, name, property, status)
-    !     implicit none
-    !     class(chfl_frame), intent(inout) :: this
-    !     character(len=*), intent(in) :: name
-    !     class(chfl_property), intent(in) :: property
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     status_tmp = c_chfl_frame_set_property(this%unsafe_ptr(), f_to_c_str(name), property%unsafe_ptr())
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
-    !
-    ! subroutine get_property_init_(this, frame, name, status)
-    !     implicit none
-    !     class(chfl_property) :: this
-    !     class(chfl_frame), intent(in) :: frame
-    !     character(len=*), intent(in) :: name
-    !     integer(chfl_status), intent(out), optional :: status
-    !     integer(chfl_status) :: status_tmp
-    !
-    !     this%unsafe_ptr() = c_chfl_frame_get_property(frame%unsafe_ptr(), f_to_c_str(name))
-    !
-    !     if (.not. c_associated(this%unsafe_ptr())) then
-    !         status_tmp = CHFL_MEMORY_ERROR
-    !     else
-    !         status_tmp = CHFL_SUCCESS
-    !     end if
-    !
-    !
-    !     if (present(status)) then
-    !         status = status_tmp
-    !     end if
-    ! end subroutine
-
     subroutine add_bond(this, i, j, bond_order, status)
         implicit none
         class(chfl_frame), intent(inout) :: this
@@ -529,6 +465,166 @@ contains
 
         status_tmp = c_chfl_frame_add_residue(this%unsafe_ptr(), residue%unsafe_const_ptr())
 
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine set_property(this, name, property, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        character(len=*), intent(in) :: name
+        type(chfl_property), intent(in) :: property
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_frame_set_property(                                &
+            this%unsafe_ptr(), f_to_c_str(name), property%unsafe_const_ptr()  &
+        )
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine set_bool(this, name, value, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        character(len=*), intent(in) :: name
+        logical, intent(in) :: value
+        integer(chfl_status), intent(out), optional :: status
+
+        type(chfl_property) :: property
+        integer(chfl_status) :: status_tmp
+
+        call property%init(value, status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 1000
+
+        call this%set_property(name, property, status=status)
+
+        call property%free(status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 1000
+
+1000    if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine set_double(this, name, value, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        character(len=*), intent(in) :: name
+        real(c_double), intent(in) :: value
+        integer(chfl_status), intent(out), optional :: status
+
+        type(chfl_property) :: property
+        integer(chfl_status) :: status_tmp
+
+        call property%init(value, status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 2000
+
+        call this%set_property(name, property, status=status)
+
+        call property%free(status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 2000
+
+2000    if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine set_string(this, name, value, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        character(len=*), intent(in) :: name
+        character(len=*), intent(in) :: value
+        integer(chfl_status), intent(out), optional :: status
+
+        type(chfl_property) :: property
+        integer(chfl_status) :: status_tmp
+
+        call property%init(value, status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 3000
+
+        call this%set_property(name, property, status=status)
+
+        call property%free(status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 3000
+
+3000    if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine set_vector3d(this, name, value, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        character(len=*), intent(in) :: name
+        real(c_double), dimension(3), intent(in) :: value
+        integer(chfl_status), intent(out), optional :: status
+
+        type(chfl_property) :: property
+        integer(chfl_status) :: status_tmp
+
+        call property%init(value, status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 4000
+
+        call this%set_property(name, property, status=status)
+
+        call property%free(status=status_tmp)
+        if (status_tmp /= CHFL_SUCCESS) goto 4000
+
+4000    if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    type(chfl_property) function get(this, name, status)
+        implicit none
+        class(chfl_frame), intent(in) :: this
+        character(len=*), intent(in) :: name
+        integer(chfl_status), intent(out), optional :: status
+
+        call get%unsafe_set_ptr(                                                 &
+            c_chfl_frame_get_property(this%unsafe_const_ptr(), f_to_c_str(name)), &
+            status                                                               &
+        )
+    end function
+
+    integer(kind=c_int64_t) function properties_count(this, status)
+        implicit none
+        class(chfl_frame), intent(in) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_frame_properties_count(this%unsafe_const_ptr(), properties_count)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end function
+
+    subroutine list_properties(this, names, status)
+        implicit none
+        class(chfl_frame), intent(in) :: this
+        character(len=CHFL_STRING_LENGTH), intent(out), dimension(:) :: names
+        integer(chfl_status), intent(out), optional :: status
+
+        type(c_ptr), dimension(:), allocatable, target :: c_names
+        integer(kind=c_int64_t) :: count, i
+        integer(chfl_status) :: status_tmp
+
+        count = size(names, 1, c_int64_t)
+        allocate(c_names(count))
+
+        status_tmp = c_chfl_frame_list_properties(this%unsafe_const_ptr(), c_loc(c_names), count)
+        if (status_tmp /= CHFL_SUCCESS) goto 5000
+
+        do i = 1, count
+            names(i) = c_to_f_str(c_names(i))
+        end do
+
+5000    deallocate(c_names)
         if (present(status)) then
             status = status_tmp
         end if

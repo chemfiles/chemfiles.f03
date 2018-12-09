@@ -10,6 +10,7 @@ program residue_test
     call test_id()
     call test_size()
     call test_contains()
+    call test_properties()
 
 contains
     subroutine test_copy()
@@ -127,6 +128,57 @@ contains
         call residue%atoms(atoms, status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(all(atoms == [0, 1, 2]))
+
+        call residue%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
+
+    subroutine test_properties()
+        implicit none
+        type(chfl_residue) :: residue
+        type(chfl_property) :: property
+        character(len=CHFL_STRING_LENGTH), dimension(2) :: names
+        integer :: status
+
+        call residue%init('He', status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%init(42d0, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%set("foo", property, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call residue%set("bar", .false., status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = residue%get("foo", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%double(status=status) == 42d0)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = residue%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%bool(status=status) .eqv. .false.)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = residue%get("baz", status=status)
+        CHECK(status /= CHFL_SUCCESS)
+
+        CHECK(residue%properties_count(status=status) == 2)
+        CHECK(status == CHFL_SUCCESS)
+
+        call residue%list_properties(names, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(names(1) == 'bar')
+        CHECK(names(2) == 'foo')
 
         call residue%free(status=status)
         CHECK(status == CHFL_SUCCESS)

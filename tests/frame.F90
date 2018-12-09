@@ -14,7 +14,7 @@ program frame_test
     call test_cell()
     call test_topology()
     call test_velocities()
-    ! call test_properties()
+    call test_properties()
     call test_distances()
     call test_bonds()
     call test_residues()
@@ -275,37 +275,56 @@ contains
         CHECK(status == CHFL_SUCCESS)
     end subroutine
 
-    ! subroutine test_properties()
-    !     implicit none
-    !     type(chfl_frame) :: frame
-    !     type(chfl_property) :: property
-    !     real(real64) :: value
-    !     integer :: status
-    !
-    !     call frame%init(status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !
-    !     call property%double(42d0, status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !
-    !     call frame%set_property("foo", property, status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !
-    !     call property%free(status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !
-    !     call property%from_frame(frame, "foo", status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !
-    !     call property%get_double(value, status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !     CHECK(value == 42d0)
-    !
-    !     call property%free(status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    !     call frame%free(status=status)
-    !     CHECK(status == CHFL_SUCCESS)
-    ! end subroutine
+    subroutine test_properties()
+        implicit none
+        type(chfl_frame) :: frame
+        type(chfl_property) :: property
+        character(len=CHFL_STRING_LENGTH), dimension(2) :: names
+        integer :: status
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%init(42d0, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%set("foo", property, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call frame%set("bar", .false., status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = frame%get("foo", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%double(status=status) == 42d0)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = frame%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%bool(status=status) .eqv. .false.)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        property = frame%get("baz", status=status)
+        CHECK(status /= CHFL_SUCCESS)
+
+        CHECK(frame%properties_count(status=status) == 2)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%list_properties(names, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(names(1) == 'bar')
+        CHECK(names(2) == 'foo')
+
+        call frame%free(status=status)
+        CHECK(status == CHFL_SUCCESS)
+    end subroutine
 
     subroutine test_distances()
         implicit none
