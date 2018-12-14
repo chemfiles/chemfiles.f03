@@ -38,7 +38,7 @@ module chemfiles
     public :: CHFL_STRING_LENGTH
 
     ! Global pointer to the callback procedure
-    procedure(chfl_warning_callback), pointer :: warning_callback
+    procedure(chfl_warning_callback), pointer :: internal_warning_callback
 
     interface
         subroutine chfl_warning_callback(message)
@@ -93,11 +93,11 @@ contains
         end if
     end subroutine
 
-    subroutine warning_callback_wrapper(message) bind(C)
+    subroutine internal_warning_wrapper(message) bind(C)
         implicit none
         type(c_ptr), intent(in), value :: message
-        call warning_callback(c_to_f_str(message))
-    end subroutine warning_callback_wrapper
+        call internal_warning_callback(c_to_f_str(message))
+    end subroutine
 
     subroutine chfl_set_warning_callback(callback, status)
         implicit none
@@ -105,14 +105,10 @@ contains
         integer, optional :: status
         integer :: status_tmp_
 
-        warning_callback => callback
-        status_tmp_ = c_chfl_set_warning_callback(c_funloc(warning_callback_wrapper))
+        internal_warning_callback => callback
+        status_tmp_ = c_chfl_set_warning_callback(c_funloc(internal_warning_wrapper))
         if (present(status)) then
             status = status_tmp_
         end if
-    end subroutine chfl_set_warning_callback
-<<<<<<< HEAD
-=======
-
->>>>>>> ce7d90b... Initial update to chemfiles 0.9.0-rc1
+    end subroutine
 end module

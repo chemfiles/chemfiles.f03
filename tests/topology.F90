@@ -118,6 +118,7 @@ contains
         implicit none
         type(chfl_topology) :: topology
         integer(int64), dimension(2, 3) :: bonds, expected
+        integer(chfl_bond_order), dimension(4) :: bond_orders
         integer :: status
 
         call topology%init(status=status)
@@ -143,9 +144,22 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(all(bonds == expected))
 
+        call topology%add_bond(0_int64, 3_int64, CHFL_BOND_AROMATIC, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%bond_order(0_int64, 3_int64, status=status) == CHFL_BOND_AROMATIC)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%bond_order(2_int64, 3_int64, status=status) == CHFL_BOND_UNKNOWN)
+        CHECK(status == CHFL_SUCCESS)
+
+        call topology%bond_orders(bond_orders, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(bond_orders == [CHFL_BOND_UNKNOWN, CHFL_BOND_AROMATIC, CHFL_BOND_UNKNOWN, CHFL_BOND_UNKNOWN]))
+
         call topology%remove_bond(2_int64, 3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        CHECK(topology%bonds_count(status=status) == 2)
+        CHECK(topology%bonds_count(status=status) == 3)
         CHECK(status == CHFL_SUCCESS)
 
         call topology%free(status=status)
