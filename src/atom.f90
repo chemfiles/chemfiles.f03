@@ -18,9 +18,8 @@ module chemfiles_atom
         procedure :: unsafe_ptr
         procedure :: unsafe_const_ptr
 
-        generic, public :: init => create, copy
-        procedure, private :: create, copy
-
+        procedure :: init
+        procedure :: copy
         procedure :: mass
         procedure :: set_mass
         procedure :: charge
@@ -93,7 +92,7 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine create(this, name, status)
+    subroutine init(this, name, status)
         implicit none
         class(chfl_atom), intent(inout) :: this
         character(len=*), intent(in) :: name

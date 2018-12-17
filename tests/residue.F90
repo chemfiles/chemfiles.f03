@@ -20,7 +20,7 @@ contains
 
         call residue%init("Res", status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(residue, status=status)
+        call cloned%copy(residue, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(residue%atoms_count(status=status) == 0)

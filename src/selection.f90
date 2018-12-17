@@ -18,9 +18,8 @@ module chemfiles_selection
         procedure :: unsafe_const_ptr
         procedure :: unsafe_ptr
 
-        generic :: init => create, copy
-        procedure, private :: create, copy
-
+        procedure :: init
+        procedure :: copy
         procedure :: size => get_size
         procedure :: string
         procedure :: evaluate
@@ -79,7 +78,7 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine create(this, selection, status)
+    subroutine init(this, selection, status)
         implicit none
         class(chfl_selection), intent(inout) :: this
         character(len=*), intent(in) :: selection

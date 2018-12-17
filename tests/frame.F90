@@ -27,7 +27,7 @@ contains
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(frame, status=status)
+        call cloned%copy(frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(frame%atoms_count(status=status) == 0)

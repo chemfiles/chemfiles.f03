@@ -23,7 +23,7 @@ contains
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(cell, status=status)
+        call cloned%copy(cell, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(all(cell%lengths(status=status) == [2.0, 3.0, 4.0]))
