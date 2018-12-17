@@ -21,9 +21,8 @@ module chemfiles_topology
         procedure :: unsafe_ptr
         procedure :: unsafe_const_ptr
 
-        generic, public :: init => create, copy
-        procedure, private :: create, copy
-
+        procedure :: init
+        procedure :: copy
         procedure :: atoms_count
         procedure :: resize
         procedure :: atom
@@ -114,7 +113,7 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine create(this, status)
+    subroutine init(this, status)
         implicit none
         class(chfl_topology), intent(inout) :: this
         integer(chfl_status), intent(out), optional :: status

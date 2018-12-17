@@ -20,9 +20,8 @@ module chemfiles_residue
         procedure :: unsafe_const_ptr
         procedure :: unsafe_ptr
 
-        generic :: init => create, copy
-        procedure, private :: create, copy
-
+        procedure :: init
+        procedure :: copy
         procedure :: atoms_count
         procedure :: atoms
         procedure :: id
@@ -102,7 +101,7 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine create(this, name, resid, status)
+    subroutine init(this, name, resid, status)
         implicit none
         class(chfl_residue), intent(inout) :: this
         character(len=*), intent(in) :: name

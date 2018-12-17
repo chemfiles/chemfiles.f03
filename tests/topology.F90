@@ -22,7 +22,7 @@ contains
 
         call topology%init(status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(topology, status=status)
+        call cloned%copy(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(topology%atoms_count(status=status) == 0)

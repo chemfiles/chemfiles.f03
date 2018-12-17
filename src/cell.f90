@@ -16,9 +16,8 @@ module chemfiles_cell
         procedure :: unsafe_ptr
         procedure :: unsafe_const_ptr
 
-        generic, public :: init => orthorhombic, triclinic, copy
-        procedure, private :: orthorhombic, triclinic, copy
-
+        procedure :: init
+        procedure :: copy
         procedure :: volume
         procedure :: lengths
         procedure :: set_lengths
@@ -82,23 +81,18 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine orthorhombic(this, lengths, status)
+    subroutine init(this, lengths, angles, status)
         implicit none
         class(chfl_cell), intent(inout) :: this
         real(kind=c_double), dimension(3), intent(in) :: lengths
+        real(kind=c_double), dimension(3), intent(in), optional :: angles
         integer(chfl_status), intent(out), optional :: status
 
-        call this%unsafe_set_ptr(c_chfl_cell(lengths), status)
-    end subroutine
-
-    subroutine triclinic(this, lengths, angles, status)
-        implicit none
-        class(chfl_cell), intent(inout) :: this
-        real(kind=c_double), dimension(3), intent(in) :: lengths
-        real(kind=c_double), dimension(3), intent(in) :: angles
-        integer(chfl_status), intent(out), optional :: status
-
-        call this%unsafe_set_ptr(c_chfl_cell_triclinic(lengths, angles), status)
+        if (present(angles)) then
+            call this%unsafe_set_ptr(c_chfl_cell_triclinic(lengths, angles), status)
+        else
+            call this%unsafe_set_ptr(c_chfl_cell(lengths), status)
+        end if
     end subroutine
 
     subroutine copy(this, cell, status)

@@ -22,7 +22,7 @@ contains
 
         call atom%init('He', status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(atom, status=status)
+        call cloned%copy(atom, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         CHECK(atom%name(status=status) == 'He')

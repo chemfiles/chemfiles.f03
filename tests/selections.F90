@@ -19,7 +19,7 @@ contains
 
         call selection%init("name O", status=status)
         CHECK(status == CHFL_SUCCESS)
-        call cloned%init(selection, status=status)
+        call cloned%copy(selection, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call selection%free(status=status)
