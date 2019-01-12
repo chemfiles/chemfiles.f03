@@ -2,7 +2,7 @@
 ! Copyright (C) 2015-2019 Guillaume Fraux - BSD License
 
 module chemfiles
-    use chemfiles_cdef
+    use chemfiles_ffi
     use chemfiles_strings
     use chemfiles_selection
     use chemfiles_property

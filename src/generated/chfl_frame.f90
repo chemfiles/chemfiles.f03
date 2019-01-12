@@ -322,14 +322,4 @@ function c_chfl_frame_add_residue(frame, residue) bind(C, name="chfl_frame_add_r
     type(c_ptr), value, intent(in) :: residue
 end function
 
-! Function "chfl_frame_free", at frame.h:336:25
-function c_chfl_frame_free(frame) bind(C, name="chfl_frame_free")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_frame_free
-    type(c_ptr), value, intent(in) :: frame
-end function
-
 end interface

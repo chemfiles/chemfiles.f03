@@ -101,14 +101,4 @@ function c_chfl_property_get_vector3d(property, value) bind(C, name="chfl_proper
     real(kind=c_double), dimension(3), intent(inout) :: value
 end function
 
-! Function "chfl_property_free", at property.h:131:25
-function c_chfl_property_free(property) bind(C, name="chfl_property_free")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_property_free
-    type(c_ptr), value, intent(in) :: property
-end function
-
 end interface

@@ -26,7 +26,7 @@ function c_chfl_atom_copy(atom) bind(C, name="chfl_atom_copy")
     type(c_ptr), value, intent(in) :: atom
 end function
 
-! Function "chfl_atom_from_frame", at atom.h:56:24
+! Function "chfl_atom_from_frame", at atom.h:54:24
 function c_chfl_atom_from_frame(frame, index) bind(C, name="chfl_atom_from_frame")
     use iso_c_binding
     
@@ -36,7 +36,7 @@ function c_chfl_atom_from_frame(frame, index) bind(C, name="chfl_atom_from_frame
     integer(kind=c_int64_t), value :: index
 end function
 
-! Function "chfl_atom_from_topology", at atom.h:81:24
+! Function "chfl_atom_from_topology", at atom.h:77:24
 function c_chfl_atom_from_topology(topology, index) bind(C, name="chfl_atom_from_topology")
     use iso_c_binding
     
@@ -46,7 +46,7 @@ function c_chfl_atom_from_topology(topology, index) bind(C, name="chfl_atom_from
     integer(kind=c_int64_t), value :: index
 end function
 
-! Function "chfl_atom_mass", at atom.h:92:25
+! Function "chfl_atom_mass", at atom.h:88:25
 function c_chfl_atom_mass(atom, mass) bind(C, name="chfl_atom_mass")
     use iso_c_binding
     import chfl_status
@@ -57,7 +57,7 @@ function c_chfl_atom_mass(atom, mass) bind(C, name="chfl_atom_mass")
     real(kind=c_double), intent(inout) :: mass
 end function
 
-! Function "chfl_atom_set_mass", at atom.h:101:25
+! Function "chfl_atom_set_mass", at atom.h:97:25
 function c_chfl_atom_set_mass(atom, mass) bind(C, name="chfl_atom_set_mass")
     use iso_c_binding
     import chfl_status
@@ -68,7 +68,7 @@ function c_chfl_atom_set_mass(atom, mass) bind(C, name="chfl_atom_set_mass")
     real(kind=c_double), value :: mass
 end function
 
-! Function "chfl_atom_charge", at atom.h:110:25
+! Function "chfl_atom_charge", at atom.h:106:25
 function c_chfl_atom_charge(atom, charge) bind(C, name="chfl_atom_charge")
     use iso_c_binding
     import chfl_status
@@ -79,7 +79,7 @@ function c_chfl_atom_charge(atom, charge) bind(C, name="chfl_atom_charge")
     real(kind=c_double), intent(inout) :: charge
 end function
 
-! Function "chfl_atom_set_charge", at atom.h:119:25
+! Function "chfl_atom_set_charge", at atom.h:115:25
 function c_chfl_atom_set_charge(atom, charge) bind(C, name="chfl_atom_set_charge")
     use iso_c_binding
     import chfl_status
@@ -90,7 +90,7 @@ function c_chfl_atom_set_charge(atom, charge) bind(C, name="chfl_atom_set_charge
     real(kind=c_double), value :: charge
 end function
 
-! Function "chfl_atom_type", at atom.h:129:25
+! Function "chfl_atom_type", at atom.h:125:25
 function c_chfl_atom_type(atom, type, buffsize) bind(C, name="chfl_atom_type")
     use iso_c_binding
     import chfl_status
@@ -102,7 +102,7 @@ function c_chfl_atom_type(atom, type, buffsize) bind(C, name="chfl_atom_type")
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_atom_set_type", at atom.h:140:25
+! Function "chfl_atom_set_type", at atom.h:136:25
 function c_chfl_atom_set_type(atom, type) bind(C, name="chfl_atom_set_type")
     use iso_c_binding
     import chfl_status
@@ -113,7 +113,7 @@ function c_chfl_atom_set_type(atom, type) bind(C, name="chfl_atom_set_type")
     character(len=1, kind=c_char), dimension(*), intent(in) :: type
 end function
 
-! Function "chfl_atom_name", at atom.h:150:25
+! Function "chfl_atom_name", at atom.h:146:25
 function c_chfl_atom_name(atom, name, buffsize) bind(C, name="chfl_atom_name")
     use iso_c_binding
     import chfl_status
@@ -125,7 +125,7 @@ function c_chfl_atom_name(atom, name, buffsize) bind(C, name="chfl_atom_name")
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_atom_set_name", at atom.h:161:25
+! Function "chfl_atom_set_name", at atom.h:157:25
 function c_chfl_atom_set_name(atom, name) bind(C, name="chfl_atom_set_name")
     use iso_c_binding
     import chfl_status
@@ -136,7 +136,7 @@ function c_chfl_atom_set_name(atom, name) bind(C, name="chfl_atom_set_name")
     character(len=1, kind=c_char), dimension(*), intent(in) :: name
 end function
 
-! Function "chfl_atom_full_name", at atom.h:171:25
+! Function "chfl_atom_full_name", at atom.h:167:25
 function c_chfl_atom_full_name(atom, name, buffsize) bind(C, name="chfl_atom_full_name")
     use iso_c_binding
     import chfl_status
@@ -148,7 +148,7 @@ function c_chfl_atom_full_name(atom, name, buffsize) bind(C, name="chfl_atom_ful
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_atom_vdw_radius", at atom.h:183:25
+! Function "chfl_atom_vdw_radius", at atom.h:179:25
 function c_chfl_atom_vdw_radius(atom, radius) bind(C, name="chfl_atom_vdw_radius")
     use iso_c_binding
     import chfl_status
@@ -159,7 +159,7 @@ function c_chfl_atom_vdw_radius(atom, radius) bind(C, name="chfl_atom_vdw_radius
     real(kind=c_double), intent(inout) :: radius
 end function
 
-! Function "chfl_atom_covalent_radius", at atom.h:193:25
+! Function "chfl_atom_covalent_radius", at atom.h:189:25
 function c_chfl_atom_covalent_radius(atom, radius) bind(C, name="chfl_atom_covalent_radius")
     use iso_c_binding
     import chfl_status
@@ -170,7 +170,7 @@ function c_chfl_atom_covalent_radius(atom, radius) bind(C, name="chfl_atom_coval
     real(kind=c_double), intent(inout) :: radius
 end function
 
-! Function "chfl_atom_atomic_number", at atom.h:203:25
+! Function "chfl_atom_atomic_number", at atom.h:199:25
 function c_chfl_atom_atomic_number(atom, number) bind(C, name="chfl_atom_atomic_number")
     use iso_c_binding
     import chfl_status
@@ -181,7 +181,7 @@ function c_chfl_atom_atomic_number(atom, number) bind(C, name="chfl_atom_atomic_
     integer(kind=c_int64_t), intent(inout) :: number
 end function
 
-! Function "chfl_atom_properties_count", at atom.h:210:25
+! Function "chfl_atom_properties_count", at atom.h:206:25
 function c_chfl_atom_properties_count(atom, count) bind(C, name="chfl_atom_properties_count")
     use iso_c_binding
     import chfl_status
@@ -192,7 +192,7 @@ function c_chfl_atom_properties_count(atom, count) bind(C, name="chfl_atom_prope
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_atom_list_properties", at atom.h:226:25
+! Function "chfl_atom_list_properties", at atom.h:222:25
 function c_chfl_atom_list_properties(atom, names, count) bind(C, name="chfl_atom_list_properties")
     use iso_c_binding
     import chfl_status
@@ -204,7 +204,7 @@ function c_chfl_atom_list_properties(atom, names, count) bind(C, name="chfl_atom
     integer(kind=c_int64_t), value :: count
 end function
 
-! Function "chfl_atom_set_property", at atom.h:238:25
+! Function "chfl_atom_set_property", at atom.h:234:25
 function c_chfl_atom_set_property(atom, name, property) bind(C, name="chfl_atom_set_property")
     use iso_c_binding
     import chfl_status
@@ -216,7 +216,7 @@ function c_chfl_atom_set_property(atom, name, property) bind(C, name="chfl_atom_
     type(c_ptr), value, intent(in) :: property
 end function
 
-! Function "chfl_atom_get_property", at atom.h:252:28
+! Function "chfl_atom_get_property", at atom.h:248:28
 function c_chfl_atom_get_property(atom, name) bind(C, name="chfl_atom_get_property")
     use iso_c_binding
     
@@ -224,16 +224,6 @@ function c_chfl_atom_get_property(atom, name) bind(C, name="chfl_atom_get_proper
     type(c_ptr) :: c_chfl_atom_get_property
     type(c_ptr), value, intent(in) :: atom
     character(len=1, kind=c_char), dimension(*), intent(in) :: name
-end function
-
-! Function "chfl_atom_free", at atom.h:260:25
-function c_chfl_atom_free(atom) bind(C, name="chfl_atom_free")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_atom_free
-    type(c_ptr), value, intent(in) :: atom
 end function
 
 end interface

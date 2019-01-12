@@ -43,13 +43,10 @@ contains
         CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_natoms()
@@ -69,8 +66,7 @@ contains
         CHECK(frame%atoms_count(status=status) == 10)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_step()
@@ -90,8 +86,7 @@ contains
         CHECK(frame%step(status=status) == 42)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_add_atom()
@@ -111,8 +106,7 @@ contains
         call frame%add_atom(atom, [10d0, 20d0, 30d0], [10d0, 20d0, 30d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         CHECK(frame%atoms_count(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
@@ -127,11 +121,9 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(atom%name(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_positions()
@@ -164,8 +156,7 @@ contains
             end do
         end do
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_velocities()
@@ -207,8 +198,7 @@ contains
             end do
         end do
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_cell()
@@ -229,11 +219,9 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(all(cell%lengths(status=status) == [3.0, 4.0, 5.0]))
         CHECK(status == CHFL_SUCCESS)
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_topology()
@@ -259,8 +247,7 @@ contains
         call frame%set_topology(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
 
         topology = frame%topology(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -268,11 +255,9 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(topology%atoms_count(status=status) == 4)
         CHECK(status == CHFL_SUCCESS)
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_properties()
@@ -293,22 +278,19 @@ contains
         call frame%set("bar", .false., status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = frame%get("foo", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%double(status=status) == 42d0)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = frame%get("bar", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%bool(status=status) .eqv. .false.)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = frame%get("baz", status=status)
         CHECK(status /= CHFL_SUCCESS)
@@ -322,8 +304,7 @@ contains
         CHECK(names(1) == 'bar')
         CHECK(names(2) == 'foo')
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_distances()
@@ -350,8 +331,7 @@ contains
         call frame%add_atom(atom, [0d0, 1d0, 2d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         CHECK(frame%distance(0_int64, 2_int64, status=status) == sqrt(2d0))
         CHECK(status == CHFL_SUCCESS)
@@ -365,8 +345,7 @@ contains
         CHECK(frame%out_of_plane(1_int64, 4_int64, 0_int64, 2_int64, status=status) == 2d0)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_bonds()
@@ -386,8 +365,7 @@ contains
             call frame%add_atom(atom, [1d0, 0d0, 0d0], status=status)
             CHECK(status == CHFL_SUCCESS)
         enddo
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         call frame%add_bond(0_int64, 2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -409,8 +387,7 @@ contains
             end do
         end do
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
 
         call frame%remove_bond(3_int64, 0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -431,11 +408,9 @@ contains
                 CHECK(bonds(i, j) == expected(i, j))
             end do
         end do
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_residues()
@@ -458,8 +433,7 @@ contains
         call frame%add_residue(residue, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
 
         topology = frame%topology(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -470,11 +444,8 @@ contains
         CHECK(residue%name(status=status) == 'foobar')
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
+        call topology%free()
+        call frame%free()
     end subroutine
 end program

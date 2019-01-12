@@ -1,0 +1,122 @@
+! chemfiles, an efficient IO library for chemistry file formats
+! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
+
+module chemfiles_ffi
+    use iso_c_binding
+    implicit none
+
+    type, bind(C) :: chfl_match
+        integer(kind=c_size_t) :: size
+        integer(kind=c_size_t), dimension(4) :: atoms
+    end type
+
+    include "generated/cenums.f90"
+    include "generated/others.f90"
+    include "generated/chfl_atom.f90"
+    include "generated/chfl_residue.f90"
+    include "generated/chfl_topology.f90"
+    include "generated/chfl_cell.f90"
+    include "generated/chfl_frame.f90"
+    include "generated/chfl_trajectory.f90"
+    include "generated/chfl_selection.f90"
+    include "generated/chfl_property.f90"
+
+    interface
+        ! C function interface definition for the warning callbacks
+        subroutine chfl_warning_callback_c(message) bind(C)
+            use iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: message
+        end subroutine chfl_warning_callback_c
+
+        ! Manual interface definition for chfl_free (the only subroutine)
+        subroutine c_chfl_free(object) bind(C, name="chfl_free")
+            use iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: object
+        end subroutine c_chfl_free
+    end interface
+
+    type chfl_ptr
+        private
+        type(c_ptr) :: ptr = c_null_ptr
+        logical :: is_const = .false.
+    contains
+        procedure :: unsafe_set_ptr
+        procedure :: unsafe_set_const_ptr
+        procedure :: unsafe_ptr
+        procedure :: unsafe_const_ptr
+        procedure :: free
+    end type
+
+contains
+
+    subroutine unsafe_set_ptr(this, ptr, status)
+        implicit none
+        class(chfl_ptr), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+
+        if (c_associated(this%ptr)) then
+            write(*,*) "Trying to reset an allocated pointer."
+            ! free the allocated memory
+            call c_chfl_free(ptr)
+            if (present(status)) then
+                status = CHFL_MEMORY_ERROR
+            end if
+            return
+        end if
+
+        this%ptr = ptr
+
+        if (present(status)) then
+            if (.not. c_associated(this%ptr)) then
+                status = CHFL_MEMORY_ERROR
+            else
+                status = CHFL_SUCCESS
+            end if
+        end if
+    end subroutine
+
+    subroutine unsafe_set_const_ptr(this, ptr, status)
+        implicit none
+        class(chfl_ptr), intent(inout) :: this
+        type(c_ptr), intent(in) :: ptr
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(ptr, status)
+        this%is_const = .true.
+    end subroutine
+
+    type(c_ptr) function unsafe_ptr(this)
+        implicit none
+        class(chfl_ptr), intent(inout) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL pointer. Call <object>%init first."
+        elseif (this%is_const) then
+            write(*, *) "Can not write data to a const pointer"
+            stop 1
+        end if
+        unsafe_ptr = this%ptr
+    end function
+
+    type(c_ptr) function unsafe_const_ptr(this)
+        implicit none
+        class(chfl_ptr), intent(in) :: this
+
+        if (.not. c_associated(this%ptr)) then
+            write(*, *) "Trying to access a NULL chfl_residue. Call chfl_residue%init first."
+        end if
+        unsafe_const_ptr = this%ptr
+    end function
+
+    subroutine free(this)
+        implicit none
+        class(chfl_ptr), intent(inout) :: this
+
+        call c_chfl_free(this%ptr)
+        this%ptr = c_null_ptr
+    end subroutine
+
+end module

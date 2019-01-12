@@ -73,14 +73,4 @@ function c_chfl_selection_matches(selection, matches, n_matches) bind(C, name="c
     integer(kind=c_int64_t), value :: n_matches
 end function
 
-! Function "chfl_selection_free", at selection.h:105:25
-function c_chfl_selection_free(selection) bind(C, name="chfl_selection_free")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_selection_free
-    type(c_ptr), value, intent(in) :: selection
-end function
-
 end interface
