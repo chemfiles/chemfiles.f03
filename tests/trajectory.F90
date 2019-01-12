@@ -65,13 +65,10 @@ contains
             CHECK(abs(pos_125(i) - positions(i, 125)) < 1d-6)
         end do
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
         ! Call close twice to check that it works
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call file%close()
+        call file%close()
     end subroutine
 
     subroutine test_open_with_format()
@@ -92,10 +89,8 @@ contains
         CHECK(frame%atoms_count(status=status) == 125)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
+        call file%close()
     end subroutine
 
     subroutine test_set_cell()
@@ -115,8 +110,7 @@ contains
         call file%set_cell(cell, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -131,12 +125,9 @@ contains
         CHECK(all(cell%lengths(status=status) == [30.0, 30.0, 30.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
+        call cell%free()
+        call file%close()
     end subroutine
 
     subroutine test_set_topology()
@@ -162,10 +153,8 @@ contains
         call file%set_topology(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
+        call topology%free()
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -176,13 +165,10 @@ contains
         atom = frame%atom(1_int64)
         CHECK(atom%name(status=status) == 'Cs')
         CHECK(status == CHFL_SUCCESS)
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
+        call file%close()
     end subroutine
 
     subroutine test_set_topology_from_file()
@@ -209,8 +195,7 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(atom%name(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         ! Set the topology associated with a trajectory from a file with a specific
         ! format
@@ -227,10 +212,8 @@ contains
         ! call atom%free(status=status)
         ! CHECK(status == CHFL_SUCCESS)
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
+        call file%close()
     end subroutine
 
     subroutine test_guess_bonds()
@@ -249,8 +232,7 @@ contains
         call file%set_cell(cell, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
 
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -271,12 +253,9 @@ contains
         CHECK(topology%angles_count(status=status) == 87)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
+        call frame%free()
+        call file%close()
     end subroutine
 
     subroutine test_write()
@@ -315,11 +294,9 @@ contains
         CHECK(status == CHFL_SUCCESS)
         call file%write(frame, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call file%close(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call file%close()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
 
         content = read_whole_file("test-tmp.xyz")
         CHECK(content == EXPECTED)

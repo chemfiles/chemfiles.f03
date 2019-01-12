@@ -38,13 +38,10 @@ contains
         CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_size()
@@ -64,8 +61,7 @@ contains
         CHECK(topology%atoms_count(status=status) == 90)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_atoms()
@@ -102,16 +98,14 @@ contains
         CHECK(atom%name(status=status) == 'O')
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         call topology%remove(3_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(topology%atoms_count(status=status) == 3)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_bonds()
@@ -162,8 +156,7 @@ contains
         CHECK(topology%bonds_count(status=status) == 3)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_angles()
@@ -201,8 +194,7 @@ contains
         CHECK(topology%angles_count(status=status) == 1)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_dihedrals()
@@ -240,8 +232,7 @@ contains
         CHECK(topology%dihedrals_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_impropers()
@@ -273,8 +264,7 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(all(impropers == expected))
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end subroutine
 
     subroutine test_residues()
@@ -302,8 +292,7 @@ contains
         call topology%add_atom(atom, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
 
         call residue%init("foo", status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -316,8 +305,7 @@ contains
         call topology%add_residue(residue, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
 
         call residue%init("bar", status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -328,8 +316,7 @@ contains
         call topology%add_residue(residue, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
 
         CHECK(topology%residues_count(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
@@ -358,11 +345,8 @@ contains
         CHECK(topology%residues_linked(first, second, status=status) .eqv. .true.)
         CHECK(status == CHFL_SUCCESS)
 
-        call first%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call second%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call first%free()
+        call second%free()
+        call topology%free()
     end subroutine
 end program

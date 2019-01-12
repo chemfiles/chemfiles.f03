@@ -41,13 +41,10 @@ contains
         CHECK(all(cloned%lengths(status=status) == [2.0, 3.0, 4.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_triclinic()
@@ -64,8 +61,7 @@ contains
         CHECK(all(cell%angles(status=status) == [90.0, 90.0, 120.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_orthorhombic()
@@ -82,8 +78,7 @@ contains
         CHECK(all(cell%angles( status=status) == [90.0, 90.0, 90.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_volume()
@@ -97,8 +92,7 @@ contains
         CHECK(cell%volume(status=status) == 2.0 * 3.0 * 4.0)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_shape()
@@ -118,8 +112,7 @@ contains
         CHECK(cell%shape(status=status) == CHFL_CELL_TRICLINIC)
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_lengths()
@@ -139,8 +132,7 @@ contains
         CHECK(all(cell%lengths(status=status) == [10.0, 20.0, 30.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_angles()
@@ -166,8 +158,7 @@ contains
         CHECK(all(cell%angles(status=status) == [80.0, 89.0, 100.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_matrix()
@@ -190,8 +181,7 @@ contains
             end do
         end do
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 
     subroutine test_wrap()
@@ -211,7 +201,6 @@ contains
         CHECK(abs(vector(2) + 1.3) < 1d-6)
         CHECK(abs(vector(3) - 2) < 1d-6)
 
-        call cell%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cell%free()
     end subroutine
 end program

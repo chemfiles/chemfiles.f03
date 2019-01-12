@@ -2,7 +2,7 @@
 ! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
 module chemfiles_atom
     use iso_c_binding
-    use chemfiles_cdef
+    use chemfiles_ffi
     use chemfiles_strings
     use chemfiles_property
     implicit none
@@ -10,14 +10,8 @@ module chemfiles_atom
     private
     public :: chfl_atom
 
-    type chfl_atom
-        private
-        type(c_ptr) :: ptr = c_null_ptr
+    type, extends(chfl_ptr) :: chfl_atom
     contains
-        procedure :: unsafe_set_ptr
-        procedure :: unsafe_ptr
-        procedure :: unsafe_const_ptr
-
         procedure :: init
         procedure :: copy
         procedure :: mass
@@ -32,7 +26,6 @@ module chemfiles_atom
         procedure :: vdw_radius
         procedure :: covalent_radius
         procedure :: atomic_number
-        procedure :: free
 
         generic :: set => set_property, set_bool, set_double, set_string, set_vector3d
         procedure, private :: set_property, set_bool, set_double, set_string, set_vector3d
@@ -42,56 +35,6 @@ module chemfiles_atom
     end type
 
 contains
-    subroutine unsafe_set_ptr(this, ptr, status)
-        implicit none
-        class(chfl_atom), intent(inout) :: this
-        type(c_ptr), intent(in) :: ptr
-        integer(chfl_status), optional, intent(out) :: status
-        integer(chfl_status) :: dummy
-
-        if (c_associated(this%ptr)) then
-            write(*, *) "Trying to reset an allocated chfl_atom. Call chfl_atom%free first."
-            ! free the allocated memory
-            dummy = c_chfl_atom_free(ptr)
-            if (present(status)) then
-                status = CHFL_MEMORY_ERROR
-            end if
-            return
-        end if
-
-        this%ptr = ptr
-
-        if (present(status)) then
-            if (.not. c_associated(this%ptr)) then
-                status = CHFL_MEMORY_ERROR
-            else
-                status = CHFL_SUCCESS
-            end if
-        end if
-    end subroutine
-
-    type(c_ptr) function unsafe_ptr(this)
-        implicit none
-        class(chfl_atom), intent(inout) :: this
-
-        if (.not. c_associated(this%ptr)) then
-            write(*, *) "Trying to access a NULL chfl_atom. Call chfl_atom%init first."
-            stop 1
-        end if
-        unsafe_ptr = this%ptr
-    end function
-
-    type(c_ptr) function unsafe_const_ptr(this)
-        implicit none
-        class(chfl_atom), intent(in) :: this
-
-        if (.not. c_associated(this%ptr)) then
-            write(*, *) "Trying to access a NULL chfl_atom. Call chfl_atom%init first."
-            stop 1
-        end if
-        unsafe_const_ptr = this%ptr
-    end function
-
     subroutine init(this, name, status)
         implicit none
         class(chfl_atom), intent(inout) :: this
@@ -299,16 +242,15 @@ contains
         integer(chfl_status) :: status_tmp
 
         call property%init(value, status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 1000
+        if (status_tmp /= CHFL_SUCCESS) then
+            if (present(status)) then
+                status = status_tmp
+            end if
+            return
+        end if
 
         call this%set_property(name, property, status=status)
-
-        call property%free(status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 1000
-
-1000    if (present(status)) then
-            status = status_tmp
-        end if
+        call property%free()
     end subroutine
 
     subroutine set_double(this, name, value, status)
@@ -322,16 +264,15 @@ contains
         integer(chfl_status) :: status_tmp
 
         call property%init(value, status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 2000
+        if (status_tmp /= CHFL_SUCCESS) then
+            if (present(status)) then
+                status = status_tmp
+            end if
+            return
+        end if
 
         call this%set_property(name, property, status=status)
-
-        call property%free(status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 2000
-
-2000    if (present(status)) then
-            status = status_tmp
-        end if
+        call property%free()
     end subroutine
 
     subroutine set_string(this, name, value, status)
@@ -345,16 +286,15 @@ contains
         integer(chfl_status) :: status_tmp
 
         call property%init(value, status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 3000
+        if (status_tmp /= CHFL_SUCCESS) then
+            if (present(status)) then
+                status = status_tmp
+            end if
+            return
+        end if
 
         call this%set_property(name, property, status=status)
-
-        call property%free(status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 3000
-
-3000    if (present(status)) then
-            status = status_tmp
-        end if
+        call property%free()
     end subroutine
 
     subroutine set_vector3d(this, name, value, status)
@@ -368,16 +308,15 @@ contains
         integer(chfl_status) :: status_tmp
 
         call property%init(value, status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 4000
+        if (status_tmp /= CHFL_SUCCESS) then
+            if (present(status)) then
+                status = status_tmp
+            end if
+            return
+        end if
 
         call this%set_property(name, property, status=status)
-
-        call property%free(status=status_tmp)
-        if (status_tmp /= CHFL_SUCCESS) goto 4000
-
-4000    if (present(status)) then
-            status = status_tmp
-        end if
+        call property%free()
     end subroutine
 
     type(chfl_property) function get(this, name, status)
@@ -419,27 +358,13 @@ contains
         allocate(c_names(count))
 
         status_tmp = c_chfl_atom_list_properties(this%unsafe_const_ptr(), c_loc(c_names), count)
-        if (status_tmp /= CHFL_SUCCESS) goto 5000
+        if (status_tmp /= CHFL_SUCCESS) goto 1000
 
         do i = 1, count
             names(i) = c_to_f_str(c_names(i))
         end do
 
-5000    deallocate(c_names)
-        if (present(status)) then
-            status = status_tmp
-        end if
-    end subroutine
-
-    subroutine free(this, status)
-        implicit none
-        class(chfl_atom), intent(inout) :: this
-        integer(chfl_status), intent(out), optional :: status
-        integer(chfl_status) :: status_tmp
-
-        status_tmp = c_chfl_atom_free(this%ptr)
-        this%ptr = c_null_ptr
-
+1000    deallocate(c_names)
         if (present(status)) then
             status = status_tmp
         end if

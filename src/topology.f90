@@ -2,7 +2,7 @@
 ! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
 module chemfiles_topology
     use iso_c_binding
-    use chemfiles_cdef
+    use chemfiles_ffi
     use chemfiles_strings
     use chemfiles_atom
     use chemfiles_residue
@@ -11,16 +11,8 @@ module chemfiles_topology
     private
     public :: chfl_topology
 
-    type chfl_topology
-        private
-        type(c_ptr) :: ptr = c_null_ptr
-        logical :: is_const = .false.
+    type, extends(chfl_ptr) :: chfl_topology
     contains
-        procedure :: unsafe_set_const_ptr
-        procedure :: unsafe_set_ptr
-        procedure :: unsafe_ptr
-        procedure :: unsafe_const_ptr
-
         procedure :: init
         procedure :: copy
         procedure :: atoms_count
@@ -45,74 +37,9 @@ module chemfiles_topology
         procedure :: residues_linked
         procedure :: bond_orders
         procedure :: bond_order
-        procedure :: free
     end type
 
 contains
-
-    subroutine unsafe_set_const_ptr(this, ptr, status)
-        implicit none
-        class(chfl_topology), intent(inout) :: this
-        type(c_ptr), intent(in) :: ptr
-        integer(chfl_status), intent(out), optional :: status
-
-        call this%unsafe_set_ptr(ptr, status)
-        this%is_const = .true.
-    end subroutine
-
-    subroutine unsafe_set_ptr(this, ptr, status)
-        implicit none
-        class(chfl_topology), intent(inout) :: this
-        type(c_ptr), intent(in) :: ptr
-        integer(chfl_status), optional, intent(out) :: status
-        integer(chfl_status) :: dummy
-
-        if (c_associated(this%ptr)) then
-            write(*, *) "Trying to reset an allocated chfl_topology. Call chfl_topology%free first."
-            ! free the allocated memory
-            dummy = c_chfl_topology_free(ptr)
-            if (present(status)) then
-                status = CHFL_MEMORY_ERROR
-            end if
-            return
-        end if
-
-        this%ptr = ptr
-
-        if (present(status)) then
-            if (.not. c_associated(this%ptr)) then
-                status = CHFL_MEMORY_ERROR
-            else
-                status = CHFL_SUCCESS
-            end if
-        end if
-    end subroutine
-
-    type(c_ptr) function unsafe_ptr(this)
-        implicit none
-        class(chfl_topology), intent(inout) :: this
-
-        if (.not. c_associated(this%ptr)) then
-            write(*, *) "Trying to access a NULL chfl_topology. Call chfl_topology%init first."
-            stop 1
-        else if (this%is_const) then
-            write(*, *) "Can not write data to a const chfl_topology"
-            stop 1
-        end if
-        unsafe_ptr = this%ptr
-    end function
-
-    type(c_ptr) function unsafe_const_ptr(this)
-        implicit none
-        class(chfl_topology), intent(in) :: this
-
-        if (.not. c_associated(this%ptr)) then
-            write(*, *) "Trying to access a NULL chfl_topology. Call chfl_topology%init first."
-            stop 1
-        end if
-        unsafe_const_ptr = this%ptr
-    end function
-
     subroutine init(this, status)
         implicit none
         class(chfl_topology), intent(inout) :: this
@@ -483,19 +410,4 @@ contains
             status = status_tmp
         end if
     end function
-
-    subroutine free(this, status)
-        implicit none
-        class(chfl_topology), intent(inout) :: this
-        integer(chfl_status), intent(out), optional :: status
-        integer(chfl_status) :: status_tmp
-
-        status_tmp = c_chfl_topology_free(this%ptr)
-        this%ptr = c_null_ptr
-        this%is_const = .false.
-
-        if (present(status)) then
-            status = status_tmp
-        end if
-    end subroutine
 end module

@@ -119,7 +119,7 @@ function c_chfl_trajectory_nsteps(trajectory, nsteps) bind(C, name="chfl_traject
     integer(kind=c_int64_t), intent(inout) :: nsteps
 end function
 
-! Function "chfl_trajectory_close", at trajectory.h:141:25
+! Function "chfl_trajectory_close", at trajectory.h:140:18
 function c_chfl_trajectory_close(trajectory) bind(C, name="chfl_trajectory_close")
     use iso_c_binding
     import chfl_status

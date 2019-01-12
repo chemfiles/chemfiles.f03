@@ -36,13 +36,10 @@ contains
         CHECK(cloned%atoms_count(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_name()
@@ -56,8 +53,7 @@ contains
         CHECK(residue%name(status=status) == 'Foo')
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
     end subroutine
 
     subroutine test_id()
@@ -71,8 +67,7 @@ contains
         CHECK(residue%id(status=status) == 56)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
     end subroutine
 
     subroutine test_size()
@@ -96,8 +91,7 @@ contains
         CHECK(residue%atoms_count(status=status) == 3)
         CHECK(status == CHFL_SUCCESS)
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
     end subroutine
 
     subroutine test_contains()
@@ -129,8 +123,7 @@ contains
         CHECK(status == CHFL_SUCCESS)
         CHECK(all(atoms == [0, 1, 2]))
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
     end subroutine
 
     subroutine test_properties()
@@ -151,22 +144,19 @@ contains
         call residue%set("bar", .false., status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = residue%get("foo", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%double(status=status) == 42d0)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = residue%get("bar", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%bool(status=status) .eqv. .false.)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = residue%get("baz", status=status)
         CHECK(status /= CHFL_SUCCESS)
@@ -180,7 +170,6 @@ contains
         CHECK(names(1) == 'bar')
         CHECK(names(2) == 'foo')
 
-        call residue%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call residue%free()
     end subroutine
 end program

@@ -25,11 +25,9 @@ contains
         CHECK(property%get_kind(status=status) == CHFL_PROPERTY_BOOL)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
         ! Call free twice to check that it works
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
     end subroutine
 
     subroutine test_double()
@@ -46,8 +44,7 @@ contains
         CHECK(property%get_kind(status=status) == CHFL_PROPERTY_DOUBLE)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
     end subroutine
 
     subroutine test_string()
@@ -64,8 +61,7 @@ contains
         CHECK(property%get_kind(status=status) == CHFL_PROPERTY_STRING)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
     end subroutine
 
     subroutine test_vector3d()
@@ -82,7 +78,6 @@ contains
         CHECK(property%get_kind(status=status) == CHFL_PROPERTY_VECTOR3D)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
     end subroutine
 end program

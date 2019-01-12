@@ -19,7 +19,7 @@ endif()
 add_subdirectory(chemfiles)
 
 set(sources
-    src/cdef.f90
+    src/ffi.f90
     src/strings.f90
     src/atom.f90
     src/cell.f90

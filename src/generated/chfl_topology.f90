@@ -271,14 +271,4 @@ function c_chfl_topology_bond_order(topology, i, j, order) bind(C, name="chfl_to
     integer(chfl_bond_order), intent(inout) :: order
 end function
 
-! Function "chfl_topology_free", at topology.h:274:25
-function c_chfl_topology_free(topology) bind(C, name="chfl_topology_free")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_topology_free
-    type(c_ptr), value, intent(in) :: topology
-end function
-
 end interface

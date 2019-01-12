@@ -22,13 +22,10 @@ contains
         call cloned%copy(selection, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_string()
@@ -42,8 +39,7 @@ contains
         CHECK(selection%string(status=status) == 'name O')
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
     end subroutine
 
     subroutine test_size()
@@ -57,8 +53,7 @@ contains
         CHECK(selection%size(status=status) == 1)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
 
         call selection%init("pairs: name(#1) Zn and name(#2) Ar", status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -66,8 +61,7 @@ contains
         CHECK(selection%size(status=status) == 2)
         CHECK(status == CHFL_SUCCESS)
 
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
     end subroutine
 
     subroutine test_evaluate_atoms()
@@ -100,11 +94,9 @@ contains
 
         deallocate(matches, stat=status)
         CHECK(status == CHFL_SUCCESS)
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     subroutine test_evaluate_angles()
@@ -142,11 +134,9 @@ contains
 
         deallocate(matches, stat=status)
         CHECK(status == CHFL_SUCCESS)
-        call selection%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call selection%free()
 
-        call frame%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call frame%free()
     end subroutine
 
     function testing_frame()
@@ -172,10 +162,8 @@ contains
         call topology%add_atom(H, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call O%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call H%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call O%free()
+        call H%free()
 
         call topology%add_bond(0_int64, 1_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -192,7 +180,6 @@ contains
         call testing_frame%set_topology(topology, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call topology%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call topology%free()
     end function
 end program

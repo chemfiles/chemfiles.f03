@@ -40,13 +40,10 @@ contains
         CHECK(cloned%name(status=status) == 'He')
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
         ! Call free twice to check that it works
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
-        call cloned%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call cloned%free()
+        call cloned%free()
     end subroutine
 
     subroutine test_name()
@@ -69,8 +66,7 @@ contains
         CHECK(atom%name(status=status) == 'Zn')
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_type()
@@ -93,8 +89,7 @@ contains
         CHECK(atom%full_name(status=status) == 'Zinc')
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_mass()
@@ -114,8 +109,7 @@ contains
         CHECK(atom%mass(status=status) == 678.0)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_charge()
@@ -135,8 +129,7 @@ contains
         CHECK(atom%charge(status=status) == -1.5)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_radius()
@@ -153,8 +146,7 @@ contains
         CHECK(atom%covalent_radius(status=status) == 1.31d0)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_atomic_number()
@@ -168,8 +160,7 @@ contains
         CHECK(atom%atomic_number(status=status) == 30)
         CHECK(status == CHFL_SUCCESS)
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 
     subroutine test_properties()
@@ -190,22 +181,19 @@ contains
         call atom%set("bar", .false., status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = atom%get("foo", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%double(status=status) == 42d0)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = atom%get("bar", status=status)
         CHECK(status == CHFL_SUCCESS)
         CHECK(property%bool(status=status) .eqv. .false.)
         CHECK(status == CHFL_SUCCESS)
-        call property%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call property%free()
 
         property = atom%get("baz", status=status)
         CHECK(status /= CHFL_SUCCESS)
@@ -219,7 +207,6 @@ contains
         CHECK(names(1) == 'bar')
         CHECK(names(2) == 'foo')
 
-        call atom%free(status=status)
-        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
     end subroutine
 end program
