@@ -4,171 +4,111 @@
 .. f:type:: chfl_property
 
     A :f:type:`chfl_property` holds data used in properties in
-    :f:type:`chfl_frame` and :f:type:`chfl_atom`. A property can contain data of
-    various types: bool, real, string or 3 dimensional array.
+    :f:type:`chfl_frame`, :f:type:`chfl_atom` and :f:type:`chfl_residue`.
 
-    The initialization routines for :f:type:`chfl_property` are:
+    A property is associated with a name and can contain data of various types:
+    logical, real, string or 3 dimensional array (``vector3d``). The property
+    kind is used to know which kind of data is stored in the property.
 
-    - :f:func:`chfl_property%bool`;
-    - :f:func:`chfl_property%double`;
-    - :f:func:`chfl_property%string`;
-    - :f:func:`chfl_property%vector3d`;
-    - :f:func:`chfl_property%from_atom`;
-    - :f:func:`chfl_property%from_frame`;
-
-    :field subroutine from_frame: :f:func:`chfl_property%from_frame`
-    :field subroutine from_atom: :f:func:`chfl_property%from_atom`
-    :field subroutine bool: :f:func:`chfl_property%bool`
-    :field subroutine double: :f:func:`chfl_property%double`
-    :field subroutine string: :f:func:`chfl_property%string`
-    :field subroutine vector3d: :f:func:`chfl_property%vector3d`
-    :field subroutine get_kind: :f:func:`chfl_property%get_kind`
-    :field subroutine get_bool: :f:func:`chfl_property%get_bool`
-    :field subroutine get_double: :f:func:`chfl_property%get_double`
-    :field subroutine get_string: :f:func:`chfl_property%get_string`
-    :field subroutine get_vector3d: :f:func:`chfl_property%get_vector3d`
+    :field subroutine init: :f:func:`chfl_property%init`
+    :field function kind: :f:func:`chfl_property%kind`
+    :field function bool: :f:func:`chfl_property%bool`
+    :field function double: :f:func:`chfl_property%double`
+    :field function string: :f:func:`chfl_property%string`
+    :field function vector3d: :f:func:`chfl_property%vector3d`
     :field subroutine free: :f:func:`chfl_property%free`
 
+.. f:subroutine:: chfl_property%init(value, [status])
 
-.. f:subroutine:: chfl_property%from_frame(frame, name, [status])
+    This is a generic subroutine for initialization of a property. It allocate
+    memory which must be released with :f:func:`chfl_property%free`.
 
-    Try to get a copy of property with the given ``name`` in the given
-    ``frame``.
+    ``value`` can be a real number, a logical value, a string
+    (``string``) or an 3-dimensional array of real numbers.
 
-    If no property with this name is found, this property is left uninitialized,
-    and ``status`` contains ``CHFL_PROPERTY_ERROR``.
+    :optional integer(chfl_status) status: status code of the operation. If it is not
+        :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn more
+        about the error.
 
-    :argument type(chfl_frame) frame: the frame to look into
-    :argument character(len=*) name: the property name
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+.. f:function:: chfl_property%kind([status])
 
-.. f:subroutine:: chfl_property%from_atom(atom, name, [status])
+    Get the property kind, a number indicating which type of value this property
+    holds. The possible kinds are represented by integer of the
+    :f:var:`chfl_property_kind` kind.
 
-    Try to get a copy of property with the given ``name`` in the given
-    ``atom``.
+    .. f:variable:: chfl_property_kind
+        :type: integer
 
-    If no property with this name is found, this property is left uninitialized,
-    and ``status`` contains ``CHFL_PROPERTY_ERROR``.
+        Kind parameter for the integer values describing :f:type:`chfl_property`
+        kinds.
 
-    :argument type(chfl_atom) atom: the frame to look into
-    :argument character(len=*) name: the property name
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    .. f:variable:: CHFL_PROPERTY_BOOL
+        :type: integer(chfl_property_kind)
 
+        Kind used for ``logical`` (``bool`` in C++) values.
 
-.. f:subroutine:: chfl_property%bool(value, [status])
+    .. f:variable:: CHFL_PROPERTY_DOUBLE
+        :type: integer(chfl_property_kind)
 
-    Initialize this property with a boolean (logical) `value`.
+        Kind used for ``real(real64)`` (``double`` in C++) values.
 
-    :argument logical value [kind=1]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    .. f:variable:: CHFL_PROPERTY_STRING
+        :type: integer(chfl_property_kind)
 
-.. f:subroutine:: chfl_property%double(value, [status])
+        Kind used for ``string`` (``std::string`` in C++) values.
 
-    Initialize this property with a real `value`.
+    .. f:variable:: CHFL_PROPERTY_VECTOR3D
+        :type: integer(chfl_property_kind)
 
-    :argument real value [kind=real64]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+        Kind used for ``real(real64), dimension(3)`` (``vector3d`` in C++)
+        values.
 
-.. f:subroutine:: chfl_property%string(value, [status])
+    :return integer(chfl_property_kind):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    Initialize this property with a string `value`.
+.. f:function:: chfl_property%bool([status])
 
-    :argument character(len=*) value: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    Get the logical value stored in this property. If the property do not store
+    a logical value, ``status`` will be :f:var:`CHFL_PROPERTY_ERROR`.
 
-.. f:subroutine:: chfl_property%vector3d(value, [status])
+    :return logical:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    Initialize this property with a 3 dimensional array `value`.
+.. f:function:: chfl_property%double([status])
 
-    :argument real value(3) [kind(real64)]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    Get the real value stored in this property. If the property do not store
+    a real value, ``status`` will be :f:var:`CHFL_PROPERTY_ERROR`.
 
-.. f:subroutine:: chfl_property%get_kind(kind, [status])
+    :return real [real64]:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    Get the property kind in ``kind``. This kind indicate which type of value
-    this property holds.
+.. f:function:: chfl_property%string([status])
 
-    :argument integer kind [kind=chfl_property_kind]: the kind of property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    Get the string stored in this property. If the property do not store a
+    string, ``status`` will be :f:var:`CHFL_PROPERTY_ERROR`. If the string is
+    longer than :f:var:`CHFL_STRING_LENGTH`, it will be truncated.
 
-    The property kinds are integers which ``kind`` is the ``chfl_property_kind``
-    parameter:
+    :return character(len=CHFL_STRING_LENGTH):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    .. f:variable:: integer(chfl_property_kind) :: CHFL_PROPERTY_BOOL
+.. f:function:: chfl_property%vector3d([status])
 
-        This property contain a boolean (logical) value
+    Get the 3 dimensional array value stored in this property. If the property
+    do not store an array, ``status`` will be :f:var:`CHFL_PROPERTY_ERROR`.
 
-    .. f:variable:: integer(chfl_property_kind) :: CHFL_PROPERTY_DOUBLE
+    :return real [dimension(3), kind(real64)]:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-        This property contain a double (real) value
-
-    .. f:variable:: integer(chfl_property_kind) :: CHFL_PROPERTY_STRING
-
-        This property contain a string value
-
-    .. f:variable:: integer(chfl_property_kind) :: CHFL_PROPERTY_VECTOR3D
-
-        This property contain a 3 dimensional array of real value
-
-.. f:subroutine:: chfl_property%get_bool(value, [status])
-
-    Get the boolean value holded by this property in ``value``
-
-    :argument logical value [kind(1)]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_property%get_double(value, [status])
-
-    Get the real value holded by this property in `value`.
-
-    :argument real value [kind=real64]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_property%get_string(value, buffsize, [status])
-
-    Get the string value of this property in the string buffer ``value``.
-
-    The buffer size must be passed in ``buffsize``. This function will truncate
-    the name to fit in the buffer.
-
-    :argument character(len=buffsize) name: string buffer to be filled with
-        the property value
-    :argument integer buffsize: length of the string buffer
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_property%get_vector3d(value, [status])
-
-    Get the real array value holded by this property in `value`.
-
-    :argument real value(3) [kind(real64)]: the value of the property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_property%free([status])
+.. f:subroutine:: chfl_property%free()
 
     Destroy a property, and free the associated memory
-
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.

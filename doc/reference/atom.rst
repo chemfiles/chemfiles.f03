@@ -3,233 +3,224 @@
 
 .. f:type:: chfl_atom
 
-    A :f:type:`chfl_atom` is a particle in the current :f:type:`chfl_frame`. It stores the
-    following atomic properties:
+    A :f:type:`chfl_atom` is a particle in the current :f:type:`chfl_frame`.
 
-    - atom name;
-    - atom type;
-    - atom mass;
-    - atom charge.
+    All atoms have an atomic name; an atomic type; an atomic mass and an atomic
+    charge.
 
-    The atom name is usually an unique identifier (``H1``, ``C_a``) while the
-    atom type will be shared between all particles of the same type: ``H``,
+    The atomic name is usually an unique identifier (``H1``, ``C_a``) while the
+    atomic type will be shared between all particles of the same type: ``H``,
     ``Ow``, ``CH3``.
-
-    The initialization routine for :f:type:`chfl_atom` are:
-
-    - :f:func:`chfl_atom%init`;
-    - :f:func:`chfl_atom%from_frame`;
-    - :f:func:`chfl_atom%from_topology`.
 
     :field subroutine init: :f:func:`chfl_atom%init`
     :field subroutine copy: :f:func:`chfl_atom%copy`
-    :field subroutine from_frame: :f:func:`chfl_atom%from_frame`
-    :field subroutine from_topology: :f:func:`chfl_atom%from_topology`
-    :field subroutine mass: :f:func:`chfl_atom%mass`
+    :field function mass: :f:func:`chfl_atom%mass`
     :field subroutine set_mass: :f:func:`chfl_atom%set_mass`
-    :field subroutine charge: :f:func:`chfl_atom%charge`
+    :field function charge: :f:func:`chfl_atom%charge`
     :field subroutine set_charge: :f:func:`chfl_atom%set_charge`
-    :field subroutine type: :f:func:`chfl_atom%type`
+    :field function type: :f:func:`chfl_atom%type`
     :field subroutine set_type: :f:func:`chfl_atom%set_type`
-    :field subroutine name: :f:func:`chfl_atom%name`
+    :field function name: :f:func:`chfl_atom%name`
     :field subroutine set_name: :f:func:`chfl_atom%set_name`
-    :field subroutine full_name: :f:func:`chfl_atom%full_name`
-    :field subroutine vdw_radius: :f:func:`chfl_atom%vdw_radius`
-    :field subroutine covalent_radius: :f:func:`chfl_atom%covalent_radius`
-    :field subroutine atomic_number: :f:func:`chfl_atom%atomic_number`
-    :field subroutine set_property: :f:func:`chfl_atom%set_property`
+    :field function full_name: :f:func:`chfl_atom%full_name`
+    :field function vdw_radius: :f:func:`chfl_atom%vdw_radius`
+    :field function covalent_radius: :f:func:`chfl_atom%covalent_radius`
+    :field function atomic_number: :f:func:`chfl_atom%atomic_number`
+    :field subroutine set: :f:func:`chfl_atom%set`
+    :field subroutine get: :f:func:`chfl_atom%get`
+    :field function properties_count: :f:func:`chfl_atom%properties_count`
+    :field function list_properties: :f:func:`chfl_atom%list_properties`
     :field subroutine free: :f:func:`chfl_atom%free`
 
 .. f:subroutine:: chfl_atom%init(name, [status])
 
     Initialize this atom with the given ``name``, and set the atom type to
-    ``name``.
+    ``name``. This subroutine allocate memory which must be released with
+    :f:func:`chfl_atom%free`.
 
-    :argument character(len=*) name: atom name
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument character(len=\*) name: atom name
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_atom%copy(atom, [status])
 
-    Initialize this atom with a copy of ``atom``.
+    Initialize this atom with a copy of ``atom``. This subroutine allocate
+    memory which must be released with :f:func:`chfl_atom%free`.
 
-    :argument chfl_atom atom: atom to copy
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_atom) atom: atom to copy
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_atom%from_frame(frame, i, [status])
+.. f:function:: chfl_atom%mass([status])
 
-    Initialize this atom with a copy the atom at index ``i`` from a ``frame``.
+    Get the mass of the atom in atomic mass units.
 
-    :argument chfl_frame frame: frame
-    :argument integer i: atom index in the frame
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_atom%from_topology(topology, i, [status])
-
-    Initialize this atom with a copy the atom at index ``i`` from a
-    ``topology``.
-
-    :argument chfl_topology topology: topology
-    :argument integer idx: atom index in the topology
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_atom%mass(mass, [status])
-
-    Get the mass of tah atom in ``mass``. The mass is in atomic mass units.
-
-    :argument real mass: atom mass
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return real:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_atom%set_mass(mass, [status])
 
-    Set the mass of the atom to ``mass``. The mass should be in atomic mass
+    Set the mass of the atom to ``mass``. The value should be in atomic mass
     units.
 
     :argument real mass: new atom mass
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_atom%charge(charge, [status])
+.. f:function:: chfl_atom%charge([status])
 
-    Get the charge of the atom in ``charge``. The charge is in number of the
-    electron charge *e*.
+    Get the charge of the atom in number of the electron charge *e*.
 
-    :argument real charge: The atom charge
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return real:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_atom%set_charge(charge, [status])
 
-    Get the charge of the atom to ``charge``. The charge should be in number of
+    Set the charge of the atom to ``charge``. The charge should be in number of
     the electron charge *e*.
 
     :argument real charge: new atom charge
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_atom%name(name, buffsize, [status])
+.. f:function:: chfl_atom%name([status])
 
-    Get the name of an atom in the string buffer ``name``.
+    Get the name of an atom. If the name is longer than
+    :f:var:`CHFL_STRING_LENGTH`, it will be truncated.
 
-    The buffer size must be passed in ``buffsize``. This function will truncate
-    the name to fit in the buffer.
-
-    :argument character(len=buffsize) name: string buffer to be filled with
-        the atom name
-    :argument integer buffsize: length of the string buffer
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return character(len=CHFL_STRING_LENGTH):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_atom%set_name(name, [status])
 
     Set the name of an atom to ``name``.
 
-    :argument character(len=*) name: new atom name
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument character(len=\*) name: new atom name
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_atom%full_name(name, buffsize, [status])
+.. f:function:: chfl_atom%full_name([status])
 
-    Get the full name of an ``atom`` from its type in the string buffer
-    ``name``.
+    Get the full name of an ``atom`` from its type. If the name is longer than
+    :f:var:`CHFL_STRING_LENGTH`, it will be truncated.
 
-    The buffer size must be passed in ``buffsize``. This function will truncate
-    the name to fit in the buffer.
+    :return character(len=CHFL_STRING_LENGTH):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    :argument character(len=buffsize) name: string buffer to be filled with
-        the atom full name
-    :argument buffsize: length of the string buffer
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+.. f:function:: chfl_atom%type([status])
 
-.. f:subroutine:: chfl_atom%type(type, buffsize, [status])
+    Get the type of an atom. If the name is longer than
+    :f:var:`CHFL_STRING_LENGTH`, it will be truncated.
 
-    Get the type of an atom in the string buffer ``type``.
-
-    The buffer size must be passed in ``buffsize``. This function will truncate
-    the type to fit in the buffer.
-
-    :argument character(len=buffsize) name: string buffer to be filled with
-        the atom type
-    :argument buffsize: length of the string buffer
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return character(len=CHFL_STRING_LENGTH):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_atom%set_type(type, [status])
 
     Set the type of an atom to ``type``.
 
-    :argument character(len=*) name: new atom type
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument character(len=\*) name: new atom type
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_atom%vdw_radius(radius, [status])
+.. f:function:: chfl_atom%vdw_radius([status])
 
-    Get the Van der Waals radius of an atom from the atom type in ``radius``.
+    Get the Van der Waals radius of an atom from the atom type. If the radius in
+    unknown, this function returns 0.
 
-    If the radius in unknown, this function set ``radius`` to 0.
+    :return real:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    :argument real radius: Van der Waals radius
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+.. f:function:: chfl_atom%covalent_radius([status])
 
-.. f:subroutine:: chfl_atom%covalent_radius(radius, [status])
+    Get the covalent radius of an atom from the atom type. If the radius in
+    unknown, this function set ``radius`` to 0.
 
-    Get the covalent radius of an atom from the atom type in ``radius``.
+    :return real:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    If the radius in unknown, this function set ``radius`` to 0.
+.. f:function:: chfl_atom%atomic_number([status])
 
-    :argument real radius: covalent radius
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    Get the atomic number of an atom from the atom type. If the atomic number in
+    unknown, this function set ``number`` to 0.
 
-.. f:subroutine:: chfl_atom%atomic_number(number, [status])
+    :argument integer:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    Get the atomic number of an atom from the atom type in ``number``.
-
-    If the atomic number in unknown, this function set ``number`` to 0.
-
-    :argument integer number: atomic number
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_atom%set_property(name, property, [status])
+.. f:subroutine:: chfl_atom%set(name, property, [status])
 
     Add a new ``property`` with the given ``name`` to this atom.
 
     If a property with the same name already exists, this function override the
     existing property with the new one.
 
-    :argument character(len=*) name: property name
-    :argument type(chfl_property) property: the new property
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    ``property`` can either be a :f:type:`chfl_property`, or any value that can
+    be stored in a :f:type:`chfl_property`: logical, real, string, or vector3d.
 
-.. f:subroutine:: chfl_atom%free([status])
+    :argument character(len=\*) name: property name
+    :argument type(chfl_property) property: the new property
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:function:: chfl_atom%get(name, [status])
+
+    Get a copy of the property with the given ``name`` in this atom. If no
+    property exist with this name, ``status`` will be set to
+    :f:var:`CHFL_PROPERTY_ERROR`.
+
+    The associated memory must be released by calling
+    :f:func:`chfl_property%free`.
+
+    :return type(chfl_property):
+    :argument character(len=\*) name: property name
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:function:: chfl_atom%properties_count([status])
+
+    Get the number of properties in this atom.
+
+    :return integer:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_atom%list_properties(names, [status])
+
+    Fill the pre-allocated array ``names`` with the names of the properties in
+    this atom. The array must have room for :f:func:`chfl_atom%properties_count`
+    values of type ``character(len=CHFL_STRING_LENGTH)``.
+
+    :return integer:
+    :argument character(len=CHFL_STRING_LENGTH) names(\:): list of properties names
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_atom%free()
 
     Destroy an atom, and free the associated memory
-
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.

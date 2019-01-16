@@ -70,7 +70,7 @@ def convert_arithm(node, expr, modname=None, nodefmt=nodes.Text):
             else:
                 node += nodefmt(num, num)
         if op:
-            op = op.replace(':', '*')
+            # op = op.replace(':', '*')
             node += nodefmt(op, op)
 
 
@@ -94,27 +94,47 @@ def add_shape(node, shape, modname=None, nodefmt=nodes.Text):
 # Doc fields
 re_name_shape = re.compile('(\w+)(\(.+\))?')
 re_fieldname_match = re.compile(r'''
-    (?P<type>\b\w+\b)?\s*
+    (?P<type>
+        \b\w+\b         # Type name
+        (?:\(.*\))?     # Optional type attributes (kind, shape, ...)
+    )?\s*
     (?P<name>\b\w+\b)\s*
     (?P<shape>\(.*\))?\s*
     (?P<sattrs>\[.+\])?
 ''', re.VERBOSE).match
 
 
+def make_fortran_xref(
+    rolename, domain, target, innernode=nodes.emphasis, modname=None, typename=None
+):
+    if not rolename:
+        return innernode(target, target)
+
+    output = []
+    subtype = False
+    if rolename == "type":
+        # Parse :type foo: / :type foo(bar):
+        if "(" in target and ")" in target:
+            subtype = True
+            lp = target.find('(') + 1
+            rp = target.find(')')
+            output.append(innernode(target[:lp], target[:lp]))
+            target = target[lp:rp]
+
+    refnode = addnodes.pending_xref(
+        '', refdomain=domain, refexplicit=False,
+        reftype=rolename, reftarget=target,
+        modname=modname, typename=typename
+    )
+    refnode += innernode(target, target)
+    output.append(refnode)
+    if subtype:
+        output.append(innernode(")", ")"))
+    return output
+
+
 class FortranField(Field):
-    def make_xref(
-                self, rolename, domain, target, innernode=nodes.emphasis,
-                modname=None, typename=None
-            ):
-        if not rolename:
-            return innernode(target, target)
-        refnode = addnodes.pending_xref(
-            '', refdomain=domain, refexplicit=False,
-            reftype=rolename, reftarget=target,
-            modname=modname, typename=typename
-        )
-        refnode += innernode(target, target)
-        return refnode
+    pass
 
 
 class FortranCallField(FortranField):
@@ -175,15 +195,15 @@ class FortranCompleteField(FortranField, GroupedField):
             self.namefmt = addnodes.desc_name
 
     def make_field(
-                self, types, domain, items, shapes=None, attrs=None,
-                modname=None, typename=None
-            ):
+        self, types, domain, items, shapes=None, attrs=None,
+        modname=None, typename=None
+    ):
         def handle_item(fieldarg, content):
             par = nodes.paragraph()
             if self.prefix:
                 par += self.namefmt(self.prefix, self.prefix)
 
-            par += self.make_xref(
+            par += make_fortran_xref(
                 self.rolename, domain, fieldarg, self.namefmt,
                 modname=modname, typename=typename
             )
@@ -199,7 +219,7 @@ class FortranCompleteField(FortranField, GroupedField):
             if fieldtype:
                 if len(fieldtype) == 1 and isinstance(fieldtype[0], nodes.Text):
                     thistypename = fieldtype[0].astext()
-                    par += self.make_xref(
+                    par += make_fortran_xref(
                         self.typerolename, domain, thistypename,
                         modname=modname, typename=typename
                     )
@@ -337,14 +357,11 @@ class FortranDocFieldTransformer(DocFieldTransformer):
             if typedesc.is_typed == 2:
                 argname, argshape, argtype, argattrs = self.scan_fieldarg(fieldarg)
                 if argtype:
-                    types.setdefault(typename, {})[argname] = \
-                                               [nodes.Text(argtype)]
+                    types.setdefault(typename, {})[argname] = [nodes.Text(argtype)]
                 if argshape:
-                    shapes.setdefault(typename, {})[argname] = \
-                                               [nodes.Text(argshape)]
+                    shapes.setdefault(typename, {})[argname] = [nodes.Text(argshape)]
                 if argattrs:
-                    attrs.setdefault(typename, {})[argname] = \
-                                               [nodes.emphasis(argattrs, argattrs)]
+                    attrs.setdefault(typename, {})[argname] = [nodes.emphasis(argattrs, argattrs)]
                 fieldarg = argname
             elif typedesc.is_typed:
                 try:
@@ -353,7 +370,7 @@ class FortranDocFieldTransformer(DocFieldTransformer):
                     pass
                 else:
                     types.setdefault(typename, {})[argname] = \
-                                               [nodes.Text(argtype)]
+                        [nodes.Text(argtype)]
                     fieldarg = argname
 
             # grouped entries need to be collected in one entry, while others
@@ -367,8 +384,7 @@ class FortranDocFieldTransformer(DocFieldTransformer):
                     entries.append(group)
                 group[1].append(typedesc.make_entry(fieldarg, content))
             else:
-                entries.append([typedesc,
-                                typedesc.make_entry(fieldarg, content)])
+                entries.append([typedesc, typedesc.make_entry(fieldarg, content)])
 
         # step 2: all entries are collected, construct the new field list
         new_list = nodes.field_list()
@@ -571,7 +587,7 @@ class FortranObject(ObjectDescription):
         sig_prefix = self.get_signature_prefix(sig)
         if objtype or sig_prefix:
             objtype = objtype or sig_prefix
-            signode += addnodes.desc_annotation(objtype+' ', objtype+' ')
+            signode += addnodes.desc_annotation(objtype + ' ', objtype + ' ')
 
         # Add module
         if self.env.config.add_module_names and modname and self.objtype != 'typefield':
@@ -602,11 +618,9 @@ class FortranObject(ObjectDescription):
         if ftype or attrs:
             signode += nodes.emphasis(' [', ' [')
         if ftype:
-            refnode = addnodes.pending_xref(
-                '', refdomain='f', reftype='type', reftarget=ftype,
-                modname=modname,)
-            refnode += nodes.emphasis(ftype, ftype)
-            signode += refnode
+            signode += make_fortran_xref(
+                "type", domain='f', target=ftype, modname=modname
+            )
         if attrs:
             if ftype:
                 signode += nodes.emphasis(',', ',')
@@ -662,7 +676,7 @@ class FortranObject(ObjectDescription):
         mn = modname or '_'
         sobj = ''
         if name.startswith(mn + f_sep):
-            name = name[len(mn)+1:]
+            name = name[len(mn) + 1:]
         if self.objtype == 'type':
             sobj = _('fortran type')
         if self.objtype == 'typefield':
@@ -688,7 +702,7 @@ class FortranSpecial:
         """
         May return a prefix to put before the object name in the signature.
         """
-        return self.objtype+' '
+        return self.objtype + ' '
 
 
 class WithFortranDocFieldTransformer:
@@ -744,7 +758,8 @@ class WithFortranDocFieldTransformer:
             self.env.temp_data['object'] = self.names[0]
         self.before_content()
         self.state.nested_parse(self.content, self.content_offset, contentnode)
-        FortranDocFieldTransformer(self, modname=modname, typename=typename).transform_all(contentnode)
+        FortranDocFieldTransformer(self, modname=modname,
+                                   typename=typename).transform_all(contentnode)
         self.env.temp_data['object'] = None
         self.after_content()
         return [self.indexnode, node]
@@ -784,7 +799,7 @@ class FortranWithSig(FortranSpecial, WithFortranDocFieldTransformer, FortranObje
         """
         May return a prefix to put before the object name in the signature.
         """
-        return self.objtype+' '
+        return self.objtype + ' '
 
 
 class FortranField(Directive):
@@ -800,7 +815,7 @@ class FortranField(Directive):
         'type': directives.unchanged,
         'shape': parse_shape,
         'attrs': directives.unchanged,
-        }
+    }
 
     def run(self):
         from docutils import nodes
@@ -847,8 +862,8 @@ class FortranModule(Directive):
         env.domaindata['f']['modules'][modname] = \
             (env.docname, self.options.get('synopsis', ''),
              self.options.get('platform', ''), 'deprecated' in self.options)
-        env.domaindata['f']['objects']['f'+f_sep+modname] = (env.docname, 'module')
-        targetnode = nodes.target('', '', ids=['f'+f_sep+modname], ismod=True)
+        env.domaindata['f']['objects']['f' + f_sep + modname] = (env.docname, 'module')
+        targetnode = nodes.target('', '', ids=['f' + f_sep + modname], ismod=True)
         self.state.document.note_explicit_target(targetnode)
         ret = [targetnode]
         # XXX this behavior of the module directive is a mess...
@@ -1049,37 +1064,37 @@ class FortranDomain(Domain):
         objtypes = self.objtypes_for_role(role)
         if searchorder == 1:
             if role in ['mod', 'prog']:
-                if 'f'+f_sep + name not in objects:  # exact match
+                if 'f' + f_sep + name not in objects:  # exact match
                     return []
-                newname = 'f'+f_sep + name
-            elif modname and 'f'+f_sep + modname + f_sep + name in objects and \
-               objects['f'+f_sep + modname + f_sep + name][1] in objtypes:
-                    newname = 'f'+f_sep + modname + f_sep + name
-            elif 'f'+f_sep + '_' + f_sep + name in objects and \
-               objects['f'+f_sep + '_' + f_sep + name][1] in objtypes:
-                    newname = 'f'+f_sep + '_' + f_sep + name
-            elif 'f'+f_sep + name in objects and \
-               objects['f'+f_sep + name][1] in objtypes:
-                    newname = 'f'+f_sep + name
+                newname = 'f' + f_sep + name
+            elif modname and 'f' + f_sep + modname + f_sep + name in objects and \
+                    objects['f' + f_sep + modname + f_sep + name][1] in objtypes:
+                newname = 'f' + f_sep + modname + f_sep + name
+            elif 'f' + f_sep + '_' + f_sep + name in objects and \
+                    objects['f' + f_sep + '_' + f_sep + name][1] in objtypes:
+                newname = 'f' + f_sep + '_' + f_sep + name
+            elif 'f' + f_sep + name in objects and \
+                    objects['f' + f_sep + name][1] in objtypes:
+                newname = 'f' + f_sep + name
             elif name in objects and \
-                objects[name][1] in objtypes:
-                    newname = name
+                    objects[name][1] in objtypes:
+                newname = name
         else:  # :role:`toto`
             # NOTE: searching for exact match, object type is not considered
-            if 'f'+f_sep + name in objects:
-                newname = 'f'+f_sep + name
+            if 'f' + f_sep + name in objects:
+                newname = 'f' + f_sep + name
             elif role in ['mod', 'prog']:
                 # only exact matches allowed for modules
                 return []
-            elif 'f'+f_sep + '_' + f_sep + name in objects:
+            elif 'f' + f_sep + '_' + f_sep + name in objects:
                 newname = 'f' + f_sep + '_' + f_sep + name
-            elif modname and 'f'+f_sep + modname + f_sep + name in objects:
+            elif modname and 'f' + f_sep + modname + f_sep + name in objects:
                 newname = 'f' + f_sep + modname + f_sep + name
         # Last chance: fuzzy search
         if newname is None:
             matches = [
                 (oname, objects[oname]) for oname in objects
-                if oname.endswith(f_sep+name)
+                if oname.endswith(f_sep + name)
                 and objects[oname][1] in objtypes
             ]
         else:

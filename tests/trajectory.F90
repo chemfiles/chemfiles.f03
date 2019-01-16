@@ -205,13 +205,11 @@ contains
         call file%read_step(1_int64, frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        ! call atom%from_frame(frame, 0_int64)
-        ! call atom%name(name, len(name, int64), status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-        ! CHECK(name == 'Zn')
-        ! call atom%free(status=status)
-        ! CHECK(status == CHFL_SUCCESS)
-
+        atom = frame%atom(0_int64, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(atom%name(status=status) == 'Zn')
+        CHECK(status == CHFL_SUCCESS)
+        call atom%free()
         call frame%free()
         call file%close()
     end subroutine

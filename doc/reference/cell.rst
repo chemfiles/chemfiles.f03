@@ -6,124 +6,99 @@
 .. f:type:: chfl_cell
 
     A :f:type:`chfl_cell` represent the box containing the atoms, and its
-    periodicity.
-
-    An unit cell is fully represented by three lengths (a, b, c); and three
-    angles (alpha, beta, gamma). The angles are stored in degrees, and the
-    lengths in Angstroms.
-
-    The initialization routine for :f:type:`chfl_cell` are:
-
-    - :f:func:`chfl_cell%init`;
-    - :f:func:`chfl_cell%triclinic`;
-    - :f:func:`chfl_cell%from_frame`;
-    - :f:func:`chfl_cell%copy`.
+    periodicity. An unit cell is fully represented by three lengths (a, b, c);
+    and three angles (alpha, beta, gamma). The angles are stored in degrees, and
+    the lengths in Angstroms.
 
     :field subroutine init: :f:func:`chfl_cell%init`
-    :field subroutine triclinic: :f:func:`chfl_cell%triclinic`
-    :field subroutine from_frame: :f:func:`chfl_cell%from_frame`
     :field subroutine copy: :f:func:`chfl_cell%copy`
-    :field subroutine lengths: :f:func:`chfl_cell%lengths`
+    :field function lengths: :f:func:`chfl_cell%lengths`
     :field subroutine set_lengths: :f:func:`chfl_cell%set_lengths`
-    :field subroutine angles: :f:func:`chfl_cell%angles`
+    :field function angles: :f:func:`chfl_cell%angles`
     :field subroutine set_angles: :f:func:`chfl_cell%set_angles`
-    :field subroutine matrix: :f:func:`chfl_cell%matrix`
-    :field subroutine shape: :f:func:`chfl_cell%shape`
+    :field function matrix: :f:func:`chfl_cell%matrix`
+    :field function shape: :f:func:`chfl_cell%shape`
     :field subroutine set_shape: :f:func:`chfl_cell%set_shape`
-    :field subroutine volume: :f:func:`chfl_cell%volume`
+    :field function volume: :f:func:`chfl_cell%volume`
     :field subroutine wrap: :f:func:`chfl_cell%wrap`
     :field subroutine free: :f:func:`chfl_cell%free`
 
 
-.. f:subroutine:: chfl_cell%init(lengths, [status])
-
-    Initialize this unit cell with an unit cell having the given ``lengths``.
-    The unit cell shape is :f:var:`CHFL_CELL_ORTHORHOMBIC`.
-
-    :argument real lengths(3): cell lengths, in angstroms
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_cell%triclinic(lengths, angles, [status])
+.. f:subroutine:: chfl_cell%init(lengths, [angles, status])
 
     Initialize this unit cell with an unit cell having the given ``lengths`` and
-    ``angles``. The unit cell shape is :f:var:`CHFL_CELL_TRICLINIC`.
+    optional ``angles``. If all angles are 90°, the unit cell shape is
+    :f:var:`CHFL_CELL_ORTHORHOMBIC`, else it is :f:var:`CHFL_CELL_TRICLINIC`.
+
+    This subroutine allocate memory which must be released with
+    :f:func:`chfl_cell%free`.
 
     :argument real lengths(3): cell lengths, in angstroms
-    :argument real angles(3): cell angles, in degrees
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional real angles(3): cell angles, in degrees
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_cell%copy(cell, [status])
 
-    Initialize this unit cell with a copy of ``cell``.
+    Initialize this unit cell with a copy of ``cell``. This subroutine allocate
+    memory which must be released with :f:func:`chfl_cell%free`.
 
-    :argument chfl_cell cell: cell to copy
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_cell) cell: cell to copy
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_cell%from_frame(frame, [status])
+.. f:function:: chfl_cell%volume([status])
 
-    Initialize this topology with a copy of the :f:type:`chfl_cell` of a frame.
+    Get the volume of the unit cell in angstroms cubes.
 
-    :argument chfl_frame frame: the frame
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return real:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_cell%volume(volume, [status])
+.. f:function:: chfl_cell%lengths([status])
 
-    Get the volume of the unit cell in ``volume``.
+    Get the unit cell lengths in angstroms.
 
-    :argument real volume: volume of the unit cell
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_cell%lengths(lengths, [status])
-
-    Get the unit cell lengths in ``lengths``.
-
-    :argument real lengths(3): cell lengths, in angstroms
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return real(3):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_cell%set_lengths(lengths, [status])
 
     Set the unit cell lengths to ``lengths``.
 
     :argument real lengths(3): new cell lengths, in angstroms
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_cell%angles(angles, [status])
+.. f:function:: chfl_cell%angles([status])
 
-    Get the unit cell angles in ``angles``.
+    Get the unit cell angles in degrees.
 
-    :argument real angles(3): cell angles, in degrees
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :return real(3):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_cell%set_angles(alpha, beta, gamma, [status])
 
     Set the cell angles to ``angles``. Trying to set cell angles on a cell which
-    is not triclinic (does not have the ``CHFL_CELL_TRICLINIC`` shape) is an
-    error.
+    is not triclinic (does not have the :f:var:`CHFL_CELL_TRICLINIC` shape) is
+    an error.
 
     :argument real angles(3): new cell angles, in degrees
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_cell%matrix(matrix, [status])
+.. f:function:: chfl_cell%matrix([status])
 
-    Get the unit cell matricial representation in ``matrix``.
+    Get the unit cell matricial representation.
 
     The unit cell representation is obtained by aligning the a vector along the
     *x* axis and putting the b vector in the *xy* plane. This make the matrix
@@ -135,33 +110,40 @@
         |  0  b_y c_y |
         |  0   0  c_z |
 
+    :return real(3, 3):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    :argument real matrix(3, 3): unit cell matrix
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+.. f:function:: chfl_cell%shape([status])
 
-.. f:subroutine:: chfl_cell%shape(shape, [status])
+    Get the unit cell shape.
 
-    Get the unit cell shape in ``shape``.
+    :return integer(chfl_cellshape):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    :argument integer type [kind=chfl_cellshape]: the shape of the cell
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    The cell shapes are integers which ``kind`` is the :f:var:`chfl_cellshape`
+    parameter.
 
-    The cell shapes are integers which ``kind`` is the ``chfl_cellshape``
-    parameter:
+    .. f:variable:: chfl_cellshape
+        :type: integer
 
-    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_ORTHORHOMBIC
+        Integer kind parameter for representing unit cel shape.
 
-        The three angles are 90°
+    .. f:variable:: CHFL_CELL_ORTHORHOMBIC
+        :type: integer(chfl_cellshape)
 
-    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_TRICLINIC
+        Cell shape for cell where the three angles are 90°
 
-        The three angles may not be 90°
+    .. f:variable:: CHFL_CELL_TRICLINIC
+        :type: integer(chfl_cellshape)
 
-    .. f:variable:: integer(chfl_cellshape) :: CHFL_CELL_INFINITE
+        Cell shape for cell where the three angles may not be 90°
+
+    .. f:variable:: CHFL_CELL_INFINITE
+        :type: integer(chfl_cellshape)
 
         Cell type when there is no periodic boundary conditions
 
@@ -169,25 +151,21 @@
 
     Set the unit cell shape to ``shape``
 
-    :argument integer type [kind=chfl_cellshape]: the new type of the cell
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument integer(chfl_cellshape) shape: the new shape of the cell
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_cell%wrap(vector, [status])
 
     Wrap a ``vector`` in this unit cell so that all its components are beteen
     ``-L/2`` and ``L/2``.
 
-    :argument real vector(3): new cell angles, in degrees
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument real vector(3): vector to wrap in the cell
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_cell%free([status])
+.. f:subroutine:: chfl_cell%free()
 
     Destroy an unit cell, and free the associated memory
-
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.

@@ -14,7 +14,7 @@ module chemfiles_property
         generic :: init => bool_init, double_init, string_init, vector3d_init
         procedure, private :: bool_init, double_init, string_init, vector3d_init
 
-        procedure :: get_kind
+        procedure :: kind => get_kind
         procedure :: bool
         procedure :: double
         procedure :: string

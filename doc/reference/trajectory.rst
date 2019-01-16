@@ -7,16 +7,9 @@
     chemfiles. A :f:type:`chfl_trajectory` behave a like a file, allowing to
     read and/or write :f:type:`chfl_frame`.
 
-    The initialization routine for :f:type:`chfl_trajectory` are:
-
-    - :f:func:`chfl_trajectory%open`;
-    - :f:func:`chfl_trajectory%with_format`.
-
-    The memory liberation routine is :f:func:`chfl_trajectory%close`.
-
     :field subroutine open: :f:func:`chfl_trajectory%open`
-    :field subroutine with_format: :f:func:`chfl_trajectory%with_format`
-    :field subroutine nsteps: :f:func:`chfl_trajectory%nsteps`
+    :field function path: :f:func:`chfl_trajectory%path`
+    :field function nsteps: :f:func:`chfl_trajectory%nsteps`
     :field subroutine read: :f:func:`chfl_trajectory%read`
     :field subroutine read_step: :f:func:`chfl_trajectory%read_step`
     :field subroutine write: :f:func:`chfl_trajectory%write`
@@ -25,35 +18,42 @@
     :field subroutine set_cell: :f:func:`chfl_trajectory%set_cell`
     :field subroutine close: :f:func:`chfl_trajectory%close`
 
-.. f:subroutine:: chfl_trajectory%open(path, mode, , [status])
+.. f:subroutine:: chfl_trajectory%open(path, mode, [format, status])
 
     Open the file at the given ``path`` using the given ``mode``.
     Valid modes are ``'r'`` for read, ``'w'`` for write and ``'a'`` for append.
 
-    :argument character(len=*) path: path to the trajectory file
+    If ``format`` is not given or an empty string, the format will be guessed
+    from the extension.
+
+    This subroutine allocate memory which must be released with
+    :f:func:`chfl_trajectory%close`.
+
+    :argument character(len=\*) path: path to the trajectory file
     :argument character mode: opening mode
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional character(len=\*) format: format to use to read and write to the file
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-.. f:subroutine:: chfl_trajectory%with_format(path, mode, format, [status])
+.. f:subroutine:: chfl_trajectory%path([status])
 
-    Open the trajectory at the given ``path`` using a specific file ``format``
-    and the given ``mode``.
+    Get the path used to open the trajectory. If the path is longer than
+    :f:var:`CHFL_STRING_LENGTH`, it will be truncated.
 
-    This is be needed when the file format does not match the extension, or when
-    there is not standard extension for this format. Valid modes are ``'r'`` for
-    read, ``'w'`` for write and ``'a'`` for append.
+    :return character(len=CHFL_STRING_LENGTH):
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
-    If ``format`` is an empty string, the format will be guessed from the
-    extension.
+.. f:function:: chfl_trajectory%nsteps([status])
 
-    :argument character(len=*) path: path to the trajectory file
-    :argument character mode: opening mode
-    :argument character(len=*) format: format to use
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    Get the number of steps (the number of frames) in the trajectory.
+
+    :return integer:
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%read(frame, [status])
 
@@ -62,10 +62,10 @@
     If the number of atoms in frame does not correspond to the number of atom in
     the next step, the frame is resized.
 
-    :argument chfl_frame frame: frame to fill with the data
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_frame) frame: frame to fill with the data
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%read_step(step, frame, [status])
 
@@ -76,19 +76,19 @@
     in the step, the frame is resized.
 
     :argument integer step: step to read
-    :argument chfl_frame frame: frame to fill with the data
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_frame) frame: frame to fill with the data
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%write(frame, [status])
 
     Write a single ``frame`` to the trajectory.
 
-    :argument chfl_frame frame: frame to be writen to the file
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_frame) frame: frame to be writen to the file
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%set_topology(topology, [status])
 
@@ -96,10 +96,10 @@
     used when reading and writing the files, replacing any topology in the
     frames or files.
 
-    :argument chfl_topology topology: new topology to use
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_topology) topology: new topology to use
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%topology_file(path, [format, status])
 
@@ -110,31 +110,21 @@
     If ``format`` is an empty string or not given, the format will be guessed
     from the extension.
 
-    :argument character(len=*) path: file to read in order to get the new topology
-    :optional string format [optional]: format to use for the topology file
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument character(len=\*) path: file to read in order to get the new topology
+    :optional character(len=\*) format: format to use for the topology file
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_trajectory%set_cell(cell, [status])
 
     Set the unit ``cell`` associated with the trajectory. This cell will be used
     when reading and writing the files, replacing any pre-existing unit cell.
 
-    :argument chfl_cell cell: new cell to use
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
-
-.. f:subroutine:: chfl_trajectory%nsteps(nsteps, [status])
-
-    Store the number of steps (the number of frames) from the trajectory in
-    ``nsteps``.
-
-    :argument integer nsteps: number of steps
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument type(chfl_cell) cell: new cell to use
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 
 .. f:subroutine:: chfl_trajectory%close([status])
@@ -143,7 +133,3 @@
 
     Closing a file will synchronize all changes made to the file with the
     storage (hard drive, network, ...) used for this file.
-
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.

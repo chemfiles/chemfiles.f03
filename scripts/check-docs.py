@@ -47,9 +47,11 @@ def type_bound_functions():
                         if kind == "f:type::":
                             type = line.split()[2]
 
-                    if type and ":field subroutine" in line:
-                        name = line.split()[2][:-1]
-                        functions.append(type + "%" + name)
+                    if type and ':field' in line:
+                        if "subroutine" in line or "function" in line:
+                            name = line.split()[2][:-1]
+                            functions.append(type + "%" + name)
+
     return functions
 
 
@@ -64,6 +66,9 @@ if __name__ == '__main__':
     for function in docs:
         if function not in functions:
             error("documentation for non-existing {}".format(function))
+
+    if ERROR:
+        sys.exit(1)
 
     types_bound = type_bound_functions()
     for function in types_bound:

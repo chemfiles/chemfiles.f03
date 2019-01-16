@@ -19,23 +19,25 @@ about these types, please see the chemfiles `overview`_.
     .. code-block :: fortran
 
         program indexing
-            use iso_fortran_env, only: real64, int64
+            use iso_fortran_env, only: real64
             use chemfiles
             implicit none
             type(chfl_frame)      :: frame
             type(chfl_atom)       :: atom
             real(real64), pointer :: positions(:, :)
-            integer(int64)        :: natoms
 
             ! Initialize the frame ...
 
             ! Get the first atom in the frame
-            call atom%from_frame(frame, 0)
+            atom = frame%atom(0)
+            call atom%free()
             ! Get the second atom in the frame
-            call atom%from_frame(frame, 1)
+            atom = frame%atom(1)
+            call atom%free()
 
-            call frame%poositions(positions, natoms)
-            ! position(1, :) now contains the positions of the first atom
+            positions => frame%positions()
+            ! positions is a fortran array, so positions(1, :) now contains
+            ! the positions of the first atom, and not positions(0, :)
         end program
 
 .. _overview: http://chemfiles.org/chemfiles/latest/overview.html
@@ -43,11 +45,10 @@ about these types, please see the chemfiles `overview`_.
 Conventions
 -----------
 
-All the functions and types have the ``chfl_`` prefix. Most functions take an
-optional ``status`` argument which will indicate the status of the operation. It
-should be ``CHFL_SUCCESS`` if everything was OK, and another value indicating in
-case of error. The only exeption to this rule are the functions returnning
-character strings: ``chfl_version()`` and ``chfl_last_error()``.
+All the free functions and types have the ``chfl_`` prefix. Most functions take
+an optional ``status`` argument which will indicate the status of the operation.
+It should be :f:var:`CHFL_SUCCESS` if everything was OK, and another value in
+case of error.
 
 When creating a variable of one of the chemfiles types, the first routine to be
 called should be an initialization routine. It can be either the ``init``

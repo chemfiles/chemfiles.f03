@@ -5,7 +5,14 @@ Miscelaneous functions
 
     Get the version of the Chemfiles library.
 
-    :return character [len=*]: chemfiles version
+    :return character(len=CHFL_STRING_LENGTH):
+
+.. f:variable:: CHFL_STRING_LENGTH
+    :type: integer
+
+    Chemfiles uses fixed length strings, containing at most
+    ``CHFL_STRING_LENGTH`` characters. If you need longer strings than the
+    default (1024), you will need to edit the corresponding source code.
 
 Error handling
 --------------
@@ -14,58 +21,73 @@ Error handling
 
     Get the last error message emmited by Chemfiles.
 
-    :return character [len=*]: error message for the last error
+    :return character(len=CHFL_STRING_LENGTH):
 
 .. f:subroutine:: chfl_clear_errors([status])
 
     Clear the last error message emmited by Chemfiles.
 
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 All chemfiles functions have an optional ``status`` argument which is an integer
 of kind ``chfl_status``, and can take the following values:
 
-.. f:variable:: integer(chfl_status) :: CHFL_SUCCESS
+.. f:variable:: chfl_status
+    :type: integer
+
+    Kind parameter for subroutine and function optional integer status.
+
+.. f:variable:: CHFL_SUCCESS
+    :type: integer(chfl_status)
 
     Status for successful operations.
 
-.. f:variable:: integer(chfl_status) :: CHFL_MEMORY_ERROR
+.. f:variable:: CHFL_MEMORY_ERROR
+    :type: integer(chfl_status)
 
     Status code for error concerning memory: out of memory, wrong size for
     pre-allocated buffers, *etc.*
 
-.. f:variable:: integer(chfl_status) :: CHFL_FILE_ERROR
+.. f:variable:: CHFL_FILE_ERROR
+    :type: integer(chfl_status)
 
     Status code for error concerning files: the file do not exist, the user
     does not have rights to open it, *etc.*
 
-.. f:variable:: integer(chfl_status) :: CHFL_FORMAT_ERROR
+.. f:variable:: CHFL_FORMAT_ERROR
+    :type: integer(chfl_status)
 
     Status code for error in file formating, i.e. for invalid files.
 
-.. f:variable:: integer(chfl_status) :: CHFL_SELECTION_ERROR
+.. f:variable:: CHFL_SELECTION_ERROR
+    :type: integer(chfl_status)
 
     Status code for invalid selection strings.
 
-.. f:variable:: integer(chfl_status) :: CHFL_CONFIGURATION_ERROR
+.. f:variable:: CHFL_CONFIGURATION_ERROR
+    :type: integer(chfl_status)
 
     Status code for configuration files errors.
 
-.. f:variable:: integer(chfl_status) :: CHFL_OUT_OF_BOUNDS
+.. f:variable:: CHFL_OUT_OF_BOUNDS
+    :type: integer(chfl_status)
 
     Status code for out of bounds indexing.
 
-.. f:variable:: integer(chfl_status) :: CHFL_PROPERTY_ERROR
+.. f:variable:: CHFL_PROPERTY_ERROR
+    :type: integer(chfl_status)
 
     Status code for errors related to properties.
 
-.. f:variable:: integer(chfl_status) :: CHFL_GENERIC_ERROR
+.. f:variable:: CHFL_GENERIC_ERROR
+    :type: integer(chfl_status)
 
     Status code for any other error from Chemfiles.
 
-.. f:variable:: integer(chfl_status) :: CHFL_CXX_ERROR
+.. f:variable:: CHFL_CXX_ERROR
+    :type: integer(chfl_status)
 
     Status code for error in the C++ standard library.
 
@@ -80,41 +102,38 @@ Warnings
     event with the event message. This function set the callback for all warning
     events.
 
-    :parameter procedure callback [kind=chfl_warning_callback]: warning callback
-    :optional integer status [optional, kind=chfl_status]: status code of the
-          operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-          about the error by using ``chfl_last_error``.
+    :parameter procedure(chfl_warning_callback) callback: warning callback
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 .. f:subroutine:: chfl_warning_callback(message)
 
     Interface for the warning callback to be used with
     ``chfl_set_warning_callback``.
 
-    :parameter character message [len=*, intent(in)]: The warning message
+    :parameter string message: The warning message
 
 Configuration files
 -------------------
 
-You can add more `configuration`_ file to chemfiles with
-:f:func:`chfl_add_configuration`.
-
-
 .. f:subroutine:: chfl_add_configuration(path, [status])
 
-    Read configuration data from the file at ``path``.
+    Read `configuration`_ data from the file at ``path``.
 
     By default, chemfiles reads configuration from any file named
-    ``.chemfilesrc`` in the current directory or any parent directory. This
-    function can be used to add data from another configuration file.
+    ``.chemfiles.toml`` or ``chemfiles.toml`` in the current directory or any
+    parent directory. This function can be used to add data from another
+    configuration file.
 
     This function will fail if there is no file at path, or if the file is
     incorectly formatted. Data from the new configuration file will overwrite
     any existing data.
 
-    :argument string path: the new configuration file path
-    :optional integer status [optional, kind=chfl_status]: status code of the
-        operation. If it is not equal to ``CHFL_SUCCESS``, you can learn more
-        about the error by using ``chfl_last_error``.
+    :argument character(len=\*) path: the new configuration file path
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
 
 
 .. _configuration: http://chemfiles.org/chemfiles/latest/configuration.html#configuration
