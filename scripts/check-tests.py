@@ -19,6 +19,7 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 
 VARIABLE_DECLARATION = re.compile("type\((.*?)\) :: (.*)")
 TYPE_BOUND_SUBROUTINE = re.compile("call (.*?)\%(.*?)\(.*status=status\)")
+FREE_SUBROUTINE = re.compile("call (.*?)\%(free|close)\(\)")
 TYPE_BOUND_FUNCTION = re.compile("[\s\(](.*?)\%(.*?)\(.*status=status\)")
 OTHER_FUNCTIONS = re.compile("[=(call)]\s+chfl_(.*?)\(.*\)")
 
@@ -39,6 +40,9 @@ def usage_in_tests():
                     if "end subroutine" in line:
                         # reset variables
                         variables = {}
+
+                    if "!" in line:
+                        continue
 
                     # Get variables types from declarations
                     match = VARIABLE_DECLARATION.search(line)
@@ -69,11 +73,22 @@ def usage_in_tests():
                             usages.add(chfl_type + "%" + function)
                             continue
 
+                    match = FREE_SUBROUTINE.search(line)
+                    if match:
+                        var, function = match.groups()
+                        var = var.split("(")[-1]
+                        var = var.split()[-1]
+                        if var in variables:
+                            chfl_type = variables[var]
+                            usages.add(chfl_type + "%" + function)
+                            continue
+
                     # other functions/subroutines
                     match = OTHER_FUNCTIONS.search(line)
                     if match:
                         name = match.groups()[0]
                         usages.add("chfl_" + name)
+                        continue
 
     return usages
 

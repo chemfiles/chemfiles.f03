@@ -55,5 +55,13 @@ pygments_style = 'sphinx'
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
+templates_path = ['templates']
+
+html_theme_options = {
+    'navbar_site_name': "Navigation",
+    'navbar_pagenav': False,
+    'source_link_position': None,
+}
+
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'chemfiles'

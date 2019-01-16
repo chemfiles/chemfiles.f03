@@ -22,7 +22,7 @@ contains
         CHECK(property%bool(status=status) .eqv. .false.)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(property%get_kind(status=status) == CHFL_PROPERTY_BOOL)
+        CHECK(property%kind(status=status) == CHFL_PROPERTY_BOOL)
         CHECK(status == CHFL_SUCCESS)
 
         call property%free()
@@ -41,7 +41,7 @@ contains
         CHECK(property%double(status=status) == 3.4d0)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(property%get_kind(status=status) == CHFL_PROPERTY_DOUBLE)
+        CHECK(property%kind(status=status) == CHFL_PROPERTY_DOUBLE)
         CHECK(status == CHFL_SUCCESS)
 
         call property%free()
@@ -58,7 +58,7 @@ contains
         CHECK(property%string(status=status) == 'test')
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(property%get_kind(status=status) == CHFL_PROPERTY_STRING)
+        CHECK(property%kind(status=status) == CHFL_PROPERTY_STRING)
         CHECK(status == CHFL_SUCCESS)
 
         call property%free()
@@ -75,7 +75,7 @@ contains
         CHECK(all(property%vector3d(status=status) == [11d0, 22d0, 33d0]))
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(property%get_kind(status=status) == CHFL_PROPERTY_VECTOR3D)
+        CHECK(property%kind(status=status) == CHFL_PROPERTY_VECTOR3D)
         CHECK(status == CHFL_SUCCESS)
 
         call property%free()
