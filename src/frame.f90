@@ -42,11 +42,15 @@ module chemfiles_frame
         procedure :: remove_bond
         procedure :: add_residue
 
-        generic :: set => set_property, set_bool, set_double, set_string, set_vector3d
-        procedure, private :: set_property, set_bool, set_double, set_string, set_vector3d
         procedure :: properties_count
         procedure :: list_properties
         procedure :: get
+        generic :: set => set_property, set_bool, set_double, set_string, set_vector3d
+        procedure, private :: set_property
+        procedure, private :: set_bool
+        procedure, private :: set_double
+        procedure, private :: set_string
+        procedure, private :: set_vector3d
     end type
 
 contains

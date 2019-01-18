@@ -12,7 +12,10 @@ module chemfiles_property
     type, extends(chfl_ptr) :: chfl_property
     contains
         generic :: init => bool_init, double_init, string_init, vector3d_init
-        procedure, private :: bool_init, double_init, string_init, vector3d_init
+        procedure, private :: bool_init
+        procedure, private :: double_init
+        procedure, private :: string_init
+        procedure, private :: vector3d_init
 
         procedure :: kind => get_kind
         procedure :: bool
