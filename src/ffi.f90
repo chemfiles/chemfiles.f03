@@ -119,4 +119,45 @@ contains
         this%ptr = c_null_ptr
     end subroutine
 
+    function chfl_cellshape_from_integer(value) result(output)
+        integer(chfl_cellshape), intent(in) :: value
+        integer(chfl_cellshape) :: output
+
+        if (value == CHFL_CELL_INFINITE) then
+            output = value
+        else if (value == CHFL_CELL_ORTHORHOMBIC) then
+            output = value
+        else if (value == CHFL_CELL_TRICLINIC) then
+            output = value
+        else
+            write(*, *) "got an invalid value for chfl_cellshape enum ", value, " defaulting to CHFL_CELL_INFINITE"
+            output = CHFL_CELL_INFINITE
+        end if
+    end function
+
+    function chfl_bond_order_from_integer(value) result(output)
+        integer(chfl_bond_order), intent(in) :: value
+        integer(chfl_bond_order) :: output
+
+        if (value == CHFL_BOND_UNKNOWN) then
+            output = value
+        else if (value == CHFL_BOND_SINGLE) then
+            output = value
+        else if (value == CHFL_BOND_DOUBLE) then
+            output = value
+        else if (value == CHFL_BOND_TRIPLE) then
+            output = value
+        else if (value == CHFL_BOND_QUADRUPLE) then
+            output = value
+        else if (value == CHFL_BOND_QINTUPLET) then
+            output = value
+        else if (value == CHFL_BOND_AMIDE) then
+            output = value
+        else if (value == CHFL_BOND_AROMATIC) then
+            output = value
+        else
+            write(*, *) "got an invalid value for chfl_bond_order enum ", value, " defaulting to CHFL_BOND_UNKNOWN"
+            output = CHFL_BOND_UNKNOWN
+        end if
+    end function
 end module

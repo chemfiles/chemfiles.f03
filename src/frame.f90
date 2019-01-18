@@ -376,7 +376,9 @@ contains
         integer(chfl_status) :: status_tmp
 
         if (present(bond_order)) then
-            status_tmp = c_chfl_frame_bond_with_order(this%unsafe_ptr(), i, j, bond_order)
+            status_tmp = c_chfl_frame_bond_with_order(                            &
+                this%unsafe_ptr(), i, j, chfl_bond_order_from_integer(bond_order) &
+            )
         else
             status_tmp = c_chfl_frame_add_bond(this%unsafe_ptr(), i, j)
         end if
