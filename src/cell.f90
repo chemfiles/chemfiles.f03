@@ -150,7 +150,9 @@ contains
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_cell_set_shape(this%unsafe_ptr(), shape)
+        status_tmp = c_chfl_cell_set_shape(                                    &
+            this%unsafe_ptr(), chfl_cellshape_from_integer(shape)              &
+        )
 
         if (present(status)) then
             status = status_tmp
