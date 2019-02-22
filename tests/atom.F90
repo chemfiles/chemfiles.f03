@@ -207,6 +207,30 @@ contains
         CHECK(names(1) == 'bar')
         CHECK(names(2) == 'foo')
 
+        call atom%set("bar", 33d0, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = atom%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%double(status=status) == 33d0)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
+        call atom%set("bar", "33d0", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = atom%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%string(status=status) == '33d0')
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
+        call atom%set("bar", [33d0, 34d0, 35d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = atom%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(property%vector3d(status=status) == [33d0, 34d0, 35d0]))
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
         call atom%free()
     end subroutine
 end program

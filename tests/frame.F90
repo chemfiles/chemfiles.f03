@@ -304,6 +304,30 @@ contains
         CHECK(names(1) == 'bar')
         CHECK(names(2) == 'foo')
 
+        call frame%set("bar", 33d0, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = frame%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%double(status=status) == 33d0)
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
+        call frame%set("bar", "33d0", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = frame%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(property%string(status=status) == '33d0')
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
+        call frame%set("bar", [33d0, 34d0, 35d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+        property = frame%get("bar", status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(property%vector3d(status=status) == [33d0, 34d0, 35d0]))
+        CHECK(status == CHFL_SUCCESS)
+        call property%free()
+
         call frame%free()
     end subroutine
 
@@ -369,12 +393,17 @@ contains
 
         call frame%add_bond(0_int64, 2_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
-        call frame%add_bond(1_int64, 2_int64, status=status)
+        call frame%add_bond(1_int64, 2_int64, CHFL_BOND_AROMATIC, status=status)
         CHECK(status == CHFL_SUCCESS)
         call frame%add_bond(3_int64, 0_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(topology%bond_order(0_int64, 3_int64, status=status) == CHFL_BOND_UNKNOWN)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%bond_order(1_int64, 2_int64, status=status) == CHFL_BOND_AROMATIC)
         CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 2, 0, 3, 1, 2], [2, 3])
