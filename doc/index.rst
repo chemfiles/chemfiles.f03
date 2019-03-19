@@ -92,11 +92,19 @@ This section contains example of how to use chemfiles, and the complete
 interface reference for all the types and subroutines in chemfiles.
 
 .. toctree::
-   :maxdepth: 3
+    :maxdepth: 3
 
-   tutorials
-   reference/index
-
+    tutorials
+    reference/index
+    reference/misc
+    reference/trajectory
+    reference/frame
+    reference/cell
+    reference/topology
+    reference/residue
+    reference/atom
+    reference/selection
+    reference/property
 
 .. _chemfiles: https://github.com/chemfiles/chemfiles
 .. _chemfiles-deps: http://chemfiles.org/chemfiles/latest/installation.html#core-library-dependencies

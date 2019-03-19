@@ -15,8 +15,8 @@ program generate
 
     call topology%init()
     call H%init("H")
-    call O%init("H")
-    call C%init("H")
+    call O%init("O")
+    call C%init("C")
 
     call topology%add_atom(H)
     call topology%add_atom(O)

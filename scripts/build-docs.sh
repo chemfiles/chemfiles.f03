@@ -12,7 +12,10 @@ rm -rf gh-pages/.git
 # Build documentation
 cd doc
 make html
-rm -rf _build/html/_static/bootswatch-* _build/html/_static/bootstrap-2.3.2
+rm -rf _build/html/.doctrees/ _build/html/.buildinfo
+rm -rf _build/html/_static/bootswatch-2.3.2/ _build/html/_static/bootstrap-2.3.2/
+shopt -s extglob
+cd _build/html/_static/bootswatch-* && rm -rf !(flatly) && cd -
 cd ..
 
 if [[ "$TRAVIS_TAG" != "" ]]; then

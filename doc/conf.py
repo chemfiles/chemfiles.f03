@@ -61,6 +61,12 @@ html_theme_options = {
     'navbar_site_name': "Navigation",
     'navbar_pagenav': False,
     'source_link_position': None,
+    'bootswatch_theme': "flatly",
+    'bootstrap_version': "3",
+}
+
+html_sidebars = {
+    '**': ['sidebar-toc.html', 'searchbox.html']
 }
 
 # Output file base name for HTML help builder.

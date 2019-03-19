@@ -73,19 +73,3 @@ variables will lead to errors and segmentation faults.
     ! free the memory
     call cell%free()
     call frame%free()
-
-Types and associated subroutines
---------------------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   misc
-   trajectory
-   frame
-   cell
-   topology
-   residue
-   atom
-   selection
-   property

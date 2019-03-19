@@ -27,7 +27,7 @@ need 64-bits integers and real.
    :dedent: 4
 
 We can then declare all the variables we will need. All chemfiles specific types
-are user defined type that should be declared with ``type(chfl_xxx)``. In this
+are *user defined type* that should be declared with ``type(chfl_xxx)``. In this
 example we will also need a few other values: an array for positions and an
 array for the indexes of atoms with ``x < 5``. The positions array is a pointer
 because we will not allocate memory for it. Instead we will directly access some
@@ -35,7 +35,7 @@ memory inside chemfiles internal data structures.
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 9-14
+   :lines: 9-12
    :dedent: 4
 
 Then we open a :f:type:`chfl_trajectory` in read (``'r'``) mode and read the
@@ -48,12 +48,12 @@ calling :f:func:`chfl_trajectory%read`.
    :dedent: 4
 
 We can now and get the positions of the atoms and the number of atoms in the
-frame with the :f:func:`chfl_frame%positions` subroutine. This function will set
-natoms to the number of atoms in the frame.
+frame with the :f:func:`chfl_frame%positions` subroutine, as well as the number
+of atoms in the frame.
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 20
+   :lines: 20-21
    :dedent: 4
 
 Knowning the total number of atoms in the frame, we can allocate memory to store
@@ -61,7 +61,7 @@ the indices of the atoms with ``x < 5``:
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 21
+   :lines: 22
    :dedent: 4
 
 Iterating through the atoms in the frame, we get the ones matching our
@@ -70,14 +70,14 @@ them in the ``less_than_five`` array.
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 23-29
+   :lines: 24-30
    :dedent: 4
 
 At the end we can print our results
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 31-34
+   :lines: 32-35
    :dedent: 4
 
 And free all allocated memory. We don't need to free ``positions``, as it points
@@ -85,7 +85,7 @@ into memory allocated and controlled by the frame.
 
 .. literalinclude:: ../examples/indexes.f90
    :language: fortran
-   :lines: 36-38
+   :lines: 37-39
    :dedent: 4
 
 .. htmlhidden::
@@ -125,8 +125,8 @@ cell and a trajectory.
    :dedent: 4
 
 Everything starts with a :f:type:`chfl_topology`. This is the type that defines
-the atoms and the connectivity in a system. Here, we add three
-:f:type:`chfl_atom` to the topology.
+the atoms and the connectivity in a system. Here, we initialize three
+:f:type:`chfl_atom` and add them to the topology.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
@@ -138,11 +138,11 @@ first the atomic number are converted to ``int64`` before passing them to the
 function (one could also change the default size of integers with a global
 compiler flag). Second, the atomic numbers starts at 0, not 1. This might be
 source of confusion when using chemfiles, as indexes usually start at 1 in
-Fortran;
+Fortran.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 26-27
+   :lines: 25-26
    :dedent: 4
 
 We can then create a :f:type:`chfl_frame` and set its topology. We free the
@@ -150,7 +150,7 @@ topology right after, because we no longer need it.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 29-32
+   :lines: 28-31
    :dedent: 4
 
 Once we set the topology, we can set the positions of the atoms. Notice how the
@@ -158,7 +158,7 @@ indexes starts at 1 here, as we are using a standard fortran array.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 34-37
+   :lines: 33-36
    :dedent: 4
 
 Another possibility is to directly add atoms and bonds to the frame. Here we
@@ -166,7 +166,7 @@ define a second molecule representing carbon dioxyde.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 39-43
+   :lines: 38-42
    :dedent: 4
 
 Finally, we can set the :f:type:`chfl_cell` associated with this frame. We
@@ -174,7 +174,7 @@ also free the cell memory, as it is no longer needed.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 45-47
+   :lines: 44-46
    :dedent: 4
 
 Now that our frame is constructed, it is time to write it to a file. For that,
@@ -182,14 +182,14 @@ we open a trajectory in write (``'w'``) mode, and write to it.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 49-51
+   :lines: 48-50
    :dedent: 4
 
 And free all remaining memory with the right functions.
 
 .. literalinclude:: ../examples/generate.f90
    :language: fortran
-   :lines: 53-56
+   :lines: 52-55
    :dedent: 4
 
 .. htmlhidden::
@@ -219,12 +219,11 @@ selection and an array of matches.
    :lines: 9-15
    :dedent: 4
 
-Then we can open the two trajectories we need, aborting if we can not open the
-input trajectory.
+Then we can open the two trajectories we need.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 17-20
+   :lines: 16-17
    :dedent: 4
 
 We create a :f:type:`chfl_frame` and a :f:type:`chfl_selection` object to
@@ -232,21 +231,14 @@ filter the atoms we want to keep.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
+   :lines: 19-20
+   :dedent: 4
+
+Then we can iterate over the frames in the trajectory
+
+.. literalinclude:: ../examples/select.f90
+   :language: fortran
    :lines: 22-23
-   :dedent: 4
-
-Then we get the number of steps in the trajectory
-
-.. literalinclude:: ../examples/select.f90
-   :language: fortran
-   :lines: 25-26
-   :dedent: 4
-
-And iterate over the frames in the trajectory
-
-.. literalinclude:: ../examples/select.f90
-   :language: fortran
-   :lines: 28-29
    :dedent: 4
 
 From here, we need to use the selection to get the atoms we want to remove. This
@@ -255,7 +247,7 @@ matches
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 31-32
+   :lines: 25-26
    :dedent: 8
 
 Second we allocate some memory and get all the matches (represented as
@@ -263,14 +255,14 @@ Second we allocate some memory and get all the matches (represented as
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 33-34
+   :lines: 27-28
    :dedent: 8
 
 We can get the index of atoms in a `to_remove` array
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 36-39
+   :lines: 30-33
    :dedent: 8
 
 In order to remove the atoms from the frame, we need to sort ``to_remove`` in
@@ -280,7 +272,7 @@ frame.
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 42-44
+   :lines: 35-38
    :dedent: 8
 
 Finally, we can write the cleaned frame to the output file, and free the memory
@@ -288,14 +280,14 @@ we allocated:
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 46-47
+   :lines: 40-41
    :dedent: 8
 
 The ``sort`` function we used to sort the matches is defined as follow:
 
 .. literalinclude:: ../examples/select.f90
    :language: fortran
-   :lines: 56-73
+   :lines: 51-67
    :dedent: 4
 
 .. htmlhidden::

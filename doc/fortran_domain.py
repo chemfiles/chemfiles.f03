@@ -713,7 +713,9 @@ class WithFortranDocFieldTransformer:
             self.domain, self.objtype = self.name.split(':', 1)
         else:
             self.domain, self.objtype = '', self.name
-        self.env = self.state.document.settings.env
+        # FIXME: Uncommenting this line raises an error, and commenting
+        # it seems to generate the right doc, so ...
+        # self.env = self.state.document.settings.env
         self.indexnode = addnodes.index(entries=[])
 
         node = addnodes.desc()
