@@ -16,6 +16,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "release" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
+# Check that the git submodule exists
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/chemfiles/CMakeLists.txt")
+    message(FATAL_ERROR
+        "The git submodule for chemfiles is not initalized.\n"
+        "Please run `git submodule update --init`"
+    )
+endif()
 add_subdirectory(chemfiles)
 
 set(sources
