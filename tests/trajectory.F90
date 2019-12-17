@@ -268,10 +268,10 @@ contains
 
         EXPECTED = "4" // EOL // &
                    "Written by the chemfiles library" // EOL // &
-                   "X 1 2 3" // EOL // &
-                   "X 1 2 3" // EOL // &
-                   "X 1 2 3" // EOL // &
-                   "X 1 2 3" // EOL
+                   "X 1.0 2.0 3.0" // EOL // &
+                   "X 1.0 2.0 3.0" // EOL // &
+                   "X 1.0 2.0 3.0" // EOL // &
+                   "X 1.0 2.0 3.0" // EOL
 
 
         call frame%init(status=status)
