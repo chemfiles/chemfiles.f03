@@ -4,6 +4,7 @@
 module chemfiles
     use chemfiles_ffi
     use chemfiles_strings
+    use chemfiles_misc
     use chemfiles_selection
     use chemfiles_property
     use chemfiles_atom
@@ -18,6 +19,7 @@ module chemfiles
     ! Export types
     public :: chfl_selection, chfl_match, chfl_trajectory, chfl_property
     public :: chfl_frame, chfl_cell, chfl_topology, chfl_residue, chfl_atom
+    public :: chfl_format_metadata
     ! Export enums
     public :: chfl_cellshape
     public :: CHFL_CELL_ORTHORHOMBIC, CHFL_CELL_TRICLINIC, CHFL_CELL_INFINITE
@@ -33,19 +35,9 @@ module chemfiles
     public :: CHFL_BOND_AMIDE, CHFL_BOND_AROMATIC
     ! Export free functions
     public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
-    public :: chfl_last_error, chfl_clear_errors
+    public :: chfl_last_error, chfl_clear_errors, chfl_formats_list
     ! Export others
     public :: CHFL_STRING_LENGTH
-
-    ! Global pointer to the callback procedure
-    procedure(chfl_warning_callback), pointer :: internal_warning_callback
-
-    interface
-        subroutine chfl_warning_callback(message)
-            implicit none
-            character(len=*), intent(in) :: message
-        end subroutine chfl_warning_callback
-    end interface
 
 contains
     function chfl_version() result(string)
@@ -57,58 +49,4 @@ contains
         c_string = c_chfl_version()
         string = c_to_f_str(c_string)
     end function
-
-    function chfl_last_error() result(string)
-        implicit none
-
-        character(len=CHFL_STRING_LENGTH) :: string
-        type(c_ptr) :: c_string
-
-        c_string = c_chfl_last_error()
-        string = c_to_f_str(c_string)
-    end function
-
-    subroutine chfl_clear_errors(status)
-        implicit none
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_clear_errors()
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_add_configuration(path, status)
-        implicit none
-        character(len=*), intent(in) :: path
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_add_configuration(f_to_c_str(path))
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine internal_warning_wrapper(message) bind(C)
-        implicit none
-        type(c_ptr), intent(in), value :: message
-        call internal_warning_callback(c_to_f_str(message))
-    end subroutine
-
-    subroutine chfl_set_warning_callback(callback, status)
-        implicit none
-        procedure(chfl_warning_callback) :: callback
-        integer, optional :: status
-        integer :: status_tmp_
-
-        internal_warning_callback => callback
-        status_tmp_ = c_chfl_set_warning_callback(c_funloc(internal_warning_wrapper))
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
 end module

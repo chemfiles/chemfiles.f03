@@ -1,5 +1,5 @@
-Miscelaneous functions
-======================
+Miscellaneous functions
+=======================
 
 .. f:function:: chfl_version()
 
@@ -19,13 +19,13 @@ Error handling
 
 .. f:function:: chfl_last_error()
 
-    Get the last error message emmited by Chemfiles.
+    Get the last error message emitted by Chemfiles.
 
     :return character(len=CHFL_STRING_LENGTH):
 
 .. f:subroutine:: chfl_clear_errors([status])
 
-    Clear the last error message emmited by Chemfiles.
+    Clear the last error message emitted by Chemfiles.
 
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
@@ -59,7 +59,7 @@ of kind ``chfl_status``, and can take the following values:
 .. f:variable:: CHFL_FORMAT_ERROR
     :type: integer(chfl_status)
 
-    Status code for error in file formating, i.e. for invalid files.
+    Status code for error in file formatting, i.e. for invalid files.
 
 .. f:variable:: CHFL_SELECTION_ERROR
     :type: integer(chfl_status)
@@ -127,7 +127,7 @@ Configuration files
     configuration file.
 
     This function will fail if there is no file at path, or if the file is
-    incorectly formatted. Data from the new configuration file will overwrite
+    incorrectly formatted. Data from the new configuration file will overwrite
     any existing data.
 
     :argument character(len=\*) path: the new configuration file path
@@ -137,3 +137,43 @@ Configuration files
 
 
 .. _configuration: http://chemfiles.org/chemfiles/latest/configuration.html#configuration
+
+
+List known formats
+------------------
+
+.. f:type:: chfl_format_metadata
+
+    A :f:type:`chfl_format_metadata` contains metadata associated with one format
+
+    :field character(len=CHFL_STRING_LENGTH) name: name of the format
+    :field character(len=CHFL_STRING_LENGTH) extension: extension associated with the format, or empty string if there is no associated extension
+    :field character(len=CHFL_STRING_LENGTH) description: extended, user-facing description of the format
+    :field character(len=CHFL_STRING_LENGTH) reference: URL pointing to the format definition/reference
+
+    :field logical read: is reading files in this format implemented?
+    :field logical write: is writing files in this format implemented?
+    :field logical memory: does this format support in-memory IO?
+
+    :field logical positions: does this format support storing atomic positions?
+    :field logical velocities: does this format support storing atomic velocities?
+    :field logical unit_cell: does this format support storing unit cell information?
+    :field logical atoms: does this format support storing atom names or types?
+    :field logical bonds: does this format support storing bonds between atoms?
+    :field logical residues: does this format support storing residues?
+
+
+.. f:subroutine:: chfl_formats_list(metadata, [status])
+
+    Get the list of formats known by chemfiles, as well as all associated
+    metadata.
+
+    This function allocate memory for all known formats. Users of this function
+    are responsible with cleaning up this memory using the standard
+    ``deallocate``.
+
+    :parameter type(chfl_format_metadata), allocatable metadata(:): array that
+        will be allocated and filled with all formats metadata
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
