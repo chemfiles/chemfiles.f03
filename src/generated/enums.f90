@@ -29,7 +29,7 @@ enum, bind(C)
     enumerator :: CHFL_BOND_DOUBLE = 2
     enumerator :: CHFL_BOND_TRIPLE = 3
     enumerator :: CHFL_BOND_QUADRUPLE = 4
-    enumerator :: CHFL_BOND_QINTUPLET = 5
+    enumerator :: CHFL_BOND_QUINTUPLET = 5
     enumerator :: CHFL_BOND_AMIDE = 254
     enumerator :: CHFL_BOND_AROMATIC = 255
 end enum

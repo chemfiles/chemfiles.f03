@@ -51,14 +51,22 @@ contains
         implicit none
         type(chfl_cell) :: cell
         integer :: status
+        real(kind=real64), dimension(3) :: angles
 
         call cell%init([12d0, 30d0, 24d0], [90d0, 90d0, 120d0], status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(all(cell%lengths(status=status) == [12.0, 30.0, 24.0]))
+        lengths = cell%lengths(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(all(cell%angles(status=status) == [90.0, 90.0, 120.0]))
+        CHECK(abs(lengths(1) - 12.0) < 1d-12)
+        CHECK(abs(lengths(2) - 30.0) < 1d-12)
+        CHECK(abs(lengths(3) - 24.0) < 1d-12)
+
+        angles = cell%angles(status=status)
+        CHECK(abs(angles(1) - 90.0) < 1d-12)
+        CHECK(abs(angles(2) - 90.0) < 1d-12)
+        CHECK(abs(angles(3) - 120.0) < 1d-12)
         CHECK(status == CHFL_SUCCESS)
 
         call cell%free()

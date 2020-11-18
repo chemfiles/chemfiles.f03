@@ -29,7 +29,7 @@ module chemfiles
     public :: CHFL_PROPERTY_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
     public :: chfl_bond_order
     public :: CHFL_BOND_UNKNOWN, CHFL_BOND_SINGLE, CHFL_BOND_DOUBLE
-    public :: CHFL_BOND_TRIPLE, CHFL_BOND_QUADRUPLE, CHFL_BOND_QINTUPLET
+    public :: CHFL_BOND_TRIPLE, CHFL_BOND_QUADRUPLE, CHFL_BOND_QUINTUPLET
     public :: CHFL_BOND_AMIDE, CHFL_BOND_AROMATIC
     ! Export free functions
     public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration

@@ -8,7 +8,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_topology", at topology.h:20:28
+! Function "chfl_topology", at topology.h:25
 function c_chfl_topology() bind(C, name="chfl_topology")
     use iso_c_binding
     
@@ -17,7 +17,7 @@ function c_chfl_topology() bind(C, name="chfl_topology")
 
 end function
 
-! Function "chfl_topology_from_frame", at topology.h:34:34
+! Function "chfl_topology_from_frame", at topology.h:38
 function c_chfl_topology_from_frame(frame) bind(C, name="chfl_topology_from_frame")
     use iso_c_binding
     
@@ -26,7 +26,7 @@ function c_chfl_topology_from_frame(frame) bind(C, name="chfl_topology_from_fram
     type(c_ptr), value, intent(in) :: frame
 end function
 
-! Function "chfl_topology_copy", at topology.h:44:28
+! Function "chfl_topology_copy", at topology.h:48
 function c_chfl_topology_copy(topology) bind(C, name="chfl_topology_copy")
     use iso_c_binding
     
@@ -35,7 +35,7 @@ function c_chfl_topology_copy(topology) bind(C, name="chfl_topology_copy")
     type(c_ptr), value, intent(in) :: topology
 end function
 
-! Function "chfl_topology_atoms_count", at topology.h:52:25
+! Function "chfl_topology_atoms_count", at topology.h:56
 function c_chfl_topology_atoms_count(topology, count) bind(C, name="chfl_topology_atoms_count")
     use iso_c_binding
     import chfl_status
@@ -46,7 +46,7 @@ function c_chfl_topology_atoms_count(topology, count) bind(C, name="chfl_topolog
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_resize", at topology.h:64:25
+! Function "chfl_topology_resize", at topology.h:68
 function c_chfl_topology_resize(topology, natoms) bind(C, name="chfl_topology_resize")
     use iso_c_binding
     import chfl_status
@@ -57,7 +57,7 @@ function c_chfl_topology_resize(topology, natoms) bind(C, name="chfl_topology_re
     integer(kind=c_int64_t), value :: natoms
 end function
 
-! Function "chfl_topology_add_atom", at topology.h:71:25
+! Function "chfl_topology_add_atom", at topology.h:75
 function c_chfl_topology_add_atom(topology, atom) bind(C, name="chfl_topology_add_atom")
     use iso_c_binding
     import chfl_status
@@ -68,7 +68,7 @@ function c_chfl_topology_add_atom(topology, atom) bind(C, name="chfl_topology_ad
     type(c_ptr), value, intent(in) :: atom
 end function
 
-! Function "chfl_topology_remove", at topology.h:82:25
+! Function "chfl_topology_remove", at topology.h:86
 function c_chfl_topology_remove(topology, i) bind(C, name="chfl_topology_remove")
     use iso_c_binding
     import chfl_status
@@ -79,7 +79,7 @@ function c_chfl_topology_remove(topology, i) bind(C, name="chfl_topology_remove"
     integer(kind=c_int64_t), value :: i
 end function
 
-! Function "chfl_topology_bonds_count", at topology.h:91:25
+! Function "chfl_topology_bonds_count", at topology.h:95
 function c_chfl_topology_bonds_count(topology, count) bind(C, name="chfl_topology_bonds_count")
     use iso_c_binding
     import chfl_status
@@ -90,7 +90,7 @@ function c_chfl_topology_bonds_count(topology, count) bind(C, name="chfl_topolog
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_angles_count", at topology.h:100:25
+! Function "chfl_topology_angles_count", at topology.h:104
 function c_chfl_topology_angles_count(topology, count) bind(C, name="chfl_topology_angles_count")
     use iso_c_binding
     import chfl_status
@@ -101,7 +101,7 @@ function c_chfl_topology_angles_count(topology, count) bind(C, name="chfl_topolo
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_dihedrals_count", at topology.h:109:25
+! Function "chfl_topology_dihedrals_count", at topology.h:113
 function c_chfl_topology_dihedrals_count(topology, count) bind(C, name="chfl_topology_dihedrals_count")
     use iso_c_binding
     import chfl_status
@@ -112,7 +112,7 @@ function c_chfl_topology_dihedrals_count(topology, count) bind(C, name="chfl_top
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_impropers_count", at topology.h:118:25
+! Function "chfl_topology_impropers_count", at topology.h:122
 function c_chfl_topology_impropers_count(topology, count) bind(C, name="chfl_topology_impropers_count")
     use iso_c_binding
     import chfl_status
@@ -123,7 +123,7 @@ function c_chfl_topology_impropers_count(topology, count) bind(C, name="chfl_top
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_bonds", at topology.h:131:25
+! Function "chfl_topology_bonds", at topology.h:135
 function c_chfl_topology_bonds(topology, data, count) bind(C, name="chfl_topology_bonds")
     use iso_c_binding
     import chfl_status
@@ -135,7 +135,7 @@ function c_chfl_topology_bonds(topology, data, count) bind(C, name="chfl_topolog
     integer(kind=c_int64_t), value :: count
 end function
 
-! Function "chfl_topology_angles", at topology.h:144:25
+! Function "chfl_topology_angles", at topology.h:148
 function c_chfl_topology_angles(topology, data, count) bind(C, name="chfl_topology_angles")
     use iso_c_binding
     import chfl_status
@@ -147,7 +147,7 @@ function c_chfl_topology_angles(topology, data, count) bind(C, name="chfl_topolo
     integer(kind=c_int64_t), value :: count
 end function
 
-! Function "chfl_topology_dihedrals", at topology.h:158:25
+! Function "chfl_topology_dihedrals", at topology.h:162
 function c_chfl_topology_dihedrals(topology, data, count) bind(C, name="chfl_topology_dihedrals")
     use iso_c_binding
     import chfl_status
@@ -159,7 +159,7 @@ function c_chfl_topology_dihedrals(topology, data, count) bind(C, name="chfl_top
     integer(kind=c_int64_t), value :: count
 end function
 
-! Function "chfl_topology_impropers", at topology.h:172:25
+! Function "chfl_topology_impropers", at topology.h:176
 function c_chfl_topology_impropers(topology, data, count) bind(C, name="chfl_topology_impropers")
     use iso_c_binding
     import chfl_status
@@ -171,7 +171,7 @@ function c_chfl_topology_impropers(topology, data, count) bind(C, name="chfl_top
     integer(kind=c_int64_t), value :: count
 end function
 
-! Function "chfl_topology_add_bond", at topology.h:181:25
+! Function "chfl_topology_add_bond", at topology.h:185
 function c_chfl_topology_add_bond(topology, i, j) bind(C, name="chfl_topology_add_bond")
     use iso_c_binding
     import chfl_status
@@ -183,7 +183,7 @@ function c_chfl_topology_add_bond(topology, i, j) bind(C, name="chfl_topology_ad
     integer(kind=c_int64_t), value :: j
 end function
 
-! Function "chfl_topology_remove_bond", at topology.h:193:25
+! Function "chfl_topology_remove_bond", at topology.h:197
 function c_chfl_topology_remove_bond(topology, i, j) bind(C, name="chfl_topology_remove_bond")
     use iso_c_binding
     import chfl_status
@@ -195,7 +195,17 @@ function c_chfl_topology_remove_bond(topology, i, j) bind(C, name="chfl_topology
     integer(kind=c_int64_t), value :: j
 end function
 
-! Function "chfl_topology_residues_count", at topology.h:203:25
+! Function "chfl_topology_clear_bonds", at topology.h:207
+function c_chfl_topology_clear_bonds(topology) bind(C, name="chfl_topology_clear_bonds")
+    use iso_c_binding
+    import chfl_status
+
+    implicit none
+    integer(kind=chfl_status) :: c_chfl_topology_clear_bonds
+    type(c_ptr), value :: topology
+end function
+
+! Function "chfl_topology_residues_count", at topology.h:215
 function c_chfl_topology_residues_count(topology, count) bind(C, name="chfl_topology_residues_count")
     use iso_c_binding
     import chfl_status
@@ -206,7 +216,7 @@ function c_chfl_topology_residues_count(topology, count) bind(C, name="chfl_topo
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_topology_add_residue", at topology.h:215:25
+! Function "chfl_topology_add_residue", at topology.h:227
 function c_chfl_topology_add_residue(topology, residue) bind(C, name="chfl_topology_add_residue")
     use iso_c_binding
     import chfl_status
@@ -217,7 +227,7 @@ function c_chfl_topology_add_residue(topology, residue) bind(C, name="chfl_topol
     type(c_ptr), value, intent(in) :: residue
 end function
 
-! Function "chfl_topology_residues_linked", at topology.h:226:25
+! Function "chfl_topology_residues_linked", at topology.h:238
 function c_chfl_topology_residues_linked(topology, first, second, result) bind(C, name="chfl_topology_residues_linked")
     use iso_c_binding
     import chfl_status
@@ -230,7 +240,7 @@ function c_chfl_topology_residues_linked(topology, first, second, result) bind(C
     logical(kind=c_bool), intent(inout) :: result
 end function
 
-! Function "chfl_topology_bond_with_order", at topology.h:239:25
+! Function "chfl_topology_bond_with_order", at topology.h:251
 function c_chfl_topology_bond_with_order(topology, i, j, bond_order) bind(C, name="chfl_topology_bond_with_order")
     use iso_c_binding
     import chfl_status
@@ -244,7 +254,7 @@ function c_chfl_topology_bond_with_order(topology, i, j, bond_order) bind(C, nam
     integer(chfl_bond_order), value :: bond_order
 end function
 
-! Function "chfl_topology_bond_orders", at topology.h:253:25
+! Function "chfl_topology_bond_orders", at topology.h:265
 function c_chfl_topology_bond_orders(topology, orders, nbonds) bind(C, name="chfl_topology_bond_orders")
     use iso_c_binding
     import chfl_status
@@ -257,7 +267,7 @@ function c_chfl_topology_bond_orders(topology, orders, nbonds) bind(C, name="chf
     integer(kind=c_int64_t), value :: nbonds
 end function
 
-! Function "chfl_topology_bond_order", at topology.h:266:25
+! Function "chfl_topology_bond_order", at topology.h:278
 function c_chfl_topology_bond_order(topology, i, j, order) bind(C, name="chfl_topology_bond_order")
     use iso_c_binding
     import chfl_status

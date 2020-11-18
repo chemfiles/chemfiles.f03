@@ -32,9 +32,9 @@ contains
         integer(chfl_status), intent(out), optional :: status
 
         if (present(angles)) then
-            call this%unsafe_set_ptr(c_chfl_cell_triclinic(lengths, angles), status)
+            call this%unsafe_set_ptr(c_chfl_cell(lengths, angles), status)
         else
-            call this%unsafe_set_ptr(c_chfl_cell(lengths), status)
+            call this%unsafe_set_ptr(c_chfl_cell(lengths, [90d0, 90d0, 90d0]), status)
         end if
     end subroutine
 
