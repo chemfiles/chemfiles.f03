@@ -10,6 +10,24 @@ module chemfiles_ffi
         integer(kind=c_size_t), dimension(4) :: atoms
     end type
 
+    type, bind(C) :: c_chfl_format_metadata
+        type(c_ptr) :: name
+        type(c_ptr) :: extension
+        type(c_ptr) :: description
+        type(c_ptr) :: reference
+
+        logical(kind=c_bool) :: read
+        logical(kind=c_bool) :: write
+        logical(kind=c_bool) :: memory
+
+        logical(kind=c_bool) :: positions
+        logical(kind=c_bool) :: velocities
+        logical(kind=c_bool) :: unit_cell
+        logical(kind=c_bool) :: atoms
+        logical(kind=c_bool) :: bonds
+        logical(kind=c_bool) :: residues
+    end type
+
     include "generated/enums.f90"
     include "generated/others.f90"
     include "generated/chfl_atom.f90"
@@ -29,12 +47,19 @@ module chemfiles_ffi
             type(c_ptr), intent(in), value :: message
         end subroutine chfl_warning_callback_c
 
-        ! Manual interface definition for chfl_free (the only subroutine)
+        ! Manual interface definition for chfl_free
         subroutine c_chfl_free(object) bind(C, name="chfl_free")
             use iso_c_binding
             implicit none
             type(c_ptr), intent(in), value :: object
         end subroutine c_chfl_free
+
+        ! Manual interface definition for the free stdlib function
+        subroutine c_free(object) bind(C, name="free")
+            use iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: object
+        end subroutine c_free
     end interface
 
     type chfl_ptr

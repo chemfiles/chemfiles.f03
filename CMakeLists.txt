@@ -28,6 +28,7 @@ add_subdirectory(chemfiles)
 set(sources
     src/ffi.f90
     src/strings.f90
+    src/misc.f90
     src/atom.f90
     src/cell.f90
     src/frame.f90
