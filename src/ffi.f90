@@ -10,7 +10,7 @@ module chemfiles_ffi
         integer(kind=c_size_t), dimension(4) :: atoms
     end type
 
-    include "generated/cenums.f90"
+    include "generated/enums.f90"
     include "generated/others.f90"
     include "generated/chfl_atom.f90"
     include "generated/chfl_residue.f90"
@@ -46,7 +46,7 @@ module chemfiles_ffi
         procedure :: unsafe_set_const_ptr
         procedure :: unsafe_ptr
         procedure :: unsafe_const_ptr
-        procedure :: free
+        procedure :: free => chfl_free
     end type
 
 contains
@@ -111,7 +111,7 @@ contains
         unsafe_const_ptr = this%ptr
     end function
 
-    subroutine free(this)
+    subroutine chfl_free(this)
         implicit none
         class(chfl_ptr), intent(inout) :: this
 
@@ -149,7 +149,7 @@ contains
             output = value
         else if (value == CHFL_BOND_QUADRUPLE) then
             output = value
-        else if (value == CHFL_BOND_QINTUPLET) then
+        else if (value == CHFL_BOND_QUINTUPLET) then
             output = value
         else if (value == CHFL_BOND_AMIDE) then
             output = value

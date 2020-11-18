@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 """
-This script check that all the functions are effectivelly tested. It does so by
+This script check that all the functions are effectively tested. It does so by
 reading the tests and parsing declarations to get the variables types.
 
 This script is not robust, and can not parse all fortran declarations, but
@@ -93,7 +93,7 @@ def usage_in_tests():
     return usages
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     functions = all_functions()
     tests = usage_in_tests()
     for function in functions:

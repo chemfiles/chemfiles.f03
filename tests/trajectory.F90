@@ -267,7 +267,7 @@ contains
         integer :: status, i, j
 
         EXPECTED = "4" // EOL // &
-                   "Written by the chemfiles library" // EOL // &
+                   "Properties=species:S:1:pos:R:3" // EOL // &
                    "X 1 2 3" // EOL // &
                    "X 1 2 3" // EOL // &
                    "X 1 2 3" // EOL // &

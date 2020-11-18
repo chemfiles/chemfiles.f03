@@ -8,7 +8,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_version", at types.h:145:25
+! Function "chfl_version", at types.h:150
 function c_chfl_version() bind(C, name="chfl_version")
     use iso_c_binding
     
@@ -17,7 +17,7 @@ function c_chfl_version() bind(C, name="chfl_version")
 
 end function
 
-! Function "chfl_last_error", at misc.h:19:25
+! Function "chfl_last_error", at misc.h:23
 function c_chfl_last_error() bind(C, name="chfl_last_error")
     use iso_c_binding
     
@@ -26,7 +26,7 @@ function c_chfl_last_error() bind(C, name="chfl_last_error")
 
 end function
 
-! Function "chfl_clear_errors", at misc.h:29:25
+! Function "chfl_clear_errors", at misc.h:33
 function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
     use iso_c_binding
     import chfl_status
@@ -36,7 +36,7 @@ function c_chfl_clear_errors() bind(C, name="chfl_clear_errors")
 
 end function
 
-! Function "chfl_set_warning_callback", at misc.h:38:25
+! Function "chfl_set_warning_callback", at misc.h:42
 function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_callback")
     use iso_c_binding
     import chfl_status
@@ -46,7 +46,7 @@ function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_ca
     type(c_funptr), value :: callback
 end function
 
-! Function "chfl_add_configuration", at misc.h:54:25
+! Function "chfl_add_configuration", at misc.h:58
 function c_chfl_add_configuration(path) bind(C, name="chfl_add_configuration")
     use iso_c_binding
     import chfl_status
@@ -54,6 +54,17 @@ function c_chfl_add_configuration(path) bind(C, name="chfl_add_configuration")
     implicit none
     integer(kind=chfl_status) :: c_chfl_add_configuration
     character(len=1, kind=c_char), dimension(*), intent(in) :: path
+end function
+
+! Function "chfl_formats_list", at misc.h:71
+function c_chfl_formats_list(metadata, count) bind(C, name="chfl_formats_list")
+    use iso_c_binding
+    import chfl_status
+
+    implicit none
+    integer(kind=chfl_status) :: c_chfl_formats_list
+    type(c_ptr), value :: metadata
+    integer(kind=c_int64_t), intent(inout) :: count
 end function
 
 end interface

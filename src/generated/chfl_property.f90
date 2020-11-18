@@ -8,7 +8,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_property_bool", at property.h:32:28
+! Function "chfl_property_bool", at property.h:37
 function c_chfl_property_bool(value) bind(C, name="chfl_property_bool")
     use iso_c_binding
     
@@ -17,7 +17,7 @@ function c_chfl_property_bool(value) bind(C, name="chfl_property_bool")
     logical(kind=c_bool), value :: value
 end function
 
-! Function "chfl_property_double", at property.h:42:28
+! Function "chfl_property_double", at property.h:47
 function c_chfl_property_double(value) bind(C, name="chfl_property_double")
     use iso_c_binding
     
@@ -26,7 +26,7 @@ function c_chfl_property_double(value) bind(C, name="chfl_property_double")
     real(kind=c_double), value :: value
 end function
 
-! Function "chfl_property_string", at property.h:52:28
+! Function "chfl_property_string", at property.h:57
 function c_chfl_property_string(value) bind(C, name="chfl_property_string")
     use iso_c_binding
     
@@ -35,7 +35,7 @@ function c_chfl_property_string(value) bind(C, name="chfl_property_string")
     character(len=1, kind=c_char), dimension(*), intent(in) :: value
 end function
 
-! Function "chfl_property_vector3d", at property.h:62:28
+! Function "chfl_property_vector3d", at property.h:67
 function c_chfl_property_vector3d(value) bind(C, name="chfl_property_vector3d")
     use iso_c_binding
     
@@ -44,7 +44,7 @@ function c_chfl_property_vector3d(value) bind(C, name="chfl_property_vector3d")
     real(kind=c_double), dimension(3), intent(in) :: value
 end function
 
-! Function "chfl_property_get_kind", at property.h:69:25
+! Function "chfl_property_get_kind", at property.h:74
 function c_chfl_property_get_kind(property, kind) bind(C, name="chfl_property_get_kind")
     use iso_c_binding
     import chfl_status
@@ -56,7 +56,7 @@ function c_chfl_property_get_kind(property, kind) bind(C, name="chfl_property_ge
     integer(chfl_property_kind), intent(inout) :: kind
 end function
 
-! Function "chfl_property_get_bool", at property.h:82:25
+! Function "chfl_property_get_bool", at property.h:87
 function c_chfl_property_get_bool(property, value) bind(C, name="chfl_property_get_bool")
     use iso_c_binding
     import chfl_status
@@ -67,7 +67,7 @@ function c_chfl_property_get_bool(property, value) bind(C, name="chfl_property_g
     logical(kind=c_bool), intent(inout) :: value
 end function
 
-! Function "chfl_property_get_double", at property.h:95:25
+! Function "chfl_property_get_double", at property.h:100
 function c_chfl_property_get_double(property, value) bind(C, name="chfl_property_get_double")
     use iso_c_binding
     import chfl_status
@@ -78,7 +78,7 @@ function c_chfl_property_get_double(property, value) bind(C, name="chfl_property
     real(kind=c_double), intent(inout) :: value
 end function
 
-! Function "chfl_property_get_string", at property.h:110:25
+! Function "chfl_property_get_string", at property.h:115
 function c_chfl_property_get_string(property, buffer, buffsize) bind(C, name="chfl_property_get_string")
     use iso_c_binding
     import chfl_status
@@ -90,7 +90,7 @@ function c_chfl_property_get_string(property, buffer, buffsize) bind(C, name="ch
     integer(kind=c_int64_t), value :: buffsize
 end function
 
-! Function "chfl_property_get_vector3d", at property.h:123:25
+! Function "chfl_property_get_vector3d", at property.h:128
 function c_chfl_property_get_vector3d(property, value) bind(C, name="chfl_property_get_vector3d")
     use iso_c_binding
     import chfl_status

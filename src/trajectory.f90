@@ -45,18 +45,14 @@ contains
         end if
     end subroutine
 
-    function path(this, status)
+    character(len=CHFL_STRING_LENGTH) function path(this, status)
         implicit none
-        character(len=CHFL_STRING_LENGTH) :: path
         class(chfl_trajectory), intent(in) :: this
         integer(chfl_status), intent(out), optional :: status
-
-        type(c_ptr), target :: c_path
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_trajectory_path(this%unsafe_const_ptr(), c_loc(c_path))
-        path = c_to_f_str(c_path)
-
+        status_tmp = c_chfl_trajectory_path(this%unsafe_const_ptr(), path, int(CHFL_STRING_LENGTH, c_int64_t))
+        path = rm_null_in_str(path)
         if (present(status)) then
             status = status_tmp
         end if
