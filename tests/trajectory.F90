@@ -12,6 +12,7 @@ program trajectory_read
     call test_set_topology_from_file()
     call test_guess_bonds()
     call test_write()
+    call test_memory_io()
 
 contains
     subroutine test_read()
@@ -301,6 +302,60 @@ contains
 
         open(unit=11, iostat=status, file="test-tmp.xyz", status='old')
         if (status == 0) close(11, status='delete')
+    end subroutine
+
+    subroutine test_memory_io()
+        implicit none
+        type(chfl_trajectory) :: trajectory
+        type(chfl_frame) :: frame
+        character(len=2048) :: data, EXPECTED
+        character(len=:), allocatable :: buffer
+        character :: EOL = char(10)
+        integer :: status
+        real(real64), dimension(:, :), pointer :: positions
+
+        data = "3" // EOL // &
+               "" // EOL // &
+               "C 0 0 0" // EOL // &
+               "O 3 3 3" // EOL // &
+               "H 1 1 1" // EOL
+
+        call trajectory%memory_reader(data, "XYZ", status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call frame%init(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call trajectory%read(frame, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        positions => frame%positions(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(all(shape(positions) == [3, 3]))
+        CHECK(all(positions(:, 1) == [0, 0, 0]))
+        CHECK(all(positions(:, 2) == [3, 3, 3]))
+        CHECK(all(positions(:, 3) == [1, 1, 1]))
+
+        call trajectory%free()
+
+        call trajectory%memory_writer("PDB", status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call trajectory%write(frame, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        call trajectory%memory_buffer(buffer, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        EXPECTED = "MODEL    1" // EOL // &
+                   "CRYST1    0.000    0.000    0.000  90.00  90.00  90.00 P 1           1" // EOL // &
+                   "HETATM    1 C            1       0.000   0.000   0.000  1.00  0.00           C" // EOL // &
+                   "HETATM    2 O            2       3.000   3.000   3.000  1.00  0.00           O" // EOL // &
+                   "HETATM    3 H            3       1.000   1.000   1.000  1.00  0.00           H" // EOL // &
+                   "ENDMDL" // EOL
+        CHECK(buffer == EXPECTED)
+
+        call frame%free()
+        call trajectory%free()
     end subroutine
 
     !** Read a whole file into a string

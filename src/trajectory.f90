@@ -2,6 +2,7 @@
 ! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
 module chemfiles_trajectory
     use iso_c_binding
+    use iso_fortran_env, only: int8
     use chemfiles_ffi
     use chemfiles_strings
     use chemfiles_cell
@@ -15,6 +16,9 @@ module chemfiles_trajectory
     type, extends(chfl_ptr) :: chfl_trajectory
     contains
         procedure :: open
+        procedure :: memory_reader
+        procedure :: memory_writer
+        procedure :: memory_buffer
         procedure :: path
         procedure :: read
         procedure :: read_step
@@ -42,6 +46,53 @@ contains
             )
         else
             call this%unsafe_set_ptr(c_chfl_trajectory_open(f_to_c_str(path), mode), status)
+        end if
+    end subroutine
+
+    subroutine memory_reader(this, data, format, status)
+        implicit none
+        class(chfl_trajectory), intent(inout) :: this
+        character(len=*), intent(in) :: data
+        character(len=*), intent(in) :: format
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(c_chfl_trajectory_memory_reader( &
+            f_to_c_str(data), int(len(data), c_int64_t), f_to_c_str(format) &
+        ), status)
+    end subroutine
+
+    subroutine memory_writer(this, format, status)
+        implicit none
+        class(chfl_trajectory), intent(inout) :: this
+        character(len=*), intent(in) :: format
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(c_chfl_trajectory_memory_writer(f_to_c_str(format)), status)
+    end subroutine
+
+    subroutine memory_buffer(this, data, status)
+        implicit none
+        class(chfl_trajectory), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        character(len=:), allocatable :: data
+
+        integer(chfl_status) :: status_tmp
+        integer(kind=c_int64_t) :: size
+        type(c_ptr), target :: ptr
+        character(len=1), dimension(:), pointer :: data_tmp
+
+        status_tmp = c_chfl_trajectory_memory_buffer(this%unsafe_const_ptr(), c_loc(ptr), size)
+
+        if (allocated(data)) then
+            deallocate(data)
+        end if
+
+        allocate(character(len=size) :: data)
+        call c_f_pointer(ptr, data_tmp, [size])
+        data = rm_null_in_str(data_tmp)
+
+        if (present(status)) then
+            status = status_tmp
         end if
     end subroutine
 

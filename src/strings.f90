@@ -65,7 +65,7 @@ contains
     function f_to_c_str(f_string) result(c_string)
         implicit none
         character(len=*), intent(in) :: f_string
-        character(len=1, kind=c_char) :: c_string(len_trim(f_string)+1)
+        character(len=1, kind=c_char) :: c_string(len_trim(f_string) + 1)
         integer :: N, i
 
         N = len_trim(f_string)

@@ -11,7 +11,7 @@ interface
 ! Function "chfl_trajectory_open", at trajectory.h:26
 function c_chfl_trajectory_open(path, mode) bind(C, name="chfl_trajectory_open")
     use iso_c_binding
-    
+
     implicit none
     type(c_ptr) :: c_chfl_trajectory_open
     character(len=1, kind=c_char), dimension(*), intent(in) :: path
@@ -21,7 +21,7 @@ end function
 ! Function "chfl_trajectory_with_format", at trajectory.h:43
 function c_chfl_trajectory_with_format(path, mode, format) bind(C, name="chfl_trajectory_with_format")
     use iso_c_binding
-    
+
     implicit none
     type(c_ptr) :: c_chfl_trajectory_with_format
     character(len=1, kind=c_char), dimension(*), intent(in) :: path
@@ -32,7 +32,7 @@ end function
 ! Function "chfl_trajectory_memory_reader", at trajectory.h:59
 function c_chfl_trajectory_memory_reader(memory, size, format) bind(C, name="chfl_trajectory_memory_reader")
     use iso_c_binding
-    
+
     implicit none
     type(c_ptr) :: c_chfl_trajectory_memory_reader
     character(len=1, kind=c_char), dimension(*), intent(in) :: memory
@@ -43,7 +43,7 @@ end function
 ! Function "chfl_trajectory_memory_writer", at trajectory.h:74
 function c_chfl_trajectory_memory_writer(format) bind(C, name="chfl_trajectory_memory_writer")
     use iso_c_binding
-    
+
     implicit none
     type(c_ptr) :: c_chfl_trajectory_memory_writer
     character(len=1, kind=c_char), dimension(*), intent(in) :: format
