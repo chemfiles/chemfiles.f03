@@ -156,6 +156,10 @@ contains
         CHECK(topology%bonds_count(status=status) == 3)
         CHECK(status == CHFL_SUCCESS)
 
+        call topology%clear_bonds(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%bonds_count() == 0)
+
         call topology%free()
     end subroutine
 

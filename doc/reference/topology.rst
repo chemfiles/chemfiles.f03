@@ -16,6 +16,7 @@
     :field subroutine remove: :f:func:`chfl_topology%remove`
     :field subroutine add_bond: :f:func:`chfl_topology%add_bond`
     :field subroutine remove_bond: :f:func:`chfl_topology%remove_bond`
+    :field subroutine clear_bonds: :f:func:`chfl_topology%clear_bonds`
     :field function bond_order: :f:func:`chfl_topology%bond_order`
     :field subroutine bond_orders: :f:func:`chfl_topology%bond_orders`
     :field function bonds_count: :f:func:`chfl_topology%bonds_count`
@@ -268,6 +269,14 @@
 
     :argument integer i: The atomic index of the first atom
     :argument integer j: The atomic index of the second atom
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_topology%clear_bonds([status])
+
+    Remove all bonds in this topology.
+
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.

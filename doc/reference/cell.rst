@@ -12,6 +12,7 @@
 
     :field subroutine init: :f:func:`chfl_cell%init`
     :field subroutine copy: :f:func:`chfl_cell%copy`
+    :field subroutine from_matrix: :f:func:`chfl_cell%from_matrix`
     :field function lengths: :f:func:`chfl_cell%lengths`
     :field subroutine set_lengths: :f:func:`chfl_cell%set_lengths`
     :field function angles: :f:func:`chfl_cell%angles`
@@ -45,6 +46,17 @@
     memory which must be released with :f:func:`chfl_cell%free`.
 
     :argument type(chfl_cell) cell: cell to copy
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_cell%from_matrix(matrix, [status])
+
+    Initialize this unit cell from it's matricial representation, i.e the matrix
+    containing the three cell vectors. This subroutine allocate
+    memory which must be released with :f:func:`chfl_cell%free`.
+
+    :argument real(kind=real64) matrix(3, 3): matrix representation of the unit cell
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.

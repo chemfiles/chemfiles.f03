@@ -30,6 +30,7 @@ module chemfiles_topology
         procedure :: impropers
         procedure :: add_bond
         procedure :: remove_bond
+        procedure :: clear_bonds
         procedure :: residues_count
         procedure :: residue
         procedure :: residue_for_atom
@@ -303,6 +304,19 @@ contains
         integer(chfl_status) :: status_tmp
 
         status_tmp = c_chfl_topology_remove_bond(this%unsafe_ptr(), i, j)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine clear_bonds(this, status)
+        implicit none
+        class(chfl_topology), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_topology_clear_bonds(this%unsafe_ptr())
 
         if (present(status)) then
             status = status_tmp

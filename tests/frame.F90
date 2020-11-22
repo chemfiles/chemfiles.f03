@@ -430,6 +430,7 @@ contains
         CHECK(status == CHFL_SUCCESS)
 
         expected = reshape([0, 2, 1, 2, -1, -1], [2, 3])
+        CHECK(topology%bonds_count() == 2)
         call topology%bonds(bonds(:, 1:2), status=status)
         CHECK(status == CHFL_SUCCESS)
         do i=1,2
@@ -439,6 +440,14 @@ contains
         end do
         call topology%free()
 
+        call frame%clear_bonds(status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        topology = frame%topology(status=status)
+        CHECK(status == CHFL_SUCCESS)
+        CHECK(topology%bonds_count() == 0)
+
+        call topology%free()
         call frame%free()
     end subroutine
 
