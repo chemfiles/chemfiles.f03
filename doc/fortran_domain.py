@@ -41,7 +41,7 @@ from docutils.parsers.rst import directives, Directive
 
 from sphinx import addnodes
 from sphinx.roles import XRefRole
-from sphinx.locale import l_, _
+from sphinx.locale import _
 from sphinx.domains import Domain, ObjType, Index
 from sphinx.directives import ObjectDescription
 from sphinx.util.nodes import make_refnode
@@ -487,7 +487,7 @@ class FortranObject(ObjectDescription):
 
     doc_field_types = [
         FortranCompleteField(
-            'parameter', label=l_('Parameters'),
+            'parameter', label=_('Parameters'),
             names=('p', 'param', 'parameter', 'a', 'arg', 'argument'),
             typerolename='type',
             typenames=('paramtype', 'type', 'ptype'),
@@ -495,7 +495,7 @@ class FortranObject(ObjectDescription):
             attrnames=('attrs', 'pattrs', 'attr'),
             can_collapse=True),
         FortranCompleteField(
-            'optional', label=l_('Options'),
+            'optional', label=_('Options'),
             names=('o', 'optional', 'opt', 'keyword', 'option'),
             typerolename='type',
             typenames=('optparamtype', 'otype'),
@@ -503,7 +503,7 @@ class FortranObject(ObjectDescription):
             attrnames=('oattrs', 'oattr'),
             can_collapse=True),
         FortranCompleteField(
-            'typefield', label=l_('Type fields'),
+            'typefield', label=_('Type fields'),
             names=('f', 'field', 'typef', 'typefield'),
             typerolename='type',
             typenames=('fieldtype', 'ftype'),
@@ -513,7 +513,7 @@ class FortranObject(ObjectDescription):
             strong=False,
             can_collapse=False),
         FortranCompleteField(
-            'return', label=l_('Return'),
+            'return', label=_('Return'),
             names=('r', 'return', 'returns'),
             typerolename='type',
             typenames=('returntype', 'rtype'),
@@ -521,10 +521,10 @@ class FortranObject(ObjectDescription):
             attrnames=('rattrs', 'rattr'),
             can_collapse=True),
         FortranCallField(
-            'calledfrom', label=l_('Called from'),
+            'calledfrom', label=_('Called from'),
             names=('calledfrom', 'from')),
         FortranCallField(
-            'callto', label=l_('Call to'),
+            'callto', label=_('Call to'),
             names=('callto', 'to')),
     ]
 
@@ -743,8 +743,8 @@ class WithFortranDocFieldTransformer:
                 signode.clear()
                 signode += addnodes.desc_name(sig, sig)
                 continue  # we don't want an index entry here
-            if not isinstance(name[0], unicode):
-                name = (unicode(name), name[1])
+            if not isinstance(name[0], str):
+                name = (str(name), name[1])
             if not noindex and name not in self.names:
                 # only add target and index entry if this is the first
                 # description of the object with this name in this desc block
@@ -932,8 +932,8 @@ class FortranModuleIndex(Index):
     """
 
     name = 'modindex'
-    localname = l_('Fortran Module Index')
-    shortname = l_('fortran modules')
+    localname = _('Fortran Module Index')
+    shortname = _('fortran modules')
 
     def generate(self, docnames=None):
         content = {}
@@ -942,7 +942,7 @@ class FortranModuleIndex(Index):
         ignores = sorted(ignores, key=len, reverse=True)
         # list of all modules, sorted by module name
         modules = sorted(
-            self.domain.data['modules'].iteritems(),
+            self.domain.data['modules'].items(),
             key=lambda x: x[0].lower()
         )
         # sort out collapsable modules
@@ -992,7 +992,7 @@ class FortranModuleIndex(Index):
         collapse = len(modules) - num_toplevels < num_toplevels
 
         # sort by first letter
-        content = sorted(content.iteritems())
+        content = sorted(content.items())
 
         return content, collapse
 
@@ -1002,12 +1002,12 @@ class FortranDomain(Domain):
     name = 'f'
     label = 'Fortran'
     object_types = {
-        'program':      ObjType(l_('program'), 'prog'),
-        'type':         ObjType(l_('type'), 'type'),
-        'variable':     ObjType(l_('variable'), 'var'),
-        'function':     ObjType(l_('function'), 'func'),
-        'subroutine':   ObjType(l_('subroutine'), 'func', 'subr'),
-        'module':       ObjType(l_('module'), 'mod'),
+        'program':      ObjType(_('program'), 'prog'),
+        'type':         ObjType(_('type'), 'type'),
+        'variable':     ObjType(_('variable'), 'var'),
+        'function':     ObjType(_('function'), 'func'),
+        'subroutine':   ObjType(_('subroutine'), 'func', 'subr'),
+        'module':       ObjType(_('module'), 'mod'),
     }
 
     directives = {
@@ -1037,12 +1037,21 @@ class FortranDomain(Domain):
     ]
 
     def clear_doc(self, docname):
+        to_remove = []
         for fullname, (fn, _) in self.data['objects'].items():
             if fn == docname:
-                del self.data['objects'][fullname]
+                to_remove.append(fullname)
+
+        for fullname in to_remove:
+            del self.data['objects'][fullname]
+
+        to_remove = []
         for modname, (fn, _, _, _) in self.data['modules'].items():
             if fn == docname:
-                del self.data['modules'][modname]
+                to_remove.append(modname)
+
+        for modname in to_remove:
+            del self.data['modules'][modname]
 
     def find_obj(self, env, modname, name, role, searchorder=0):
         """
@@ -1134,9 +1143,9 @@ class FortranDomain(Domain):
                                 contnode, name)
 
     def get_objects(self):
-        for modname, info in self.data['modules'].iteritems():
+        for modname, info in self.data['modules'].items():
             yield (modname, modname, 'module', info[0], 'module-' + modname, 0)
-        for refname, (docname, type) in self.data['objects'].iteritems():
+        for refname, (docname, type) in self.data['objects'].items():
             yield (refname, refname, type, docname, refname, 1)
 
 
