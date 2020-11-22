@@ -51,7 +51,7 @@ contains
         implicit none
         type(chfl_cell) :: cell
         integer :: status
-        real(kind=real64), dimension(3) :: angles
+        real(kind=real64) :: angles(3), lengths(3), matrix(3, 3)
 
         call cell%init([12d0, 30d0, 24d0], [90d0, 90d0, 120d0], status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -70,12 +70,35 @@ contains
         CHECK(status == CHFL_SUCCESS)
 
         call cell%free()
+
+        matrix = reshape([                  &
+            12.0, -15.0, 0.0,               &
+            0.0, 25.980762113533164, 0.0,   &
+            0.0, 0.0, 24.0                  &
+        ], shape(matrix))
+        call cell%from_matrix(matrix, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        lengths = cell%lengths(status=status)
+        CHECK(abs(lengths(1) - 12.0) < 1d-12)
+        CHECK(abs(lengths(2) - 30.0) < 1d-6)
+        CHECK(abs(lengths(3) - 24.0) < 1d-12)
+        CHECK(status == CHFL_SUCCESS)
+
+        angles = cell%angles(status=status)
+        CHECK(abs(angles(1) - 90.0) < 1d-12)
+        CHECK(abs(angles(2) - 90.0) < 1d-12)
+        CHECK(abs(angles(3) - 120.0) < 1d-6)
+        CHECK(status == CHFL_SUCCESS)
+
+        call cell%free()
     end subroutine
 
     subroutine test_orthorhombic()
         implicit none
         type(chfl_cell) :: cell
         integer :: status
+        real(kind=real64) :: matrix(3, 3)
 
         call cell%init([2d0, 3d0, 4d0], status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -83,7 +106,23 @@ contains
         CHECK(all(cell%lengths(status=status) == [2.0, 3.0, 4.0]))
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(all(cell%angles( status=status) == [90.0, 90.0, 90.0]))
+        CHECK(all(cell%angles(status=status) == [90.0, 90.0, 90.0]))
+        CHECK(status == CHFL_SUCCESS)
+
+        call cell%free()
+
+        matrix = reshape([  &
+            10, 0, 0,       &
+            0, 12, 0,       &
+            0, 0, 15        &
+        ], shape(matrix))
+        call cell%from_matrix(matrix, status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cell%lengths(status=status) == [10.0, 12.0, 15.0]))
+        CHECK(status == CHFL_SUCCESS)
+
+        CHECK(all(cell%angles(status=status) == [90.0, 90.0, 90.0]))
         CHECK(status == CHFL_SUCCESS)
 
         call cell%free()

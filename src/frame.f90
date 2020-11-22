@@ -40,6 +40,7 @@ module chemfiles_frame
         procedure :: out_of_plane
         procedure :: add_bond
         procedure :: remove_bond
+        procedure :: clear_bonds
         procedure :: add_residue
 
         procedure :: properties_count
@@ -397,6 +398,19 @@ contains
         integer(chfl_status) :: status_tmp
 
         status_tmp = c_chfl_frame_remove_bond(this%unsafe_ptr(), i, j)
+
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end subroutine
+
+    subroutine clear_bonds(this, status)
+        implicit none
+        class(chfl_frame), intent(inout) :: this
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_frame_clear_bonds(this%unsafe_ptr())
 
         if (present(status)) then
             status = status_tmp

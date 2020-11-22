@@ -2,6 +2,7 @@
 ! Copyright (C) 2015-2019 Guillaume Fraux -- BSD licence
 module chemfiles_cell
     use iso_c_binding
+    use iso_fortran_env, only: real64
     use chemfiles_ffi
     implicit none
 
@@ -12,6 +13,7 @@ module chemfiles_cell
     contains
         procedure :: init
         procedure :: copy
+        procedure :: from_matrix
         procedure :: volume
         procedure :: lengths
         procedure :: set_lengths
@@ -46,6 +48,15 @@ contains
 
         call this%unsafe_set_ptr(c_chfl_cell_copy(cell%unsafe_const_ptr()), status)
     end subroutine
+
+    subroutine from_matrix(this, matrix, status)
+        implicit none
+        class(chfl_cell), intent(inout) :: this
+        real(kind=real64), intent(in), target :: matrix(3, 3)
+        integer(chfl_status), intent(out), optional :: status
+
+        call this%unsafe_set_ptr(c_chfl_cell_from_matrix(c_loc(matrix)), status)
+    end subroutine from_matrix
 
     real(kind=c_double) function volume(this, status)
         implicit none

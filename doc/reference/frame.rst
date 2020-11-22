@@ -18,6 +18,7 @@
     :field subroutine resize: :f:func:`chfl_frame%resize`
     :field subroutine add_bond: :f:func:`chfl_frame%add_bond`
     :field subroutine remove_bond: :f:func:`chfl_frame%remove_bond`
+    :field subroutine clear_bonds: :f:func:`chfl_frame%clear_bonds`
     :field subroutine add_residue: :f:func:`chfl_frame%add_residue`
     :field function distance: :f:func:`chfl_frame%distance`
     :field function angle: :f:func:`chfl_frame%angle`
@@ -161,6 +162,14 @@
 
     :argument integer i: atomic index of the first atom
     :argument integer j: atomic index of the second atom
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_frame%clear_bonds([status])
+
+    Remove all bonds in this frame.
+
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
