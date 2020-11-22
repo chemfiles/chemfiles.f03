@@ -8,6 +8,9 @@
     read and/or write :f:type:`chfl_frame`.
 
     :field subroutine open: :f:func:`chfl_trajectory%open`
+    :field subroutine memory_reader: :f:func:`chfl_trajectory%memory_reader`
+    :field subroutine memory_writer: :f:func:`chfl_trajectory%memory_writer`
+    :field subroutine memory_buffer: :f:func:`chfl_trajectory%memory_buffer`
     :field function path: :f:func:`chfl_trajectory%path`
     :field function nsteps: :f:func:`chfl_trajectory%nsteps`
     :field subroutine read: :f:func:`chfl_trajectory%read`
@@ -32,6 +35,45 @@
     :argument character(len=\*) path: path to the trajectory file
     :argument character mode: opening mode
     :optional character(len=\*) format: format to use to read and write to the file
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_trajectory%memory_reader(data, format, [status])
+
+    Read the ``data`` memory buffer as though it were a formatted file.
+    The ``format`` parameter is required and may contain a compression method.
+
+    This subroutine allocate memory which must be released with
+    :f:func:`chfl_trajectory%close`.
+
+    :argument character(len=\*) data: memory to read
+    :argument character(len=\*) format: format uses to read the buffer
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_trajectory%memory_writer(format, [status])
+
+    Write to a memory buffer as though it were a formatted file
+
+    The ``format`` parameter is required. To retrieve the memory written to by
+    the :f:type:`chfl_trajectory`, use :f:type:`chfl_trajectory%memory_buffer`.
+
+    This subroutine allocate memory which must be released with
+    :f:func:`chfl_trajectory%close`.
+
+    :argument character(len=\*) format: format used to write to the file
+    :optional integer(chfl_status) status: status code of the operation. If it
+        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
+        more about the error.
+
+.. f:subroutine:: chfl_trajectory%memory_buffer(buffer, [status])
+
+    Obtain the memory buffer written to by the :f:type:`chfl_trajectory`.
+
+    :argument character(len=:) buffer [allocatable]: buffer to fill with the
+        data written to this trajectory
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
