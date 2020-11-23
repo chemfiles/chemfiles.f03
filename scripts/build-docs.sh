@@ -1,12 +1,11 @@
 #!/bin/bash -xe
 
 # Install doc dependencies
-cd $TRAVIS_BUILD_DIR
 pip install --user -r doc/requirements.txt
-export PATH=$PATH:$HOME/Library/Python/2.7/bin/
+export PATH=$PATH:$HOME/.local/bin
 
 # Get previous documentation
-git clone https://github.com/$TRAVIS_REPO_SLUG --branch gh-pages gh-pages
+git clone https://github.com/$GITHUB_REPOSITORY --branch gh-pages gh-pages
 rm -rf gh-pages/.git
 
 # Build documentation
@@ -18,8 +17,10 @@ shopt -s extglob
 cd _build/html/_static/bootswatch-* && rm -rf !(flatly) && cd -
 cd ..
 
-if [[ "$TRAVIS_TAG" != "" ]]; then
-    mv doc/_build/html/ gh-pages/$TRAVIS_TAG
+REF_KIND=$(echo $GITHUB_REF | cut -d / -f2)
+if [[ "$REF_KIND" == "tags" ]]; then
+    TAG=${GITHUB_REF#refs/tags/}
+    mv doc/_build/html/ gh-pages/$TAG
 else
     rm -rf gh-pages/latest
     mv doc/_build/html/ gh-pages/latest
