@@ -1,7 +1,8 @@
-include(CheckFortranCompilerFlag)
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/chemfiles/cmake/CheckCompilerFlags")
+include(CheckCompilerFlag)
 
 macro(set_fortran_debug_flag_if_possible _flag_)
-    CHECK_Fortran_COMPILER_FLAG("${_flag_}" FC_SUPPORTS${_flag_})
+    CHECK_COMPILER_FLAG(Fortran "${_flag_}" FC_SUPPORTS${_flag_})
     if(FC_SUPPORTS${_flag_})
         set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} ${_flag_}")
     endif()
@@ -29,6 +30,3 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "PGI")
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Mstandard -Mallocatable=03")
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Mfree")
 endif()
-
-# include(CheckFortranSourceCompiles)
-# check_fortran_source_compiles("program foo\nend program")

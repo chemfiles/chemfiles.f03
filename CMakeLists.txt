@@ -48,7 +48,7 @@ set_property(TARGET chemfilesf03 PROPERTY SOVERSION ${CHEMFILES_VERSION})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chemfiles.mod DESTINATION include)
 install(TARGETS chemfilesf03 DESTINATION lib)
 
-CHECK_Fortran_COMPILER_FLAG("-Wno-compare-reals" FC_SUPPORTS_NO_COMPARE_REAL)
+CHECK_COMPILER_FLAG(Fortran "-Wno-compare-reals" FC_SUPPORTS_NO_COMPARE_REAL)
 
 if(${CHFL_CODE_COVERAGE})
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fprofile-arcs -ftest-coverage -O0")
