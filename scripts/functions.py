@@ -41,14 +41,16 @@ def all_functions():
                         procedure = procedure.strip()
                         functions.append(current_type + "%" + procedure)
 
-    with open(os.path.join(ROOT, "src", "chemfiles.f90")) as fd:
-        for line in fd:
-            if "function" in line or "subroutine" in line:
-                if 'end' in line or "!" in line:
-                    continue
-                name = line.split()[1].split('(')[0]
-                if "internal" in name or name == 'chfl_warning_callback':
-                    continue
-                functions.append(name)
+    FREE_FUNCTIONS_FILES = ["misc.f90", "chemfiles.f90"]
+    for path in FREE_FUNCTIONS_FILES:
+        with open(os.path.join(ROOT, "src", path)) as fd:
+            for line in fd:
+                if "function" in line or "subroutine" in line:
+                    if "end" in line or "!" in line:
+                        continue
+                    name = line.split()[1].split("(")[0]
+                    if "internal" in name or name == "chfl_warning_callback":
+                        continue
+                    functions.append(name)
 
     return functions
