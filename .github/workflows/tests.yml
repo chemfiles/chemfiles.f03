@@ -57,7 +57,6 @@ jobs:
         run: |
           ./scripts/check-tests.py
           ./scripts/check-docs.py
-          ./scripts/build-docs.sh
       - name: upload coverage
         if: matrix.os == 'ubuntu-16.04'
         run: codecov --gcov-exec=gcov-4.9
