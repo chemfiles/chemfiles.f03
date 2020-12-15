@@ -123,7 +123,7 @@ contains
             metadata(i)%residues = c_metadata(i)%residues
         end do
 
-        call c_free(ptr)
+        call c_chfl_free(ptr)
     end subroutine
 
     subroutine internal_warning_wrapper(message) bind(C)
