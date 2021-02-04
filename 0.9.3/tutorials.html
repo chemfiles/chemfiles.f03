@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tutorials &#8212; Fortran interface to chemfiles 0.9.3
+ documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fortran interface reference" href="reference/index.html" />
+    <link rel="prev" title="Fortran interface to chemfiles" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.9</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/misc.html">Miscelaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: Fortran interface to chemfiles"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Fortran inter...</span>
+    </a>
+  </li>
+  <li>
+    <a href="reference/index.html" title="Next Chapter: Fortran interface reference"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Fortran inter... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#read-a-single-frame">Read a single frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-a-structure">Generating a structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-selections">Using selections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/misc.html">Miscelaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
+<p>This section present some hand-on tutorials to the chemfiles Fortran API. These
+tutorial do not check for errors. When using chemfiles you might want to check
+for error using the <code class="docutils literal notranslate"><span class="pre">status</span></code> parameter that all functions take.</p>
+<p>All the code here is under the <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">CC-0 Universal Licence</a> which means that you
+are free to do whatever you want with it (<em>i.e.</em> it is Public Domain code)</p>
+<div class="section" id="read-a-single-frame">
+<h2>Read a single frame<a class="headerlink" href="#read-a-single-frame" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorials we will read a frame from a trajectory, and print the indexes
+of all the atom in the half-space <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">5</span></code>.</p>
+<p>We start by <code class="docutils literal notranslate"><span class="pre">use``ing</span> <span class="pre">the</span> <span class="pre">modules</span> <span class="pre">we</span> <span class="pre">will</span> <span class="pre">need:</span> <span class="pre">``chemfiles</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">iso_fortran_env</span></code>.  <code class="docutils literal notranslate"><span class="pre">iso_fortran_env</span></code> provides fixed width types that are
+very usefull when using a C++ library like chemfiles from Fortran. Here, we only
+need 64-bits integers and real.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">int64</span><span class="p">,</span> <span class="n">real64</span>
+<span class="k">use </span><span class="n">chemfiles</span>
+<span class="k">implicit none</span>
+</pre></div>
+</div>
+<p>We can then declare all the variables we will need. All chemfiles specific types
+are <em>user defined type</em> that should be declared with <code class="docutils literal notranslate"><span class="pre">type(chfl_xxx)</span></code>. In this
+example we will also need a few other values: an array for positions and an
+array for the indexes of atoms with <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">5</span></code>. The positions array is a pointer
+because we will not allocate memory for it. Instead we will directly access some
+memory inside chemfiles internal data structures.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="k">file</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+<span class="kt">real</span><span class="p">(</span><span class="n">real64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:,</span> <span class="p">:),</span> <span class="k">pointer</span> <span class="kd">::</span> <span class="n">positions</span>
+<span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">less_than_five</span>
+</pre></div>
+</div>
+<p>Then we open a <a class="reference internal" href="reference/trajectory.html#f%_%chfl_trajectory" title="f%_%chfl_trajectory"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory</span></code></a> in read (<code class="docutils literal notranslate"><span class="pre">'r'</span></code>) mode and read the
+first frame.  We need to initialize memory for the <a class="reference internal" href="reference/frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a> before
+calling <a class="reference internal" href="reference/trajectory.html#f%chfl_trajectory%read" title="f%chfl_trajectory%read"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%read()</span></code></a>.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call file</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;filename.xyz&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+<span class="k">call file</span><span class="p">%</span><span class="k">read</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now and get the positions of the atoms and the number of atoms in the
+frame with the <a class="reference internal" href="reference/frame.html#f%chfl_frame%positions" title="f%chfl_frame%positions"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_frame%positions()</span></code></a> subroutine, as well as the number
+of atoms in the frame.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="n">positions</span> <span class="o">=&gt;</span> <span class="n">frame</span><span class="p">%</span><span class="n">positions</span><span class="p">()</span>
+<span class="n">natoms</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Knowning the total number of atoms in the frame, we can allocate memory to store
+the indices of the atoms with <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">5</span></code>:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">allocate</span><span class="p">(</span><span class="n">less_than_five</span><span class="p">(</span><span class="n">natoms</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Iterating through the atoms in the frame, we get the ones matching our
+condition. We need to track the number of <code class="docutils literal notranslate"><span class="pre">matched</span></code> atoms to know where to add
+them in the <code class="docutils literal notranslate"><span class="pre">less_than_five</span></code> array.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="n">matched</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">natoms</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">positions</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="p">.</span><span class="n">lt</span><span class="p">.</span> <span class="mi">5</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">less_than_five</span><span class="p">(</span><span class="n">matched</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="n">matched</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">end if</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+<p>At the end we can print our results</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="s2">&quot;Atoms with x &lt; 5:&quot;</span>
+<span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">matched</span>
+    <span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="s2">&quot;  - &quot;</span><span class="p">,</span> <span class="n">less_than_five</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+<p>And free all allocated memory. We don’t need to free <code class="docutils literal notranslate"><span class="pre">positions</span></code>, as it points
+into memory allocated and controlled by the frame.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">deallocate</span><span class="p">(</span><span class="n">less_than_five</span><span class="p">)</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+<span class="k">call file</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<details><summary><a>Click here to see the whole program</a></summary><div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">program </span><span class="n">indexes</span>
+    <span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">int64</span><span class="p">,</span> <span class="n">real64</span>
+    <span class="k">use </span><span class="n">chemfiles</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="k">file</span>
+<span class="k">    type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">real64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:,</span> <span class="p">:),</span> <span class="k">pointer</span> <span class="kd">::</span> <span class="n">positions</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">less_than_five</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">natoms</span>
+    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">matched</span>
+
+    <span class="k">call file</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;filename.xyz&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+    <span class="k">call file</span><span class="p">%</span><span class="k">read</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="n">positions</span> <span class="o">=&gt;</span> <span class="n">frame</span><span class="p">%</span><span class="n">positions</span><span class="p">()</span>
+    <span class="n">natoms</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">allocate</span><span class="p">(</span><span class="n">less_than_five</span><span class="p">(</span><span class="n">natoms</span><span class="p">))</span>
+
+    <span class="n">matched</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">natoms</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">positions</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="p">.</span><span class="n">lt</span><span class="p">.</span> <span class="mi">5</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">            </span><span class="n">less_than_five</span><span class="p">(</span><span class="n">matched</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">matched</span> <span class="o">=</span> <span class="n">matched</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">end if</span>
+<span class="k">    end do</span>
+
+<span class="k">    print</span><span class="o">*</span><span class="p">,</span> <span class="s2">&quot;Atoms with x &lt; 5:&quot;</span>
+    <span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">matched</span>
+        <span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="s2">&quot;  - &quot;</span><span class="p">,</span> <span class="n">less_than_five</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end do</span>
+
+<span class="k">    deallocate</span><span class="p">(</span><span class="n">less_than_five</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call file</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+<span class="k">end program</span>
+</pre></div>
+</div>
+</details><p>For more information about reading frame in a trajectory, see the following
+functions:</p>
+<ul class="simple">
+<li><a class="reference internal" href="reference/trajectory.html#f%chfl_trajectory%nsteps" title="f%chfl_trajectory%nsteps"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%nsteps()</span></code></a> to know when to stop reading</li>
+<li><a class="reference internal" href="reference/trajectory.html#f%chfl_trajectory%read_step" title="f%chfl_trajectory%read_step"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%read_step()</span></code></a> to directlty read a given step.</li>
+<li><a class="reference internal" href="reference/trajectory.html#f%chfl_trajectory%set_cell" title="f%chfl_trajectory%set_cell"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%set_cell()</span></code></a> and <a class="reference internal" href="reference/trajectory.html#f%chfl_trajectory%set_topology" title="f%chfl_trajectory%set_topology"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%set_topology()</span></code></a>
+to specify an unit cell or a topology for all frames in a trajectory.</li>
+</ul>
+</div>
+<div class="section" id="generating-a-structure">
+<h2>Generating a structure<a class="headerlink" href="#generating-a-structure" title="Permalink to this headline">¶</a></h2>
+<p>Now that we know how to read frames from a trajectory, let’s try to create a new
+structure and write it to a file. As previsouly, we start by <code class="docutils literal notranslate"><span class="pre">use``ing</span> <span class="pre">the</span>
+<span class="pre">chemfiles</span> <span class="pre">and</span> <span class="pre">``iso_fortran_env</span></code> modules:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">int64</span><span class="p">,</span> <span class="n">real64</span>
+<span class="k">use </span><span class="n">chemfiles</span>
+<span class="k">implicit none</span>
+</pre></div>
+</div>
+<p>Again, we declare everything we will need: a topology, some atoms, a frame, a
+cell and a trajectory.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">chfl_topology</span><span class="p">)</span> <span class="kd">::</span> <span class="n">topology</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_atom</span><span class="p">)</span> <span class="kd">::</span> <span class="n">O</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">C</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_cell</span><span class="p">)</span> <span class="kd">::</span> <span class="n">cell</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="n">trajectory</span>
+<span class="kt">real</span><span class="p">(</span><span class="n">real64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:,</span> <span class="p">:),</span> <span class="k">pointer</span> <span class="kd">::</span> <span class="n">positions</span>
+</pre></div>
+</div>
+<p>Everything starts with a <a class="reference internal" href="reference/topology.html#f%_%chfl_topology" title="f%_%chfl_topology"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_topology</span></code></a>. This is the type that defines
+the atoms and the connectivity in a system. Here, we initialize three
+<a class="reference internal" href="reference/atom.html#f%_%chfl_atom" title="f%_%chfl_atom"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_atom</span></code></a> and add them to the topology.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">H</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">O</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;O&quot;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">C</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+<span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+<span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">)</span>
+<span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then we can add bonds between these atoms. It is worth noting two things here:
+first the atomic number are converted to <code class="docutils literal notranslate"><span class="pre">int64</span></code> before passing them to the
+function (one could also change the default size of integers with a global
+compiler flag). Second, the atomic numbers starts at 0, not 1. This might be
+source of confusion when using chemfiles, as indexes usually start at 1 in
+Fortran.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+<span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can then create a <a class="reference internal" href="reference/frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a> and set its topology. We free the
+topology right after, because we no longer need it.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">resize</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">set_topology</span><span class="p">(</span><span class="n">topology</span><span class="p">)</span>
+<span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once we set the topology, we can set the positions of the atoms. Notice how the
+indexes starts at 1 here, as we are using a standard fortran array.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="n">positions</span> <span class="o">=&gt;</span> <span class="n">frame</span><span class="p">%</span><span class="n">positions</span><span class="p">()</span>
+<span class="n">positions</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+<span class="n">positions</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+<span class="n">positions</span><span class="p">(:,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">1</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Another possibility is to directly add atoms and bonds to the frame. Here we
+define a second molecule representing carbon dioxyde.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Finally, we can set the <a class="reference internal" href="reference/cell.html#f%_%chfl_cell" title="f%_%chfl_cell"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_cell</span></code></a> associated with this frame. We
+also free the cell memory, as it is no longer needed.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">cell</span><span class="p">%</span><span class="n">init</span><span class="p">([</span><span class="mi">10</span><span class="n">d0</span><span class="p">,</span> <span class="mi">10</span><span class="n">d0</span><span class="p">,</span> <span class="mi">10</span><span class="n">d0</span><span class="p">])</span>
+<span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">set_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+<span class="k">call </span><span class="n">cell</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now that our frame is constructed, it is time to write it to a file. For that,
+we open a trajectory in write (<code class="docutils literal notranslate"><span class="pre">'w'</span></code>) mode, and write to it.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;water-co2.pdb&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And free all remaining memory with the right functions.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+<span class="k">call </span><span class="n">C</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+<span class="k">call </span><span class="n">H</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+<span class="k">call </span><span class="n">O</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+</pre></div>
+</div>
+<details><summary><a>Click here to see the whole program</a></summary><div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">program </span><span class="n">generate</span>
+    <span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">int64</span><span class="p">,</span> <span class="n">real64</span>
+    <span class="k">use </span><span class="n">chemfiles</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    type</span><span class="p">(</span><span class="n">chfl_topology</span><span class="p">)</span> <span class="kd">::</span> <span class="n">topology</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_atom</span><span class="p">)</span> <span class="kd">::</span> <span class="n">O</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">C</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_cell</span><span class="p">)</span> <span class="kd">::</span> <span class="n">cell</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="n">trajectory</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">real64</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(:,</span> <span class="p">:),</span> <span class="k">pointer</span> <span class="kd">::</span> <span class="n">positions</span>
+
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">H</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">O</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;O&quot;</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">C</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">resize</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">set_topology</span><span class="p">(</span><span class="n">topology</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">topology</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+
+    <span class="n">positions</span> <span class="o">=&gt;</span> <span class="n">frame</span><span class="p">%</span><span class="n">positions</span><span class="p">()</span>
+    <span class="n">positions</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+    <span class="n">positions</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+    <span class="n">positions</span><span class="p">(:,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">1</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">]</span>
+
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_atom</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">])</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">add_bond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">int64</span><span class="p">))</span>
+
+    <span class="k">call </span><span class="n">cell</span><span class="p">%</span><span class="n">init</span><span class="p">([</span><span class="mi">10</span><span class="n">d0</span><span class="p">,</span> <span class="mi">10</span><span class="n">d0</span><span class="p">,</span> <span class="mi">10</span><span class="n">d0</span><span class="p">])</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">set_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">cell</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+
+    <span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;water-co2.pdb&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">trajectory</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">C</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">H</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">O</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+<span class="k">end program</span>
+</pre></div>
+</div>
+</details></div>
+<div class="section" id="using-selections">
+<h2>Using selections<a class="headerlink" href="#using-selections" title="Permalink to this headline">¶</a></h2>
+<p>Now that we know how to read and write frame from trajectories, how about we do
+a bit a filtering? In this tutorial, we will read all the frames from a file,
+and use <a class="reference external" href="http://chemfiles.org/chemfiles/latest/selections.html">selections</a> to filter which atoms we will write back to another file.
+This example will also show how chemfiles can be used to convert from a file
+format to another one.</p>
+<p>We start by declaring all the variables we need: two trajectories, a frame, a
+selection and an array of matches.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="n">input</span><span class="p">,</span> <span class="n">output</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_selection</span><span class="p">)</span> <span class="kd">::</span> <span class="n">selection</span>
+<span class="k">type</span><span class="p">(</span><span class="n">chfl_match</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">dimension</span><span class="p">(:)</span> <span class="kd">::</span> <span class="n">matches</span>
+<span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">dimension</span><span class="p">(:)</span> <span class="kd">::</span> <span class="n">to_remove</span>
+<span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="nb">count</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">step</span>
+</pre></div>
+</div>
+<p>Then we can open the two trajectories we need.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">input</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;input.arc&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">output</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;output.pdb&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We create a <a class="reference internal" href="reference/frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a> and a <a class="reference internal" href="reference/selection.html#f%_%chfl_selection" title="f%_%chfl_selection"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_selection</span></code></a> object to
+filter the atoms we want to keep.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+<span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;name Zn or name N&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then we can iterate over the frames in the trajectory</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">do </span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">input</span><span class="p">%</span><span class="n">nsteps</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">input</span><span class="p">%</span><span class="k">read</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From here, we need to use the selection to get the atoms we want to remove. This
+is a two steps process: first we evaluate the selection and get the number of
+matches</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="nb">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">evaluate</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Second we allocate some memory and get all the matches (represented as
+<a class="reference internal" href="reference/selection.html#f%_%chfl_match" title="f%_%chfl_match"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_match</span></code></a>):</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">allocate</span><span class="p">(</span><span class="n">matches</span><span class="p">(</span><span class="nb">count</span><span class="p">))</span>
+<span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">matches</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can get the index of atoms in a <cite>to_remove</cite> array</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">allocate</span><span class="p">(</span><span class="n">to_remove</span><span class="p">(</span><span class="nb">count</span><span class="p">))</span>
+<span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">count</span>
+<span class="nb">    </span><span class="n">to_remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">matches</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">atoms</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+<p>In order to remove the atoms from the frame, we need to sort <code class="docutils literal notranslate"><span class="pre">to_remove</span></code> in
+descending order: removing the atom at index i will shift the index of all the
+atoms after i. So we need start from the end and work toward the start of the
+frame.</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">sort</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span>
+<span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="nb">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">remove</span><span class="p">(</span><span class="n">to_remove</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+<p>Finally, we can write the cleaned frame to the output file, and free the memory
+we allocated:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">output</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="k">deallocate</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">to_remove</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sort</span></code> function we used to sort the matches is defined as follow:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">sort</span><span class="p">(</span><span class="k">array</span><span class="p">)</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="k">array</span><span class="p">(:)</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">tmp</span>
+    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="nb">min</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">                </span><span class="nb">min</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">end if</span>
+<span class="k">        end do</span>
+<span class="k">        </span><span class="n">tmp</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="nb">min</span>
+<span class="nb">        </span><span class="k">array</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">=</span> <span class="n">tmp</span>
+    <span class="k">end do</span>
+<span class="k">end subroutine</span>
+</pre></div>
+</div>
+<details><summary><a>Click here to see the whole program</a></summary><div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">program select</span>
+<span class="k">    use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">int64</span>
+    <span class="k">use </span><span class="n">chemfiles</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    type</span><span class="p">(</span><span class="n">chfl_trajectory</span><span class="p">)</span> <span class="kd">::</span> <span class="n">input</span><span class="p">,</span> <span class="n">output</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_frame</span><span class="p">)</span> <span class="kd">::</span> <span class="n">frame</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_selection</span><span class="p">)</span> <span class="kd">::</span> <span class="n">selection</span>
+    <span class="k">type</span><span class="p">(</span><span class="n">chfl_match</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">dimension</span><span class="p">(:)</span> <span class="kd">::</span> <span class="n">matches</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">dimension</span><span class="p">(:)</span> <span class="kd">::</span> <span class="n">to_remove</span>
+    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="nb">count</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">step</span>
+
+    <span class="k">call </span><span class="n">input</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;input.arc&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">call </span><span class="n">output</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="s2">&quot;output.pdb&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;name Zn or name N&quot;</span><span class="p">)</span>
+
+    <span class="k">do </span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">input</span><span class="p">%</span><span class="n">nsteps</span><span class="p">()</span>
+        <span class="k">call </span><span class="n">input</span><span class="p">%</span><span class="k">read</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+        <span class="nb">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">evaluate</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">count</span><span class="p">)</span>
+        <span class="k">allocate</span><span class="p">(</span><span class="n">matches</span><span class="p">(</span><span class="nb">count</span><span class="p">))</span>
+        <span class="k">call </span><span class="n">selection</span><span class="p">%</span><span class="n">matches</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+
+        <span class="k">allocate</span><span class="p">(</span><span class="n">to_remove</span><span class="p">(</span><span class="nb">count</span><span class="p">))</span>
+        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">count</span>
+<span class="nb">            </span><span class="n">to_remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">matches</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">atoms</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">end do</span>
+
+<span class="k">        call </span><span class="n">sort</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span>
+        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="nb">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">remove</span><span class="p">(</span><span class="n">to_remove</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">end do</span>
+
+<span class="k">        call </span><span class="n">output</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="k">deallocate</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">to_remove</span><span class="p">)</span>
+    <span class="k">end do</span>
+
+<span class="k">    call </span><span class="n">selection</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">frame</span><span class="p">%</span><span class="n">free</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">input</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+    <span class="k">call </span><span class="n">output</span><span class="p">%</span><span class="k">close</span><span class="p">()</span>
+
+<span class="k">contains</span>
+    <span class="c">! A very simple and ineficient sorting routine</span>
+    <span class="k">subroutine </span><span class="n">sort</span><span class="p">(</span><span class="k">array</span><span class="p">)</span>
+        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="k">array</span><span class="p">(:)</span>
+        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">tmp</span>
+        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">                    </span><span class="nb">min</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">pos</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">end if</span>
+<span class="k">            end do</span>
+<span class="k">            </span><span class="n">tmp</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="nb">min</span>
+<span class="nb">            </span><span class="k">array</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">=</span> <span class="n">tmp</span>
+        <span class="k">end do</span>
+<span class="k">    end subroutine</span>
+<span class="k">end program</span>
+</pre></div>
+</div>
+</details></div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

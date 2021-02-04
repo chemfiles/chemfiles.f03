@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Fortran interface to chemfiles &#8212; Fortran interface to chemfiles 0.7.4
+ documentation</title>
+    
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage examples" href="examples.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Fortran interface reference</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Fortran interface to chemfiles</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#user-documentation">User documentation</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="examples.html" title="Next Chapter: Usage examples"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Usage examples &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/index.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="fortran-interface-to-chemfiles">
+<h1>Fortran interface to chemfiles<a class="headerlink" href="#fortran-interface-to-chemfiles" title="Permalink to this headline">¶</a></h1>
+<p>This is the documentation for the Fortran 2003 interface to the <a class="reference external" href="https://github.com/chemfiles/chemfiles">chemfiles</a> library.
+This Fortran interface to chemfiles is built in an object-oriented fashion, using the
+C interface of chemfiles and the <code class="docutils literal"><span class="pre">iso_c_binding</span></code> intrisic module.</p>
+<p>All the functionalities are in the <code class="docutils literal"><span class="pre">chemfiles</span></code> module, which should be used in
+all the programs using chemfiles. The <code class="docutils literal"><span class="pre">iso_fortran_env</span></code> instrisic module can also
+be usefull to set the kind of real and doubles where needed.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The fortran interface have the same dependencies as the main C++ library, which
+are documented <a class="reference external" href="http://chemfiles.org/chemfiles/latest/installation.html#core-library-dependencies">here</a>. It also need a modern fortran
+compiler. <code class="docutils literal"><span class="pre">gfortran</span></code> (4.9) and <code class="docutils literal"><span class="pre">ifort</span></code> (14) are known to work. If you manage
+to build it with another compiler, please tell me so that I can add it here.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># Get the sources:</span>
+git clone --recursive https://github.com/chemfiles/chemfiles.f03
+<span class="nb">cd</span> chemfiles.f03
+mkdir build
+<span class="c1"># Configure for installation in PREFIX</span>
+cmake -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;PREFIX&gt; ..
+<span class="c1"># Build</span>
+make
+<span class="c1"># run tests (optional, but recommended)</span>
+ctest
+<span class="c1"># install to `PREFIX`</span>
+make install
+</pre></div>
+</div>
+<p>Other options are available and documented with the <a class="reference external" href="http://chemfiles.org/chemfiles/latest/installation.html#build-steps">main C++ library</a>.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To compile your own code using <code class="docutils literal"><span class="pre">chemfiles</span></code>, you need to <code class="docutils literal"><span class="pre">use</span> <span class="pre">chemfiles</span></code> in
+your program, and add the <code class="docutils literal"><span class="pre">chemfilesf03</span></code> and <code class="docutils literal"><span class="pre">chemfiles</span></code> libraries to the
+linker arguments. On GNU/Linux and OS X, this is done by the <code class="docutils literal"><span class="pre">-lchemfilesf03</span>
+<span class="pre">-lchemfiles</span></code> flags. If you want to compile <code class="docutils literal"><span class="pre">main.f90</span></code> with gfortran, you need
+to run</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>gfortran main.f90 -o main -lchemfilesf03 -lchemfiles
+</pre></div>
+</div>
+</div>
+<div class="section" id="user-documentation">
+<h2>User documentation<a class="headerlink" href="#user-documentation" title="Permalink to this headline">¶</a></h2>
+<p>This section contains example of how to use chemfiles, and the complete interface
+reference for all the types and subroutines in chemfiles.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#read-a-single-frame-indexes-f90">Read a single frame (indexes.f90)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#read-multiple-frames-rmsd-f90">Read Multiple frames (rmsd.f90)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#write-frames-convert-f90">Write frames (convert.f90)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Fortran interface reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#conventions">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#error-and-logging-functions">Error and logging functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-trajectory-type"><code class="docutils literal"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-frame-type"><code class="docutils literal"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-cell-type"><code class="docutils literal"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-topology-type"><code class="docutils literal"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-residue-type"><code class="docutils literal"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-atom-type"><code class="docutils literal"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#chfl-selection-type"><code class="docutils literal"><span class="pre">chfl_selection</span></code> type</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Guillaume Fraux — MPLv2 licence.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>chfl_atom type &#8212; Fortran interface to chemfiles 0.8.0
+ documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chfl_selection type" href="selection.html" />
+    <link rel="prev" title="chfl_residue type" href="residue.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="residue.html" title="Previous Chapter: chfl_residue type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_residue type</span>
+    </a>
+  </li>
+  <li>
+    <a href="selection.html" title="Next Chapter: chfl_selection type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_selection type &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/reference/atom.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+</ul>
+
+  <li>
+    <a href="residue.html" title="Previous Chapter: chfl_residue type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_residue type</span>
+    </a>
+  </li>
+  <li>
+    <a href="selection.html" title="Next Chapter: chfl_selection type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_selection type &raquo;</span>
+    </a>
+  </li>
+<div id="sourcelink">
+  <a href="../_sources/reference/atom.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="col-md-9 content">
+      
+  <div class="section" id="chfl-atom-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type<a class="headerlink" href="#chfl-atom-type" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="f%_%chfl_atom">
+<em class="property">type  </em><code class="descname">chfl_atom</code><a class="headerlink" href="#f%_%chfl_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#f%_%chfl_atom" title="f%_%chfl_atom"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_atom</span></code></a> is a particle in the current <a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a>. It stores the
+following atomic properties:</p>
+<ul class="simple">
+<li>atom name;</li>
+<li>atom type;</li>
+<li>atom mass;</li>
+<li>atom charge.</li>
+</ul>
+<p>The atom name is usually an unique identifier (<code class="docutils literal notranslate"><span class="pre">H1</span></code>, <code class="docutils literal notranslate"><span class="pre">C_a</span></code>) while the
+atom type will be shared between all particles of the same type: <code class="docutils literal notranslate"><span class="pre">H</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Ow</span></code>, <code class="docutils literal notranslate"><span class="pre">CH3</span></code>.</p>
+<p>The initialization routine for <a class="reference internal" href="#f%_%chfl_atom" title="f%_%chfl_atom"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_atom</span></code></a> are:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#f%chfl_atom%init" title="f%chfl_atom%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%init()</span></code></a>;</li>
+<li><a class="reference internal" href="#f%chfl_atom%from_frame" title="f%chfl_atom%from_frame"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%from_frame()</span></code></a>;</li>
+<li><a class="reference internal" href="#f%chfl_atom%from_topology" title="f%chfl_atom%from_topology"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%from_topology()</span></code></a>.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type fields:</th><td class="field-body"><ul class="first last simple">
+<li><code class="descname">% </code><code class="descname">init</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%init" title="f%chfl_atom%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%init()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">copy</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%copy" title="f%chfl_atom%copy"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%copy()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">from_frame</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%from_frame" title="f%chfl_atom%from_frame"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%from_frame()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">from_topology</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%from_topology" title="f%chfl_atom%from_topology"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%from_topology()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">mass</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%mass" title="f%chfl_atom%mass"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%mass()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">set_mass</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_mass" title="f%chfl_atom%set_mass"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_mass()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">charge</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%charge" title="f%chfl_atom%charge"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%charge()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">set_charge</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_charge" title="f%chfl_atom%set_charge"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_charge()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">type</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%type" title="f%chfl_atom%type"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%type()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">set_type</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_type" title="f%chfl_atom%set_type"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_type()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">name</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%name" title="f%chfl_atom%name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%name()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">set_name</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_name" title="f%chfl_atom%set_name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_name()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">full_name</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%full_name" title="f%chfl_atom%full_name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%full_name()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">vdw_radius</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%vdw_radius" title="f%chfl_atom%vdw_radius"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%vdw_radius()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">covalent_radius</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%covalent_radius" title="f%chfl_atom%covalent_radius"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%covalent_radius()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">atomic_number</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%atomic_number" title="f%chfl_atom%atomic_number"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%atomic_number()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">set_property</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_property" title="f%chfl_atom%set_property"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_property()</span></code></a></li>
+<li><code class="descname">% </code><code class="descname">free</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%free" title="f%chfl_atom%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%free()</span></code></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%init">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">init</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with the given <code class="docutils literal notranslate"><span class="pre">name</span></code>, and set the atom type to
+<code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>character</strong> (len=*) :: atom name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%copy">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">copy</code><span class="sig-paren">(</span><em>atom</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with a copy of <code class="docutils literal notranslate"><span class="pre">atom</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>atom</strong><em> [</em><a class="reference internal" href="#f%_%chfl_atom" title="f%_%chfl_atom"><em>chfl_atom</em></a><em>]</em> :: atom to copy</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%from_frame">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">from_frame</code><span class="sig-paren">(</span><em>frame</em>, <em>i</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%from_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with a copy the atom at index <code class="docutils literal notranslate"><span class="pre">i</span></code> from a <code class="docutils literal notranslate"><span class="pre">frame</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>frame</strong><em> [</em><a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><em>chfl_frame</em></a><em>]</em> :: frame</li>
+<li><strong>i</strong><em> [</em><em>integer</em><em>]</em> :: atom index in the frame</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%from_topology">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">from_topology</code><span class="sig-paren">(</span><em>topology</em>, <em>i</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%from_topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with a copy the atom at index <code class="docutils literal notranslate"><span class="pre">i</span></code> from a
+<code class="docutils literal notranslate"><span class="pre">topology</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>topology</strong><em> [</em><a class="reference internal" href="topology.html#f%_%chfl_topology" title="f%_%chfl_topology"><em>chfl_topology</em></a><em>]</em> :: topology</li>
+<li><strong>idx</strong><em> [</em><em>integer</em><em>]</em> :: atom index in the topology</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%mass">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">mass</code><span class="sig-paren">(</span><em>mass</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mass of tah atom in <code class="docutils literal notranslate"><span class="pre">mass</span></code>. The mass is in atomic mass units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mass</strong><em> [</em><em>real</em><em>]</em> :: atom mass</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%set_mass">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">set_mass</code><span class="sig-paren">(</span><em>mass</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the mass of the atom to <code class="docutils literal notranslate"><span class="pre">mass</span></code>. The mass should be in atomic mass
+units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mass</strong><em> [</em><em>real</em><em>]</em> :: new atom mass</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%charge">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">charge</code><span class="sig-paren">(</span><em>charge</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the charge of the atom in <code class="docutils literal notranslate"><span class="pre">charge</span></code>. The charge is in number of the
+electron charge <em>e</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>charge</strong><em> [</em><em>real</em><em>]</em> :: The atom charge</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%set_charge">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">set_charge</code><span class="sig-paren">(</span><em>charge</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the charge of the atom to <code class="docutils literal notranslate"><span class="pre">charge</span></code>. The charge should be in number of
+the electron charge <em>e</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>charge</strong><em> [</em><em>real</em><em>]</em> :: new atom charge</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%name">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">name</code><span class="sig-paren">(</span><em>name</em>, <em>buffsize</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name of an atom in the string buffer <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<p>The buffer size must be passed in <code class="docutils literal notranslate"><span class="pre">buffsize</span></code>. This function will truncate
+the name to fit in the buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>character</strong> (len=buffsize) :: string buffer to be filled with
+the atom name</li>
+<li><strong>buffsize</strong><em> [</em><em>integer</em><em>]</em> :: length of the string buffer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%set_name">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the name of an atom to <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>character</strong> (len=*) :: new atom name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%full_name">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">full_name</code><span class="sig-paren">(</span><em>name</em>, <em>buffsize</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%full_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full name of an <code class="docutils literal notranslate"><span class="pre">atom</span></code> from its type in the string buffer
+<code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<p>The buffer size must be passed in <code class="docutils literal notranslate"><span class="pre">buffsize</span></code>. This function will truncate
+the name to fit in the buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>character</strong> (len=buffsize) :: string buffer to be filled with
+the atom full name</li>
+<li><strong>buffsize</strong> :: length of the string buffer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%type">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">type</code><span class="sig-paren">(</span><em>type</em>, <em>buffsize</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the type of an atom in the string buffer <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<p>The buffer size must be passed in <code class="docutils literal notranslate"><span class="pre">buffsize</span></code>. This function will truncate
+the type to fit in the buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>character</strong> (len=buffsize) :: string buffer to be filled with
+the atom type</li>
+<li><strong>buffsize</strong> :: length of the string buffer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%set_type">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">set_type</code><span class="sig-paren">(</span><em>type</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the type of an atom to <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>character</strong> (len=*) :: new atom type</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%vdw_radius">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">vdw_radius</code><span class="sig-paren">(</span><em>radius</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%vdw_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Van der Waals radius of an atom from the atom type in <code class="docutils literal notranslate"><span class="pre">radius</span></code>.</p>
+<p>If the radius in unknown, this function set <code class="docutils literal notranslate"><span class="pre">radius</span></code> to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>radius</strong><em> [</em><em>real</em><em>]</em> :: Van der Waals radius</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%covalent_radius">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">covalent_radius</code><span class="sig-paren">(</span><em>radius</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%covalent_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the covalent radius of an atom from the atom type in <code class="docutils literal notranslate"><span class="pre">radius</span></code>.</p>
+<p>If the radius in unknown, this function set <code class="docutils literal notranslate"><span class="pre">radius</span></code> to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>radius</strong><em> [</em><em>real</em><em>]</em> :: covalent radius</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%atomic_number">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">atomic_number</code><span class="sig-paren">(</span><em>number</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%atomic_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the atomic number of an atom from the atom type in <code class="docutils literal notranslate"><span class="pre">number</span></code>.</p>
+<p>If the atomic number in unknown, this function set <code class="docutils literal notranslate"><span class="pre">number</span></code> to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>number</strong><em> [</em><em>integer</em><em>]</em> :: atomic number</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%set_property">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">set_property</code><span class="sig-paren">(</span><em>name</em>, <em>property</em><span class="optional">[</span>, <em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new <code class="docutils literal notranslate"><span class="pre">property</span></code> with the given <code class="docutils literal notranslate"><span class="pre">name</span></code> to this atom.</p>
+<p>If a property with the same name already exists, this function override the
+existing property with the new one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>character</strong> (len=*) :: property name</li>
+<li><strong>type</strong> (<a class="reference internal" href="property.html#f%_%chfl_property" title="f%_%chfl_property">chfl_property</a>) :: the new property</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Options:</th><td class="field-body"><p class="first last"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_atom%free">
+<em class="property">subroutine  </em><code class="descclassname">chfl_atom%</code><code class="descname">free</code><span class="sig-paren">(</span><span class="optional">[</span><em>status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy an atom, and free the associated memory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options:</th><td class="field-body"><strong>status</strong><em> [</em><em>integer</em><em>,</em><em>optional, kind=chfl_status</em><em>]</em> :: status code of the
+operation. If it is not equal to <code class="docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code>, you can learn more
+about the error by using <code class="docutils literal notranslate"><span class="pre">chfl_last_error</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015-2017, Guillaume Fraux — BSD licence.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
