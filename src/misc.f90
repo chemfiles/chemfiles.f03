@@ -12,7 +12,7 @@ module chemfiles_misc
     public :: chfl_last_error, chfl_clear_errors
     public :: chfl_set_warning_callback
     public :: chfl_add_configuration
-    public :: chfl_formats_list, chfl_format_metadata
+    public :: chfl_formats_list, chfl_format_metadata, chfl_guess_format
 
     ! Global pointer to the callback procedure
     procedure(chfl_warning_callback), pointer :: internal_warning_callback
@@ -144,4 +144,18 @@ contains
             status = status_tmp_
         end if
     end subroutine
+
+    function chfl_guess_format(path, status)
+        implicit none
+        character(len=64) :: chfl_guess_format
+        character(len=*), intent(in) :: path
+        integer(chfl_status), intent(out), optional :: status
+        integer(chfl_status) :: status_tmp
+
+        status_tmp = c_chfl_guess_format(path, chfl_guess_format, int(64, c_int64_t))
+        chfl_guess_format = rm_null_in_str(chfl_guess_format)
+        if (present(status)) then
+            status = status_tmp
+        end if
+    end function
 end module

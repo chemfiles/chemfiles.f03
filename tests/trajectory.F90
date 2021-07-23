@@ -320,7 +320,7 @@ contains
                "O 3 3 3" // EOL // &
                "H 1 1 1" // EOL
 
-        call trajectory%memory_reader(data, "XYZ", status=status)
+        call trajectory%memory_reader(trim(data), "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)

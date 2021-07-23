@@ -67,4 +67,16 @@ function c_chfl_formats_list(metadata, count) bind(C, name="chfl_formats_list")
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
+! Function "chfl_guess_format", at misc.h:93
+function c_chfl_guess_format(path, format, buffsize) bind(C, name="chfl_guess_format")
+    use iso_c_binding
+    import chfl_status
+
+    implicit none
+    integer(kind=chfl_status) :: c_chfl_guess_format
+    character(len=1, kind=c_char), dimension(*), intent(in) :: path
+    character(len=1, kind=c_char), dimension(*) :: format
+    integer(kind=c_int64_t), value :: buffsize
+end function
+
 end interface

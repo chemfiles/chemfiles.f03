@@ -29,7 +29,7 @@ module chemfiles_ffi
     end type
 
     include "generated/enums.f90"
-    include "generated/others.f90"
+    include "generated/misc.f90"
     include "generated/chfl_atom.f90"
     include "generated/chfl_residue.f90"
     include "generated/chfl_topology.f90"

@@ -17,11 +17,11 @@ ERROR = False
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 
 
-VARIABLE_DECLARATION = re.compile("type\((.*?)\) :: (.*)")
-TYPE_BOUND_SUBROUTINE = re.compile("call (.*?)\%(.*?)\(.*status=status\)")
-FREE_SUBROUTINE = re.compile("call (.*?)\%(free|close)\(\)")
-TYPE_BOUND_FUNCTION = re.compile("[\s\(](.*?)\%(.*?)\(.*status=status\)")
-OTHER_FUNCTIONS = re.compile("[=(call)]\s+chfl_(.*?)\(.*\)")
+VARIABLE_DECLARATION = re.compile(r"type\((.*?)\) :: (.*)")
+TYPE_BOUND_SUBROUTINE = re.compile(r"call (.*?)\%(.*?)\(.*status=status\)")
+FREE_SUBROUTINE = re.compile(r"call (.*?)\%(free|close)\(\)")
+TYPE_BOUND_FUNCTION = re.compile(r"[\s\(](.*?)\%(.*?)\(.*status=status\)")
+OTHER_FUNCTIONS = re.compile(r"[=(call)]\s+chfl_(.*?)\(.*\)")
 
 
 def error(message):
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     tests = usage_in_tests()
     for function in functions:
         if function not in tests:
-            error("missing tests for {}".format(function))
+            error(f"missing tests for {function}")
 
     if ERROR:
         sys.exit(1)
