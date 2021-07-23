@@ -1,6 +1,7 @@
 coverage:
   ignore:
     - tests/.*
+    - examples/.*
   status:
     project:
       default:
