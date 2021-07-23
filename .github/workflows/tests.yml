@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-10.15, ubuntu-16.04, ubuntu-18.04]
+        os: [macos-10.15, ubuntu-18.04]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -26,13 +26,6 @@ jobs:
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
           echo "FC=gfortran-9" >> $GITHUB_ENV
-      - name: configure ubuntu-16.04 environnement
-        if: matrix.os == 'ubuntu-16.04'
-        run: |
-          sudo apt install g++-4.9 gfortran-4.9
-          echo "CC=gcc-4.9" >> $GITHUB_ENV
-          echo "CXX=g++-4.9" >> $GITHUB_ENV
-          echo "FC=gfortran-4.9" >> $GITHUB_ENV
       - name: configure ubuntu-18.04 environnement
         if: matrix.os == 'ubuntu-18.04'
         run: |
@@ -44,7 +37,7 @@ jobs:
           mkdir build && cd build
           cmake -DCMAKE_BUILD_TYPE=debug -DCHFL_FORTRAN_BUILD_TESTS=ON ..
       - name: enable coverage
-        if: matrix.os == 'ubuntu-16.04'
+        if: matrix.os == 'ubuntu-18.04'
         run: |
           python -m pip install --upgrade pip
           pip install codecov
@@ -58,5 +51,5 @@ jobs:
           ./scripts/check-tests.py
           ./scripts/check-docs.py
       - name: upload coverage
-        if: matrix.os == 'ubuntu-16.04'
-        run: codecov --gcov-exec=gcov-4.9
+        if: matrix.os == 'ubuntu-18.04'
+        run: codecov --gcov-exec=gcov-9
