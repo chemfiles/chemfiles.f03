@@ -22,6 +22,7 @@ program misc_test
     character(len=1024) :: error
     character(len=1024) :: version
     character(len=1024) :: expected
+    character(len=64) :: format
     type(chfl_format_metadata), dimension(:), allocatable :: metadata
     type(chfl_trajectory) :: trajectory
 
@@ -52,21 +53,29 @@ program misc_test
     call chfl_formats_list(metadata, status=status)
     CHECK(status == CHFL_SUCCESS)
 
-    CHECK(size(metadata) == 21)
-    CHECK(trim(metadata(21)%name) == 'XYZ')
-    CHECK(trim(metadata(21)%extension) == '.xyz')
-    CHECK(trim(metadata(21)%description) == 'XYZ text format')
-    CHECK(trim(metadata(21)%reference) == 'https://openbabel.org/wiki/XYZ')
+    CHECK(size(metadata) == 22)
+    CHECK(trim(metadata(22)%name) == 'XYZ')
+    CHECK(trim(metadata(22)%extension) == '.xyz')
+    CHECK(trim(metadata(22)%description) == 'XYZ text format')
+    CHECK(trim(metadata(22)%reference) == 'https://openbabel.org/wiki/XYZ')
 
-    CHECK(metadata(21)%read .eqv. .true.)
-    CHECK(metadata(21)%write .eqv. .true.)
-    CHECK(metadata(21)%memory .eqv. .true.)
-    CHECK(metadata(21)%positions .eqv. .true.)
-    CHECK(metadata(21)%velocities .eqv. .false.)
-    CHECK(metadata(21)%unit_cell .eqv. .true.)
-    CHECK(metadata(21)%atoms .eqv. .true.)
-    CHECK(metadata(21)%bonds .eqv. .false.)
-    CHECK(metadata(21)%residues .eqv. .false.)
+    CHECK(metadata(22)%read .eqv. .true.)
+    CHECK(metadata(22)%write .eqv. .true.)
+    CHECK(metadata(22)%memory .eqv. .true.)
+    CHECK(metadata(22)%positions .eqv. .true.)
+    CHECK(metadata(22)%velocities .eqv. .false.)
+    CHECK(metadata(22)%unit_cell .eqv. .true.)
+    CHECK(metadata(22)%atoms .eqv. .true.)
+    CHECK(metadata(22)%bonds .eqv. .false.)
+    CHECK(metadata(22)%residues .eqv. .false.)
 
     deallocate(metadata)
+
+    format = chfl_guess_format("file.xyz.gz", status=status)
+    CHECK(status == CHFL_SUCCESS)
+    CHECK(trim(format) == 'XYZ / GZ')
+
+    format = chfl_guess_format("file.nc", status=status)
+    CHECK(status == CHFL_SUCCESS)
+    CHECK(trim(format) == 'Amber NetCDF')
 end program

@@ -35,7 +35,8 @@ module chemfiles
     public :: CHFL_BOND_AMIDE, CHFL_BOND_AROMATIC
     ! Export free functions
     public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
-    public :: chfl_last_error, chfl_clear_errors, chfl_formats_list
+    public :: chfl_last_error, chfl_clear_errors
+    public :: chfl_formats_list, chfl_guess_format
     ! Export others
     public :: CHFL_STRING_LENGTH
 
