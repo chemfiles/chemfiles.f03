@@ -54,8 +54,8 @@ program misc_test
     call chfl_formats_list(metadata, status=status)
     CHECK(status == CHFL_SUCCESS)
 
-    CHECK(size(metadata) == 23)
-    xyz_index = 23
+    CHECK(size(metadata) == 24)
+    xyz_index = 24
     CHECK(trim(metadata(xyz_index)%name) == 'XYZ')
     CHECK(trim(metadata(xyz_index)%extension) == '.xyz')
     CHECK(trim(metadata(xyz_index)%description) == 'XYZ text format')
