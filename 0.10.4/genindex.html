@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Fortran interface to chemfiles 0.10.4
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%add_atom"><strong>add_atom() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/residue.html#f%chfl_residue%add_atom"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+        <li><a href="reference/topology.html#f%chfl_topology%add_atom"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/frame.html#f%chfl_frame%add_bond"><strong>add_bond() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%add_bond"><strong>(fortran subroutine in module chfl_topology)</strong></a>, <a href="reference/topology.html#f%chfl_topology%add_bond"><strong>[1]</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/frame.html#f%chfl_frame%add_residue"><strong>add_residue() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%add_residue"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/frame.html#f%chfl_frame%add_velocities"><strong>add_velocities() (fortran subroutine in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%angle"><strong>angle() (fortran function in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/cell.html#f%chfl_cell%angles"><strong>angles() (fortran function in module chfl_cell)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%angles"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/topology.html#f%chfl_topology%angles_count"><strong>angles_count() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%atom"><strong>atom() (fortran function in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%atom"><strong>(fortran function in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/atom.html#f%chfl_atom%atomic_number"><strong>atomic_number() (fortran function in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/residue.html#f%chfl_residue%atoms"><strong>atoms() (fortran subroutine in module chfl_residue)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%atoms_count"><strong>atoms_count() (fortran function in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/residue.html#f%chfl_residue%atoms_count"><strong>(fortran function in module chfl_residue)</strong></a>
+</li>
+        <li><a href="reference/topology.html#f%chfl_topology%atoms_count"><strong>(fortran function in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/topology.html#f%chfl_topology%bond_order"><strong>bond_order() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%bond_orders"><strong>bond_orders() (fortran subroutine in module chfl_topology)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/topology.html#f%chfl_topology%bonds"><strong>bonds() (fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%bonds_count"><strong>bonds_count() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%chfl_property%bool"><strong>bool() (fortran function in module chfl_property)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%cell"><strong>cell() (fortran function in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%charge"><strong>charge() (fortran function in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_add_configuration"><strong>chfl_add_configuration() (fortran subroutine)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%_%chfl_atom"><strong>chfl_atom (fortran type)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_AMIDE"><strong>CHFL_BOND_AMIDE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_AROMATIC"><strong>CHFL_BOND_AROMATIC (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_DOUBLE"><strong>CHFL_BOND_DOUBLE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%chfl_bond_order"><strong>chfl_bond_order (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_QINTUPLET"><strong>CHFL_BOND_QINTUPLET (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_QUADRUPLE"><strong>CHFL_BOND_QUADRUPLE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_SINGLE"><strong>CHFL_BOND_SINGLE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_TRIPLE"><strong>CHFL_BOND_TRIPLE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%CHFL_BOND_UNKNOWN"><strong>CHFL_BOND_UNKNOWN (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%_%chfl_cell"><strong>chfl_cell (fortran type)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%_%CHFL_CELL_INFINITE"><strong>CHFL_CELL_INFINITE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%_%CHFL_CELL_ORTHORHOMBIC"><strong>CHFL_CELL_ORTHORHOMBIC (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%_%CHFL_CELL_TRICLINIC"><strong>CHFL_CELL_TRICLINIC (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%_%chfl_cellshape"><strong>chfl_cellshape (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_clear_errors"><strong>chfl_clear_errors() (fortran subroutine)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_CONFIGURATION_ERROR"><strong>CHFL_CONFIGURATION_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_CXX_ERROR"><strong>CHFL_CXX_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_FILE_ERROR"><strong>CHFL_FILE_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_FORMAT_ERROR"><strong>CHFL_FORMAT_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_format_metadata"><strong>chfl_format_metadata (fortran type)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_formats_list"><strong>chfl_formats_list() (fortran subroutine)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%_%chfl_frame"><strong>chfl_frame (fortran type)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_GENERIC_ERROR"><strong>CHFL_GENERIC_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_guess_format"><strong>chfl_guess_format() (fortran function)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_last_error"><strong>chfl_last_error() (fortran function)</strong></a>
+</li>
+      <li><a href="reference/selection.html#f%_%chfl_match"><strong>chfl_match (fortran type)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/misc.html#f%_%CHFL_MEMORY_ERROR"><strong>CHFL_MEMORY_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_OUT_OF_BOUNDS"><strong>CHFL_OUT_OF_BOUNDS (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%chfl_property"><strong>chfl_property (fortran type)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%CHFL_PROPERTY_BOOL"><strong>CHFL_PROPERTY_BOOL (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%CHFL_PROPERTY_DOUBLE"><strong>CHFL_PROPERTY_DOUBLE (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_PROPERTY_ERROR"><strong>CHFL_PROPERTY_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%chfl_property_kind"><strong>chfl_property_kind (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%CHFL_PROPERTY_STRING"><strong>CHFL_PROPERTY_STRING (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%_%CHFL_PROPERTY_VECTOR3D"><strong>CHFL_PROPERTY_VECTOR3D (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/residue.html#f%_%chfl_residue"><strong>chfl_residue (fortran type)</strong></a>
+</li>
+      <li><a href="reference/selection.html#f%_%chfl_selection"><strong>chfl_selection (fortran type)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_SELECTION_ERROR"><strong>CHFL_SELECTION_ERROR (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_set_warning_callback"><strong>chfl_set_warning_callback() (fortran subroutine)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_status"><strong>chfl_status (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_STRING_LENGTH"><strong>CHFL_STRING_LENGTH (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%CHFL_SUCCESS"><strong>CHFL_SUCCESS (fortran variable)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%_%chfl_topology"><strong>chfl_topology (fortran type)</strong></a>
+</li>
+      <li><a href="reference/trajectory.html#f%_%chfl_trajectory"><strong>chfl_trajectory (fortran type)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_version"><strong>chfl_version() (fortran function)</strong></a>
+</li>
+      <li><a href="reference/misc.html#f%_%chfl_warning_callback"><strong>chfl_warning_callback() (fortran subroutine)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%clear_bonds"><strong>clear_bonds() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%clear_bonds"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%close"><strong>close() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/residue.html#f%chfl_residue%contains"><strong>contains() (fortran function in module chfl_residue)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%copy"><strong>copy() (fortran subroutine in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/cell.html#f%chfl_cell%copy"><strong>(fortran subroutine in module chfl_cell)</strong></a>
+</li>
+        <li><a href="reference/frame.html#f%chfl_frame%copy"><strong>(fortran subroutine in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%copy"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+        <li><a href="reference/selection.html#f%chfl_selection%copy"><strong>(fortran subroutine in module chfl_selection)</strong></a>
+</li>
+        <li><a href="reference/topology.html#f%chfl_topology%copy"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/atom.html#f%chfl_atom%covalent_radius"><strong>covalent_radius() (fortran function in module chfl_atom)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%dihedral"><strong>dihedral() (fortran function in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%dihedrals"><strong>dihedrals() (fortran subroutine in module chfl_topology)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/topology.html#f%chfl_topology%dihedrals_count"><strong>dihedrals_count() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%distance"><strong>distance() (fortran function in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%chfl_property%double"><strong>double() (fortran function in module chfl_property)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/selection.html#f%chfl_selection%evaluate"><strong>evaluate() (fortran subroutine in module chfl_selection)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%free"><strong>free() (fortran subroutine in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/cell.html#f%chfl_cell%free"><strong>(fortran subroutine in module chfl_cell)</strong></a>
+</li>
+        <li><a href="reference/frame.html#f%chfl_frame%free"><strong>(fortran subroutine in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/property.html#f%chfl_property%free"><strong>(fortran subroutine in module chfl_property)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%free"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+        <li><a href="reference/selection.html#f%chfl_selection%free"><strong>(fortran subroutine in module chfl_selection)</strong></a>
+</li>
+        <li><a href="reference/topology.html#f%chfl_topology%free"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/cell.html#f%chfl_cell%from_matrix"><strong>from_matrix() (fortran subroutine in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%full_name"><strong>full_name() (fortran function in module chfl_atom)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%get"><strong>get() (fortran function in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/frame.html#f%chfl_frame%get"><strong>(fortran function in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%get"><strong>(fortran function in module chfl_residue)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%guess_bonds"><strong>guess_bonds() (fortran subroutine in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%has_velocities"><strong>has_velocities() (fortran function in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/residue.html#f%chfl_residue%id"><strong>id() (fortran function in module chfl_residue)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%impropers"><strong>impropers() (fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%impropers_count"><strong>impropers_count() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%init"><strong>init() (fortran subroutine in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/cell.html#f%chfl_cell%init"><strong>(fortran subroutine in module chfl_cell)</strong></a>
+</li>
+        <li><a href="reference/frame.html#f%chfl_frame%init"><strong>(fortran subroutine in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/property.html#f%chfl_property%init"><strong>(fortran subroutine in module chfl_property)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%init"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+        <li><a href="reference/selection.html#f%chfl_selection%init"><strong>(fortran subroutine in module chfl_selection)</strong></a>
+</li>
+        <li><a href="reference/topology.html#f%chfl_topology%init"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/property.html#f%chfl_property%kind"><strong>kind() (fortran function in module chfl_property)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/cell.html#f%chfl_cell%lengths"><strong>lengths() (fortran function in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%list_properties"><strong>list_properties() (fortran subroutine in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/frame.html#f%chfl_frame%list_properties"><strong>(fortran subroutine in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%list_properties"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%mass"><strong>mass() (fortran function in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/selection.html#f%chfl_selection%matches"><strong>matches() (fortran subroutine in module chfl_selection)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%chfl_cell%matrix"><strong>matrix() (fortran function in module chfl_cell)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%memory_buffer"><strong>memory_buffer() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%memory_reader"><strong>memory_reader() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%memory_writer"><strong>memory_writer() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%name"><strong>name() (fortran function in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/residue.html#f%chfl_residue%name"><strong>(fortran function in module chfl_residue)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%nsteps"><strong>nsteps() (fortran function in module chfl_trajectory)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%open"><strong>open() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%out_of_plane"><strong>out_of_plane() (fortran function in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%path"><strong>path() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%positions"><strong>positions() (fortran function in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%properties_count"><strong>properties_count() (fortran function in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/frame.html#f%chfl_frame%properties_count"><strong>(fortran function in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%properties_count"><strong>(fortran function in module chfl_residue)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%read"><strong>read() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%read_step"><strong>read_step() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%remove"><strong>remove() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%remove"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/frame.html#f%chfl_frame%remove_bond"><strong>remove_bond() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%remove_bond"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/topology.html#f%chfl_topology%residue"><strong>residue() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%residue_for_atom"><strong>residue_for_atom() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%residues_count"><strong>residues_count() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/topology.html#f%chfl_topology%residues_linked"><strong>residues_linked() (fortran function in module chfl_topology)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%resize"><strong>resize() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/topology.html#f%chfl_topology%resize"><strong>(fortran subroutine in module chfl_topology)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%set"><strong>set() (fortran subroutine in module chfl_atom)</strong></a>
+
+      <ul>
+        <li><a href="reference/frame.html#f%chfl_frame%set"><strong>(fortran subroutine in module chfl_frame)</strong></a>
+</li>
+        <li><a href="reference/residue.html#f%chfl_residue%set"><strong>(fortran subroutine in module chfl_residue)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/cell.html#f%chfl_cell%set_angles"><strong>set_angles() (fortran subroutine in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%set_cell"><strong>set_cell() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/trajectory.html#f%chfl_trajectory%set_cell"><strong>(fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/atom.html#f%chfl_atom%set_charge"><strong>set_charge() (fortran subroutine in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%chfl_cell%set_lengths"><strong>set_lengths() (fortran subroutine in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%set_mass"><strong>set_mass() (fortran subroutine in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%set_name"><strong>set_name() (fortran subroutine in module chfl_atom)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/cell.html#f%chfl_cell%set_shape"><strong>set_shape() (fortran subroutine in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%set_step"><strong>set_step() (fortran subroutine in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%set_topology"><strong>set_topology() (fortran subroutine in module chfl_frame)</strong></a>
+
+      <ul>
+        <li><a href="reference/trajectory.html#f%chfl_trajectory%set_topology"><strong>(fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="reference/atom.html#f%chfl_atom%set_type"><strong>set_type() (fortran subroutine in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%chfl_cell%shape"><strong>shape() (fortran function in module chfl_cell)</strong></a>
+</li>
+      <li><a href="reference/selection.html#f%chfl_selection%size"><strong>size() (fortran function in module chfl_selection)</strong></a>
+</li>
+      <li><a href="reference/frame.html#f%chfl_frame%step"><strong>step() (fortran function in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%chfl_property%string"><strong>string() (fortran function in module chfl_property)</strong></a>
+
+      <ul>
+        <li><a href="reference/selection.html#f%chfl_selection%string"><strong>(fortran function in module chfl_selection)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%topology"><strong>topology() (fortran function in module chfl_frame)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%topology_file"><strong>topology_file() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+      <li><a href="reference/atom.html#f%chfl_atom%type"><strong>type() (fortran function in module chfl_atom)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/atom.html#f%chfl_atom%vdw_radius"><strong>vdw_radius() (fortran function in module chfl_atom)</strong></a>
+</li>
+      <li><a href="reference/property.html#f%chfl_property%vector3d"><strong>vector3d() (fortran function in module chfl_property)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/frame.html#f%chfl_frame%velocities"><strong>velocities() (fortran function in module chfl_frame)</strong></a>
+</li>
+      <li><a href="reference/cell.html#f%chfl_cell%volume"><strong>volume() (fortran function in module chfl_cell)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/cell.html#f%chfl_cell%wrap"><strong>wrap() (fortran subroutine in module chfl_cell)</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/trajectory.html#f%chfl_trajectory%write"><strong>write() (fortran subroutine in module chfl_trajectory)</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015-2017, Guillaume Fraux — BSD licence.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

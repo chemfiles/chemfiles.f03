@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>chfl_trajectory type &#8212; Fortran interface to chemfiles 0.10.1
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chfl_frame type" href="frame.html" />
+    <link rel="prev" title="Miscellaneous functions" href="misc.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="misc.html" title="Previous Chapter: Miscellaneous functions"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Miscellaneous...</span>
+    </a>
+  </li>
+  <li>
+    <a href="frame.html" title="Next Chapter: chfl_frame type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_frame type &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="chfl-trajectory-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type<a class="headerlink" href="#chfl-trajectory-type" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt class="sig sig-object f" id="f%_%chfl_trajectory">
+<em class="property"><span class="pre">type</span>&#160; </em><span class="sig-name descname"><span class="pre">chfl_trajectory</span></span><a class="headerlink" href="#f%_%chfl_trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#f%_%chfl_trajectory" title="f%_%chfl_trajectory"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory</span></code></a> type is the main entry point when using
+chemfiles. A <a class="reference internal" href="#f%_%chfl_trajectory" title="f%_%chfl_trajectory"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory</span></code></a> behave a like a file, allowing to
+read and/or write <a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">open</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%open" title="f%chfl_trajectory%open"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%open()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">memory_reader</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%memory_reader" title="f%chfl_trajectory%memory_reader"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%memory_reader()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">memory_writer</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%memory_writer" title="f%chfl_trajectory%memory_writer"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%memory_writer()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">memory_buffer</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%memory_buffer" title="f%chfl_trajectory%memory_buffer"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%memory_buffer()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">path</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%path" title="f%chfl_trajectory%path"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%path()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">nsteps</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%nsteps" title="f%chfl_trajectory%nsteps"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%nsteps()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">read</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%read" title="f%chfl_trajectory%read"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%read()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">read_step</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%read_step" title="f%chfl_trajectory%read_step"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%read_step()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">write</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%write" title="f%chfl_trajectory%write"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%write()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_topology</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%set_topology" title="f%chfl_trajectory%set_topology"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%set_topology()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">topology_file</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%topology_file" title="f%chfl_trajectory%topology_file"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%topology_file()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_cell</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%set_cell" title="f%chfl_trajectory%set_cell"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%set_cell()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">close</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_trajectory%close" title="f%chfl_trajectory%close"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%close()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%open">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">mode</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">format</span></em>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the file at the given <code class="docutils literal notranslate"><span class="pre">path</span></code> using the given <code class="docutils literal notranslate"><span class="pre">mode</span></code>.
+Valid modes are <code class="docutils literal notranslate"><span class="pre">'r'</span></code> for read, <code class="docutils literal notranslate"><span class="pre">'w'</span></code> for write and <code class="docutils literal notranslate"><span class="pre">'a'</span></code> for append.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">format</span></code> is not given or an empty string, the format will be guessed
+from the extension.</p>
+<p>This subroutine allocate memory which must be released with
+<a class="reference internal" href="#f%chfl_trajectory%close" title="f%chfl_trajectory%close"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%close()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: path to the trajectory file</p></li>
+<li><p><strong>mode</strong><em> [</em><em>character</em><em>]</em> :: opening mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>format</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: format to use to read and write to the file</p></li>
+<li><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%memory_reader">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">memory_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">format</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%memory_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the <code class="docutils literal notranslate"><span class="pre">data</span></code> memory buffer as though it were a formatted file.
+The <code class="docutils literal notranslate"><span class="pre">format</span></code> parameter is required and may contain a compression method.</p>
+<p>This subroutine allocate memory which must be released with
+<a class="reference internal" href="#f%chfl_trajectory%close" title="f%chfl_trajectory%close"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%close()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: memory to read</p></li>
+<li><p><strong>format</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: format uses to read the buffer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%memory_writer">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">memory_writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">format</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%memory_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write to a memory buffer as though it were a formatted file</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">format</span></code> parameter is required. To retrieve the memory written to by
+the <a class="reference internal" href="#f%_%chfl_trajectory" title="f%_%chfl_trajectory"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory</span></code></a>, use <a class="reference internal" href="#f%chfl_trajectory%memory_buffer" title="f%chfl_trajectory%memory_buffer"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory%memory_buffer</span></code></a>.</p>
+<p>This subroutine allocate memory which must be released with
+<a class="reference internal" href="#f%chfl_trajectory%close" title="f%chfl_trajectory%close"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_trajectory%close()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>format</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: format used to write to the file</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%memory_buffer">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">memory_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">buffer</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%memory_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the memory buffer written to by the <a class="reference internal" href="#f%_%chfl_trajectory" title="f%_%chfl_trajectory"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_trajectory</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>buffer</strong><em> [</em><em>character(</em><em>len=:</em><em>)</em><em>,</em><em>allocatable</em><em>]</em> :: buffer to fill with the
+data written to this trajectory</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%path">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the path used to open the trajectory. If the path is longer than
+<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_STRING_LENGTH</span></code></a>, it will be truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>character</strong> (len=<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH">CHFL_STRING_LENGTH</a>)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%nsteps">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">nsteps</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%nsteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of steps (the number of frames) in the trajectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%read">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">frame</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the next step of the trajectory into a <code class="docutils literal notranslate"><span class="pre">frame</span></code>.</p>
+<p>If the number of atoms in frame does not correspond to the number of atom in
+the next step, the frame is resized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong><em> [</em><em>type(</em><a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><em>chfl_frame</em></a><em>)</em><em>]</em> :: frame to fill with the data</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%read_step">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">read_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">step</span></em>, <em class="sig-param"><span class="pre">frame</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%read_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a specific <code class="docutils literal notranslate"><span class="pre">step</span></code> of the trajectory into a <code class="docutils literal notranslate"><span class="pre">frame</span></code>. The first
+trajectory step is the step 0.</p>
+<p>If the number of atoms in frame does not correspond to the number of atom
+in the step, the frame is resized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong><em> [</em><em>integer</em><em>]</em> :: step to read</p></li>
+<li><p><strong>frame</strong><em> [</em><em>type(</em><a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><em>chfl_frame</em></a><em>)</em><em>]</em> :: frame to fill with the data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%write">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">frame</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single <code class="docutils literal notranslate"><span class="pre">frame</span></code> to the trajectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong><em> [</em><em>type(</em><a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><em>chfl_frame</em></a><em>)</em><em>]</em> :: frame to be writen to the file</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%set_topology">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">set_topology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">topology</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%set_topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <code class="docutils literal notranslate"><span class="pre">topology</span></code> associated with the trajectory. This topology will be
+used when reading and writing the files, replacing any topology in the
+frames or files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>topology</strong><em> [</em><em>type(</em><a class="reference internal" href="topology.html#f%_%chfl_topology" title="f%_%chfl_topology"><em>chfl_topology</em></a><em>)</em><em>]</em> :: new topology to use</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%topology_file">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">topology_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">path</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">format</span></em>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%topology_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the topology associated with the trajectory by reading the first frame of
+the file at the given <code class="docutils literal notranslate"><span class="pre">path</span></code> using the file format in <code class="docutils literal notranslate"><span class="pre">format</span></code>; and
+extracting the topology of this frame.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">format</span></code> is an empty string or not given, the format will be guessed
+from the extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: file to read in order to get the new topology</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>format</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: format to use for the topology file</p></li>
+<li><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%set_cell">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">set_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cell</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%set_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the unit <code class="docutils literal notranslate"><span class="pre">cell</span></code> associated with the trajectory. This cell will be used
+when reading and writing the files, replacing any pre-existing unit cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cell</strong><em> [</em><em>type(</em><a class="reference internal" href="cell.html#f%_%chfl_cell" title="f%_%chfl_cell"><em>chfl_cell</em></a><em>)</em><em>]</em> :: new cell to use</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_trajectory%close">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_trajectory%</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_trajectory%close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close a trajectory file, and free the associated memory.</p>
+<p>Closing a file will synchronize all changes made to the file with the
+storage (hard drive, network, …) used for this file.</p>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>chfl_atom type &#8212; Fortran interface to chemfiles 0.10.4
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chfl_selection type" href="selection.html" />
+    <link rel="prev" title="chfl_residue type" href="residue.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="residue.html" title="Previous Chapter: chfl_residue type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_residue type</span>
+    </a>
+  </li>
+  <li>
+    <a href="selection.html" title="Next Chapter: chfl_selection type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_selection type &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="chfl-atom-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type<a class="headerlink" href="#chfl-atom-type" title="Permalink to this heading">¶</a></h1>
+<dl>
+<dt class="sig sig-object f" id="f%_%chfl_atom">
+<em class="property"><span class="pre">type</span>&#160; </em><span class="sig-name descname"><span class="pre">chfl_atom</span></span><a class="headerlink" href="#f%_%chfl_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#f%_%chfl_atom" title="f%_%chfl_atom"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_atom</span></code></a> is a particle in the current <a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a>.</p>
+<p>All atoms have an atomic name; an atomic type; an atomic mass and an atomic
+charge.</p>
+<p>The atomic name is usually an unique identifier (<code class="docutils literal notranslate"><span class="pre">H1</span></code>, <code class="docutils literal notranslate"><span class="pre">C_a</span></code>) while the
+atomic type will be shared between all particles of the same type: <code class="docutils literal notranslate"><span class="pre">H</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Ow</span></code>, <code class="docutils literal notranslate"><span class="pre">CH3</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">init</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%init" title="f%chfl_atom%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%init()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">copy</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%copy" title="f%chfl_atom%copy"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%copy()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">mass</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%mass" title="f%chfl_atom%mass"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%mass()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_mass</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_mass" title="f%chfl_atom%set_mass"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_mass()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">charge</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%charge" title="f%chfl_atom%charge"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%charge()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_charge</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_charge" title="f%chfl_atom%set_charge"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_charge()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">type</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%type" title="f%chfl_atom%type"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%type()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_type</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_type" title="f%chfl_atom%set_type"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_type()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">name</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%name" title="f%chfl_atom%name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%name()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_name</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set_name" title="f%chfl_atom%set_name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set_name()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">full_name</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%full_name" title="f%chfl_atom%full_name"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%full_name()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">vdw_radius</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%vdw_radius" title="f%chfl_atom%vdw_radius"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%vdw_radius()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">covalent_radius</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%covalent_radius" title="f%chfl_atom%covalent_radius"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%covalent_radius()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">atomic_number</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%atomic_number" title="f%chfl_atom%atomic_number"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%atomic_number()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%set" title="f%chfl_atom%set"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%set()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">get</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%get" title="f%chfl_atom%get"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%get()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">properties_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%properties_count" title="f%chfl_atom%properties_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%properties_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">list_properties</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%list_properties" title="f%chfl_atom%list_properties"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%list_properties()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">free</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_atom%free" title="f%chfl_atom%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%free()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%init">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with the given <code class="docutils literal notranslate"><span class="pre">name</span></code>, and set the atom type to
+<code class="docutils literal notranslate"><span class="pre">name</span></code>. This subroutine allocate memory which must be released with
+<a class="reference internal" href="#f%chfl_atom%free" title="f%chfl_atom%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: atom name</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%copy">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this atom with a copy of <code class="docutils literal notranslate"><span class="pre">atom</span></code>. This subroutine allocate
+memory which must be released with <a class="reference internal" href="#f%chfl_atom%free" title="f%chfl_atom%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atom</strong><em> [</em><em>type(</em><a class="reference internal" href="#f%_%chfl_atom" title="f%_%chfl_atom"><em>chfl_atom</em></a><em>)</em><em>]</em> :: atom to copy</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%mass">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">mass</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mass of the atom in atomic mass units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>real</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%set_mass">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">set_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mass</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the mass of the atom to <code class="docutils literal notranslate"><span class="pre">mass</span></code>. The value should be in atomic mass
+units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mass</strong><em> [</em><em>real</em><em>]</em> :: new atom mass</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%charge">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the charge of the atom in number of the electron charge <em>e</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>real</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%set_charge">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">set_charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">charge</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the charge of the atom to <code class="docutils literal notranslate"><span class="pre">charge</span></code>. The charge should be in number of
+the electron charge <em>e</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>charge</strong><em> [</em><em>real</em><em>]</em> :: new atom charge</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%name">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name of an atom. If the name is longer than
+<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_STRING_LENGTH</span></code></a>, it will be truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> (len=<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH">CHFL_STRING_LENGTH</a>)</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%set_name">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the name of an atom to <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: new atom name</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%full_name">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">full_name</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%full_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full name of an <code class="docutils literal notranslate"><span class="pre">atom</span></code> from its type. If the name is longer than
+<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_STRING_LENGTH</span></code></a>, it will be truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> (len=<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH">CHFL_STRING_LENGTH</a>)</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%type">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">type</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the type of an atom. If the name is longer than
+<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_STRING_LENGTH</span></code></a>, it will be truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> (len=<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH">CHFL_STRING_LENGTH</a>)</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%set_type">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">set_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">type</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the type of an atom to <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: new atom type</p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%vdw_radius">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">vdw_radius</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%vdw_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Van der Waals radius of an atom from the atom type. If the radius in
+unknown, this function returns 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>real</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%covalent_radius">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">covalent_radius</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%covalent_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the covalent radius of an atom from the atom type. If the radius in
+unknown, this function set <code class="docutils literal notranslate"><span class="pre">radius</span></code> to 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>real</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%atomic_number">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">atomic_number</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%atomic_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the atomic number of an atom from the atom type. If the atomic number in
+unknown, this function set <code class="docutils literal notranslate"><span class="pre">number</span></code> to 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%set">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">property</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new <code class="docutils literal notranslate"><span class="pre">property</span></code> with the given <code class="docutils literal notranslate"><span class="pre">name</span></code> to this atom.</p>
+<p>If a property with the same name already exists, this function override the
+existing property with the new one.</p>
+<p><code class="docutils literal notranslate"><span class="pre">property</span></code> can either be a <a class="reference internal" href="property.html#f%_%chfl_property" title="f%_%chfl_property"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_property</span></code></a>, or any value that can
+be stored in a <a class="reference internal" href="property.html#f%_%chfl_property" title="f%_%chfl_property"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_property</span></code></a>: logical, real, string, or vector3d.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: property name</p></li>
+<li><p><strong>property</strong><em> [</em><em>type(</em><a class="reference internal" href="property.html#f%_%chfl_property" title="f%_%chfl_property"><em>chfl_property</em></a><em>)</em><em>]</em> :: the new property</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%get">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a copy of the property with the given <code class="docutils literal notranslate"><span class="pre">name</span></code> in this atom. If no
+property exist with this name, <code class="docutils literal notranslate"><span class="pre">status</span></code> will be set to
+<a class="reference internal" href="misc.html#f%_%CHFL_PROPERTY_ERROR" title="f%_%CHFL_PROPERTY_ERROR"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_PROPERTY_ERROR</span></code></a>.</p>
+<p>The associated memory must be released by calling
+<a class="reference internal" href="property.html#f%chfl_property%free" title="f%chfl_property%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type</strong> (<a class="reference internal" href="property.html#f%_%chfl_property" title="f%_%chfl_property">chfl_property</a>)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>name</strong><em> [</em><em>character(</em><em>len=*</em><em>)</em><em>]</em> :: property name</p>
+</dd>
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%properties_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">properties_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%properties_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of properties in this atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%list_properties">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">names</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%list_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill the pre-allocated array <code class="docutils literal notranslate"><span class="pre">names</span></code> with the names of the properties in
+this atom. The array must have room for <a class="reference internal" href="#f%chfl_atom%properties_count" title="f%chfl_atom%properties_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%properties_count()</span></code></a>
+values of type <code class="docutils literal notranslate"><span class="pre">character(len=CHFL_STRING_LENGTH)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>names</strong> (:)<em> [</em><em>character(</em><em>len=CHFL_STRING_LENGTH</em><em>)</em><em>]</em> :: list of properties names</p>
+</dd>
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_atom%free">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_atom%</span></span><span class="sig-name descname"><span class="pre">free</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_atom%free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy an atom, and free the associated memory</p>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

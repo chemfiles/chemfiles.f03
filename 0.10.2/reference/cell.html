@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>chfl_cell type &#8212; Fortran interface to chemfiles 0.10.2
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chfl_topology type" href="topology.html" />
+    <link rel="prev" title="chfl_frame type" href="frame.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="frame.html" title="Previous Chapter: chfl_frame type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_frame type</span>
+    </a>
+  </li>
+  <li>
+    <a href="topology.html" title="Next Chapter: chfl_topology type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_topology type &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="chfl-cell-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type<a class="headerlink" href="#chfl-cell-type" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt class="sig sig-object f" id="f%_%chfl_cell">
+<em class="property"><span class="pre">type</span>&#160; </em><span class="sig-name descname"><span class="pre">chfl_cell</span></span><a class="headerlink" href="#f%_%chfl_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#f%_%chfl_cell" title="f%_%chfl_cell"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_cell</span></code></a> represent the box containing the atoms, and its
+periodicity. An unit cell is fully represented by three lengths (a, b, c);
+and three angles (alpha, beta, gamma). The angles are stored in degrees, and
+the lengths in Angstroms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">init</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%init" title="f%chfl_cell%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%init()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">copy</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%copy" title="f%chfl_cell%copy"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%copy()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">from_matrix</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%from_matrix" title="f%chfl_cell%from_matrix"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%from_matrix()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">lengths</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%lengths" title="f%chfl_cell%lengths"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%lengths()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_lengths</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%set_lengths" title="f%chfl_cell%set_lengths"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%set_lengths()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">angles</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%angles" title="f%chfl_cell%angles"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%angles()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_angles</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%set_angles" title="f%chfl_cell%set_angles"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%set_angles()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">matrix</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%matrix" title="f%chfl_cell%matrix"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%matrix()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">shape</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%shape" title="f%chfl_cell%shape"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%shape()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">set_shape</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%set_shape" title="f%chfl_cell%set_shape"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%set_shape()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">volume</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%volume" title="f%chfl_cell%volume"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%volume()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">wrap</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%wrap" title="f%chfl_cell%wrap"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%wrap()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">free</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_cell%free" title="f%chfl_cell%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%free()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%init">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lengths</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">angles</span></em>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this unit cell with an unit cell having the given <code class="docutils literal notranslate"><span class="pre">lengths</span></code> and
+optional <code class="docutils literal notranslate"><span class="pre">angles</span></code>. If all angles are 90°, the unit cell shape is
+<a class="reference internal" href="#f%_%CHFL_CELL_ORTHORHOMBIC" title="f%_%CHFL_CELL_ORTHORHOMBIC"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_CELL_ORTHORHOMBIC</span></code></a>, else it is <a class="reference internal" href="#f%_%CHFL_CELL_TRICLINIC" title="f%_%CHFL_CELL_TRICLINIC"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_CELL_TRICLINIC</span></code></a>.</p>
+<p>This subroutine allocate memory which must be released with
+<a class="reference internal" href="#f%chfl_cell%free" title="f%chfl_cell%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lengths</strong> (3)<em> [</em><em>real</em><em>]</em> :: cell lengths, in angstroms</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>angles</strong> (3)<em> [</em><em>real</em><em>]</em> :: cell angles, in degrees</p></li>
+<li><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%copy">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cell</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this unit cell with a copy of <code class="docutils literal notranslate"><span class="pre">cell</span></code>. This subroutine allocate
+memory which must be released with <a class="reference internal" href="#f%chfl_cell%free" title="f%chfl_cell%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cell</strong><em> [</em><em>type(</em><a class="reference internal" href="#f%_%chfl_cell" title="f%_%chfl_cell"><em>chfl_cell</em></a><em>)</em><em>]</em> :: cell to copy</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%from_matrix">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">from_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">matrix</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%from_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this unit cell from it’s matricial representation, i.e the matrix
+containing the three cell vectors. This subroutine allocate
+memory which must be released with <a class="reference internal" href="#f%chfl_cell%free" title="f%chfl_cell%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_cell%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>matrix</strong> (3, 3)<em> [</em><em>real(</em><em>kind=real64</em><em>)</em><em>]</em> :: matrix representation of the unit cell</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%volume">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the volume of the unit cell in angstroms cubes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%lengths">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">lengths</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unit cell lengths in angstroms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong> (3)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%set_lengths">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">set_lengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lengths</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%set_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the unit cell lengths to <code class="docutils literal notranslate"><span class="pre">lengths</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lengths</strong> (3)<em> [</em><em>real</em><em>]</em> :: new cell lengths, in angstroms</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%angles">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">angles</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%angles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unit cell angles in degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong> (3)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%set_angles">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">set_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">beta</span></em>, <em class="sig-param"><span class="pre">gamma</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%set_angles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the cell angles to <code class="docutils literal notranslate"><span class="pre">angles</span></code>. Trying to set cell angles on a cell which
+is not triclinic (does not have the <a class="reference internal" href="#f%_%CHFL_CELL_TRICLINIC" title="f%_%CHFL_CELL_TRICLINIC"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_CELL_TRICLINIC</span></code></a> shape) is
+an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angles</strong> (3)<em> [</em><em>real</em><em>]</em> :: new cell angles, in degrees</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%matrix">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unit cell matricial representation.</p>
+<p>The unit cell representation is obtained by aligning the a vector along the
+<em>x</em> axis and putting the b vector in the <em>xy</em> plane. This make the matrix
+an upper triangular matrix:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="p">|</span> a_x b_x c_x <span class="p">|</span>
+<span class="p">|</span>  <span class="m">0</span>  b_y c_y <span class="p">|</span>
+<span class="p">|</span>  <span class="m">0</span>   <span class="m">0</span>  c_z <span class="p">|</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong> (3, 3)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%shape">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">shape</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unit cell shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong> (<a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape">chfl_cellshape</a>)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+<p>The cell shapes are integers which <code class="docutils literal notranslate"><span class="pre">kind</span></code> is the <a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape"><code class="xref f f-var docutils literal notranslate"><span class="pre">chfl_cellshape</span></code></a>
+parameter.</p>
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%chfl_cellshape">
+<span class="sig-name descname"><span class="pre">chfl_cellshape</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%chfl_cellshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer kind parameter for representing unit cel shape.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_CELL_ORTHORHOMBIC">
+<span class="sig-name descname"><span class="pre">CHFL_CELL_ORTHORHOMBIC</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape"><em><span class="pre">chfl_cellshape</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_CELL_ORTHORHOMBIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cell shape for cell where the three angles are 90°</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_CELL_TRICLINIC">
+<span class="sig-name descname"><span class="pre">CHFL_CELL_TRICLINIC</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape"><em><span class="pre">chfl_cellshape</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_CELL_TRICLINIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cell shape for cell where the three angles may not be 90°</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_CELL_INFINITE">
+<span class="sig-name descname"><span class="pre">CHFL_CELL_INFINITE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape"><em><span class="pre">chfl_cellshape</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_CELL_INFINITE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cell type when there is no periodic boundary conditions</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%set_shape">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">set_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">shape</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%set_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the unit cell shape to <code class="docutils literal notranslate"><span class="pre">shape</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shape</strong><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_cellshape" title="f%_%chfl_cellshape"><em>chfl_cellshape</em></a><em>)</em><em>]</em> :: the new shape of the cell</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%wrap">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">vector</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap a <code class="docutils literal notranslate"><span class="pre">vector</span></code> in this unit cell so that all its components are beteen
+<code class="docutils literal notranslate"><span class="pre">-L/2</span></code> and <code class="docutils literal notranslate"><span class="pre">L/2</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vector</strong> (3)<em> [</em><em>real</em><em>]</em> :: vector to wrap in the cell</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_cell%free">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_cell%</span></span><span class="sig-name descname"><span class="pre">free</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_cell%free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy an unit cell, and free the associated memory</p>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

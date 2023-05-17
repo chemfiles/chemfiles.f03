@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chfl_property type &#8212; Fortran interface to chemfiles 0.10.0
+ documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="chfl_selection type" href="selection.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="selection.html" title="Previous Chapter: chfl_selection type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_selection type</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="chfl-property-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type<a class="headerlink" href="#chfl-property-type" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="f%_%chfl_property">
+<em class="property">type  </em><code class="sig-name descname">chfl_property</code><a class="headerlink" href="#f%_%chfl_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#f%_%chfl_property" title="f%_%chfl_property"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_property</span></code></a> holds data used in properties in
+<a class="reference internal" href="frame.html#f%_%chfl_frame" title="f%_%chfl_frame"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_frame</span></code></a>, <a class="reference internal" href="atom.html#f%_%chfl_atom" title="f%_%chfl_atom"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_atom</span></code></a> and <a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_residue</span></code></a>.</p>
+<p>A property is associated with a name and can contain data of various types:
+logical, real, string or 3 dimensional array (<code class="docutils literal notranslate"><span class="pre">vector3d</span></code>). The property
+kind is used to know which kind of data is stored in the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">init</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%init" title="f%chfl_property%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%init()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">kind</code><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%kind" title="f%chfl_property%kind"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%kind()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">bool</code><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%bool" title="f%chfl_property%bool"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%bool()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">double</code><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%double" title="f%chfl_property%double"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%double()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">string</code><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%string" title="f%chfl_property%string"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%string()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">vector3d</code><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%vector3d" title="f%chfl_property%vector3d"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%vector3d()</span></code></a></p></li>
+<li><p><code class="sig-name descname">% </code><code class="sig-name descname">free</code><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_property%free" title="f%chfl_property%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%free()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_property%init">
+<em class="property">subroutine  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="optional">[</span>, <em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%init" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a generic subroutine for initialization of a property. It allocate
+memory which must be released with <a class="reference internal" href="#f%chfl_property%free" title="f%chfl_property%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_property%free()</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">value</span></code> can be a real number, a logical value, a string
+(<code class="docutils literal notranslate"><span class="pre">string</span></code>) or an 3-dimensional array of real numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it is not
+<a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn more
+about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="f%chfl_property%kind">
+<em class="property">function  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">kind</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the property kind, a number indicating which type of value this property
+holds. The possible kinds are represented by integer of the
+<a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind"><code class="xref f f-var docutils literal notranslate"><span class="pre">chfl_property_kind</span></code></a> kind.</p>
+<dl class="f variable">
+<dt id="f%_%chfl_property_kind">
+<code class="sig-name descname">chfl_property_kind</code><em> [</em><em>integer</em><em>]</em><a class="headerlink" href="#f%_%chfl_property_kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind parameter for the integer values describing <a class="reference internal" href="#f%_%chfl_property" title="f%_%chfl_property"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_property</span></code></a>
+kinds.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt id="f%_%CHFL_PROPERTY_BOOL">
+<code class="sig-name descname">CHFL_PROPERTY_BOOL</code><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind"><em>chfl_property_kind</em></a><em>)</em><em>]</em><a class="headerlink" href="#f%_%CHFL_PROPERTY_BOOL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind used for <code class="docutils literal notranslate"><span class="pre">logical</span></code> (<code class="docutils literal notranslate"><span class="pre">bool</span></code> in C++) values.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt id="f%_%CHFL_PROPERTY_DOUBLE">
+<code class="sig-name descname">CHFL_PROPERTY_DOUBLE</code><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind"><em>chfl_property_kind</em></a><em>)</em><em>]</em><a class="headerlink" href="#f%_%CHFL_PROPERTY_DOUBLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind used for <code class="docutils literal notranslate"><span class="pre">real(real64)</span></code> (<code class="docutils literal notranslate"><span class="pre">double</span></code> in C++) values.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt id="f%_%CHFL_PROPERTY_STRING">
+<code class="sig-name descname">CHFL_PROPERTY_STRING</code><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind"><em>chfl_property_kind</em></a><em>)</em><em>]</em><a class="headerlink" href="#f%_%CHFL_PROPERTY_STRING" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind used for <code class="docutils literal notranslate"><span class="pre">string</span></code> (<code class="docutils literal notranslate"><span class="pre">std::string</span></code> in C++) values.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt id="f%_%CHFL_PROPERTY_VECTOR3D">
+<code class="sig-name descname">CHFL_PROPERTY_VECTOR3D</code><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind"><em>chfl_property_kind</em></a><em>)</em><em>]</em><a class="headerlink" href="#f%_%CHFL_PROPERTY_VECTOR3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind used for <code class="docutils literal notranslate"><span class="pre">real(real64),</span> <span class="pre">dimension(3)</span></code> (<code class="docutils literal notranslate"><span class="pre">vector3d</span></code> in C++)
+values.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong> (<a class="reference internal" href="#f%_%chfl_property_kind" title="f%_%chfl_property_kind">chfl_property_kind</a>)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="f%chfl_property%bool">
+<em class="property">function  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">bool</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the logical value stored in this property. If the property do not store
+a logical value, <code class="docutils literal notranslate"><span class="pre">status</span></code> will be <a class="reference internal" href="misc.html#f%_%CHFL_PROPERTY_ERROR" title="f%_%CHFL_PROPERTY_ERROR"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_PROPERTY_ERROR</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>logical</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="f%chfl_property%double">
+<em class="property">function  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">double</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the real value stored in this property. If the property do not store
+a real value, <code class="docutils literal notranslate"><span class="pre">status</span></code> will be <a class="reference internal" href="misc.html#f%_%CHFL_PROPERTY_ERROR" title="f%_%CHFL_PROPERTY_ERROR"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_PROPERTY_ERROR</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong><em> [</em><em>real64</em><em>]</em></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="f%chfl_property%string">
+<em class="property">function  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">string</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the string stored in this property. If the property do not store a
+string, <code class="docutils literal notranslate"><span class="pre">status</span></code> will be <a class="reference internal" href="misc.html#f%_%CHFL_PROPERTY_ERROR" title="f%_%CHFL_PROPERTY_ERROR"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_PROPERTY_ERROR</span></code></a>. If the string is
+longer than <a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_STRING_LENGTH</span></code></a>, it will be truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>character</strong> (len=<a class="reference internal" href="misc.html#f%_%CHFL_STRING_LENGTH" title="f%_%CHFL_STRING_LENGTH">CHFL_STRING_LENGTH</a>)</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="f%chfl_property%vector3d">
+<em class="property">function  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">vector3d</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">status</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%vector3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the 3 dimensional array value stored in this property. If the property
+do not store an array, <code class="docutils literal notranslate"><span class="pre">status</span></code> will be <a class="reference internal" href="misc.html#f%_%CHFL_PROPERTY_ERROR" title="f%_%CHFL_PROPERTY_ERROR"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_PROPERTY_ERROR</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>real</strong><em> [</em><em>dimension(3), kind(real64)</em><em>]</em></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="subroutine">
+<dt id="f%chfl_property%free">
+<em class="property">subroutine  </em><code class="sig-prename descclassname">chfl_property%</code><code class="sig-name descname">free</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_property%free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy a property, and free the associated memory</p>
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

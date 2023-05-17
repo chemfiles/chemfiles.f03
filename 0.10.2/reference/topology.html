@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>chfl_topology type &#8212; Fortran interface to chemfiles 0.10.2
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chfl_residue type" href="residue.html" />
+    <link rel="prev" title="chfl_cell type" href="cell.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Fortran interface to chemfiles</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Navigation <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="cell.html" title="Previous Chapter: chfl_cell type"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; chfl_cell type</span>
+    </a>
+  </li>
+  <li>
+    <a href="residue.html" title="Next Chapter: chfl_residue type"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">chfl_residue type &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fortran interface reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trajectory.html"><code class="docutils literal notranslate"><span class="pre">chfl_trajectory</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frame.html"><code class="docutils literal notranslate"><span class="pre">chfl_frame</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cell.html"><code class="docutils literal notranslate"><span class="pre">chfl_cell</span></code> type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="residue.html"><code class="docutils literal notranslate"><span class="pre">chfl_residue</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom.html"><code class="docutils literal notranslate"><span class="pre">chfl_atom</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html"><code class="docutils literal notranslate"><span class="pre">chfl_selection</span></code> type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html"><code class="docutils literal notranslate"><span class="pre">chfl_property</span></code> type</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="chfl-topology-type">
+<h1><code class="docutils literal notranslate"><span class="pre">chfl_topology</span></code> type<a class="headerlink" href="#chfl-topology-type" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt class="sig sig-object f" id="f%_%chfl_topology">
+<em class="property"><span class="pre">type</span>&#160; </em><span class="sig-name descname"><span class="pre">chfl_topology</span></span><a class="headerlink" href="#f%_%chfl_topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#f%_%chfl_topology" title="f%_%chfl_topology"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_topology</span></code></a> contains the definition of all the atoms in the
+system, and the liaisons between the atoms (bonds, angles, dihedrals,
+…). It will also contain all the residues information if it is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">init</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%init" title="f%chfl_topology%init"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%init()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">copy</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%copy" title="f%chfl_topology%copy"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%copy()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">atoms_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%atoms_count" title="f%chfl_topology%atoms_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%atoms_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">add_atom</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%add_atom" title="f%chfl_topology%add_atom"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_atom()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">atom</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%atom" title="f%chfl_topology%atom"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%atom()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">resize</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%resize" title="f%chfl_topology%resize"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%resize()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">remove</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%remove" title="f%chfl_topology%remove"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%remove()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">add_bond</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%add_bond" title="f%chfl_topology%add_bond"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_bond()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">remove_bond</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%remove_bond" title="f%chfl_topology%remove_bond"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%remove_bond()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">clear_bonds</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%clear_bonds" title="f%chfl_topology%clear_bonds"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%clear_bonds()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">bond_order</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%bond_order" title="f%chfl_topology%bond_order"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%bond_order()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">bond_orders</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%bond_orders" title="f%chfl_topology%bond_orders"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%bond_orders()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">bonds_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%bonds_count" title="f%chfl_topology%bonds_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%bonds_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">angles_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%angles_count" title="f%chfl_topology%angles_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%angles_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">dihedrals_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%dihedrals_count" title="f%chfl_topology%dihedrals_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%dihedrals_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">impropers_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%impropers_count" title="f%chfl_topology%impropers_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%impropers_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">bonds</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%bonds" title="f%chfl_topology%bonds"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%bonds()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">angles</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%angles" title="f%chfl_topology%angles"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%angles()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">dihedrals</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%dihedrals" title="f%chfl_topology%dihedrals"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%dihedrals()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">impropers</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%impropers" title="f%chfl_topology%impropers"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%impropers()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">residues_count</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%residues_count" title="f%chfl_topology%residues_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%residues_count()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">add_residue</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%add_residue" title="f%chfl_topology%add_residue"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_residue()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">residue</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%residue" title="f%chfl_topology%residue"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%residue()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">residue_for_atom</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%residue_for_atom" title="f%chfl_topology%residue_for_atom"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%residue_for_atom()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">residues_linked</span><em> [</em><em>function</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%residues_linked" title="f%chfl_topology%residues_linked"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%residues_linked()</span></code></a></p></li>
+<li><p><span class="sig-name descname">% </span><span class="sig-name descname">free</span><em> [</em><em>subroutine</em><em>]</em> :: <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%init">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this topology with a new empty topology. This subroutine allocate
+memory which must be released with <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%copy">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">topology</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this topology with a copy of <code class="docutils literal notranslate"><span class="pre">topology</span></code>. This subroutine
+allocate memory which must be released with <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>topology</strong><em> [</em><em>type(</em><a class="reference internal" href="#f%_%chfl_topology" title="f%_%chfl_topology"><em>chfl_topology</em></a><em>)</em><em>]</em> :: topology to copy</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%atoms_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">atoms_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%atoms_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of atoms in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%resize">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">count</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the topology to hold <code class="docutils literal notranslate"><span class="pre">count</span></code> atoms. If the new number of atoms is
+bigger than the current number, new atoms will be created with an empty name
+and type. If it is lower than the current number of atoms, the last atoms
+will be removed, together with the associated bonds, angles and dihedrals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong><em> [</em><em>integer</em><em>]</em> :: new size of the topology</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%add_atom">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">add_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%add_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a copy of <code class="docutils literal notranslate"><span class="pre">atom</span></code> at the end of the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>atom</strong><em> [</em><em>type(</em><a class="reference internal" href="atom.html#f%_%chfl_atom" title="f%_%chfl_atom"><em>chfl_atom</em></a><em>)</em><em>]</em> :: atom to be added</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%atom">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">index</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get access to the atom at the given <code class="docutils literal notranslate"><span class="pre">index</span></code> from this topology</p>
+<p>Any modification to the atom will be reflected in the topology. The topology
+will be kept alive, even if <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a> is called, until
+<a class="reference internal" href="atom.html#f%chfl_atom%free" title="f%chfl_atom%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_atom%free()</span></code></a> is also called on the atom returned by this
+function.</p>
+<p>The atom returned by this function is a pointer that points directly inside
+the topology, and will be invalidated if any of the following function is
+called on the topology:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#f%chfl_topology%resize" title="f%chfl_topology%resize"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%resize()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#f%chfl_topology%add_atom" title="f%chfl_topology%add_atom"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_atom()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#f%chfl_topology%remove" title="f%chfl_topology%remove"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%remove()</span></code></a></p></li>
+</ul>
+<p>Calling any function on an invalidated pointer is undefined behavior. Even
+if the pointer if invalidated, it stills needs to be released with
+<cite>chfl_atom%free</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>type</strong> (<a class="reference internal" href="atom.html#f%_%chfl_atom" title="f%_%chfl_atom">chfl_atom</a>)</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>index</strong><em> [</em><em>integer</em><em>]</em> :: index of the atom to retrieve</p>
+</dd>
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%remove">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">index</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the atom at the given <code class="docutils literal notranslate"><span class="pre">index</span></code> from the topology.</p>
+<p>This shifts all the atoms indexes after <code class="docutils literal notranslate"><span class="pre">index</span></code> by 1 (n becomes n-1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong><em> [</em><em>integer</em><em>]</em> :: index of the atom to remove</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%bonds_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">bonds_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%bonds_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of bonds in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%angles_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">angles_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%angles_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of angles in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%dihedrals_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">dihedrals_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%dihedrals_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of dihedral angles in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%impropers_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">impropers_count</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%impropers_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of improper dihedral angles in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%bonds">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%bonds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of bonds in the topology in the pre-allocated array <code class="docutils literal notranslate"><span class="pre">data</span></code>
+of shape <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">chfl_topology%bonds_count()]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (2, :)<em> [</em><em>integer</em><em>]</em> :: array to be filled with the bonds in the system</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%angles">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%angles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of angles in the <code class="docutils literal notranslate"><span class="pre">topology</span></code> in the pre-allocated array
+<code class="docutils literal notranslate"><span class="pre">data</span></code> of shape <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">chfl_topology%angles_count()]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (3, :)<em> [</em><em>integer</em><em>]</em> :: array to be filled with the angles in the system</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%dihedrals">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">dihedrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%dihedrals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of dihedral angles in the topology in the pre-allocated array
+<code class="docutils literal notranslate"><span class="pre">data</span></code> of shape <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">chfl_topology%dihedrals_count()]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (4, :)<em> [</em><em>integer</em><em>]</em> :: array to be filled with the dihedral angles
+in the system</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%impropers">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">impropers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%impropers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of improper dihedral angles in the topology in the
+pre-allocated array <code class="docutils literal notranslate"><span class="pre">data</span></code> of shape <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">chfl_topology%impropers_count()]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (4, :)<em> [</em><em>integer</em><em>]</em> :: array to be filled with the dihedral angles
+in the system</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%add_bond">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">add_bond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">i</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">bond_order</span></em>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%add_bond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a bond between the atoms at indexes <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> in the topology, and
+optionaly set the <code class="docutils literal notranslate"><span class="pre">bond_order</span></code>. By default, a bond order of
+<a class="reference internal" href="#f%_%CHFL_BOND_UNKNOWN" title="f%_%CHFL_BOND_UNKNOWN"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_BOND_UNKNOWN</span></code></a> is used.</p>
+<p>Possible bond orders are represented by an integer of kind <a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><code class="xref f f-var docutils literal notranslate"><span class="pre">chfl_bond_order</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the first atom of the bond</p></li>
+<li><p><strong>j</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the second atom of the bond</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>bond_order</strong><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em>chfl_bond_order</em></a><em>)</em><em>]</em> :: order of the bond</p></li>
+<li><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%chfl_bond_order">
+<span class="sig-name descname"><span class="pre">chfl_bond_order</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%chfl_bond_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kind parameter for integers representing bond orders.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_UNKNOWN">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_UNKNOWN</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd><p>This bond order is used when the actual bond order is unkown or unspecified
+in the input file format.</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_SINGLE">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_SINGLE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_SINGLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for single bonds</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_DOUBLE">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_DOUBLE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_DOUBLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for double bonds</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_TRIPLE">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_TRIPLE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_TRIPLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for triple bonds</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_QUADRUPLE">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_QUADRUPLE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_QUADRUPLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for quadruple bond (present in some metals)</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_QINTUPLET">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_QINTUPLET</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_QINTUPLET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for quintuplet bond (present in some metals)</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_AMIDE">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_AMIDE</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_AMIDE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for amide bonds</p>
+</dd></dl>
+
+<dl class="f variable">
+<dt class="sig sig-object f" id="f%_%CHFL_BOND_AROMATIC">
+<span class="sig-name descname"><span class="pre">CHFL_BOND_AROMATIC</span></span><em> <span class="pre">[</span></em><em><span class="pre">integer(</span></em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em><span class="pre">chfl_bond_order</span></em></a><em><span class="pre">)</span></em><em><span class="pre">]</span></em><a class="headerlink" href="#f%_%CHFL_BOND_AROMATIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bond order for aromatic bonds</p>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%remove_bond">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">remove_bond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">i</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%remove_bond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove any existing bond between the atoms at indexes <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> in the
+topology.</p>
+<p>This function does nothing if there is no bond between <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong><em> [</em><em>integer</em><em>]</em> :: The atomic index of the first atom</p></li>
+<li><p><strong>j</strong><em> [</em><em>integer</em><em>]</em> :: The atomic index of the second atom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%clear_bonds">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">clear_bonds</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%clear_bonds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all bonds in this topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">add_bond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">i</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">bond_order</span></em>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
+<dd><p>Add a bond between the atoms at indexes <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> in the topology, and
+optionaly set the <code class="docutils literal notranslate"><span class="pre">bond_order</span></code>. By default, a bond order of
+<code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_BOND_UNKOWN</span></code> is used.</p>
+<p>Possible bond orders are represented by an integer of kind <a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><code class="xref f f-var docutils literal notranslate"><span class="pre">chfl_bond_order</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the first atom of the bond</p></li>
+<li><p><strong>j</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the second atom of the bond</p></li>
+</ul>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>bond_order</strong><em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em>chfl_bond_order</em></a><em>)</em><em>]</em> :: order of the bond</p></li>
+<li><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%bond_order">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">bond_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">i</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%bond_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bond order for the bond between atoms at indexes <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong> (<a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order">chfl_bond_order</a>)</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>i</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the first atom of the bond</p></li>
+<li><p><strong>j</strong><em> [</em><em>integer</em><em>]</em> :: atomic index of the second atom of the bond</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%bond_orders">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">bond_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%bond_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bond order for all bonds in the system in the pre-allocated array
+<code class="docutils literal notranslate"><span class="pre">data</span></code>. This array must have room for <a class="reference internal" href="#f%chfl_topology%bonds_count" title="f%chfl_topology%bonds_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%bonds_count()</span></code></a>
+elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (:)<em> [</em><em>integer(</em><a class="reference internal" href="#f%_%chfl_bond_order" title="f%_%chfl_bond_order"><em>chfl_bond_order</em></a><em>)</em><em>]</em> :: Array to be filled with the
+bond order of all bonds in the system.</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%residues_count">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">residues_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">natoms</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%residues_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of residues in the topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>integer</strong></p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%add_residue">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">add_residue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">residue</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%add_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a copy of <code class="docutils literal notranslate"><span class="pre">residue</span></code> to this topology.</p>
+<p>The residue id must not already be in the topology, and the residue must
+contain only atoms that are not already in another residue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>residue</strong><em> [</em><em>type(</em><a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><em>chfl_residue</em></a><em>)</em><em>]</em> :: residue to add in the topology</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%residue">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">residue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">index</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get read-only access to the residue at the given <code class="docutils literal notranslate"><span class="pre">index</span></code> in this topology.
+Trying to write to the residue will give an error.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">index</span></code> is bigger than the result of
+<a class="reference internal" href="#f%chfl_topology%residues_count" title="f%chfl_topology%residues_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%residues_count()</span></code></a>, this function will return an invalid
+<a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_residue</span></code></a> and set <code class="docutils literal notranslate"><span class="pre">status</span></code> to <code class="docutils literal notranslate"><span class="pre">CHFL_MEMORY_ERROR</span></code>.</p>
+<p>The residue index in the topology is not always the same as the residue
+id.</p>
+<p>The topology will be kept alive, even if <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a> is
+called, until <a class="reference internal" href="residue.html#f%chfl_residue%free" title="f%chfl_residue%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_residue%free()</span></code></a> is also called on the residue
+returned by this function, unless the this function returns an invalid
+residue.</p>
+<p>The residue returned by this function is a pointer that points directly
+inside the topology, and will be invalidated if
+<a class="reference internal" href="#f%chfl_topology%add_residue" title="f%chfl_topology%add_residue"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_residue()</span></code></a> is called. Calling any function on an
+invalidated pointer is undefined behavior. Even if the pointer if
+invalidated, it stills needs to be released with
+<a class="reference internal" href="residue.html#f%chfl_residue%free" title="f%chfl_residue%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_residue%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>type</strong> (<a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue">chfl_residue</a>)</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>index</strong><em> [</em><em>integer</em><em>]</em> :: Index of the residue in the topology. This is NOT
+the same thing as the residue id.</p>
+</dd>
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%residue_for_atom">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">residue_for_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">index</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%residue_for_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get read-only access to the residue containing the atom at the given
+<code class="docutils literal notranslate"><span class="pre">index</span></code> in this topology. Trying to write to the residue will give an
+error.</p>
+<p>This function will return an invalid invalid <a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><code class="xref f f-type docutils literal notranslate"><span class="pre">chfl_residue</span></code></a> and set
+<code class="docutils literal notranslate"><span class="pre">status</span></code> to <code class="docutils literal notranslate"><span class="pre">CHFL_MEMORY_ERROR</span></code> if the atom is not in a residue, or if
+the <code class="docutils literal notranslate"><span class="pre">index</span></code> is bigger than <a class="reference internal" href="#f%chfl_topology%atoms_count" title="f%chfl_topology%atoms_count"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%atoms_count()</span></code></a>.</p>
+<p>The topology will be kept alive, even if <a class="reference internal" href="#f%chfl_topology%free" title="f%chfl_topology%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%free()</span></code></a> is
+called, until <a class="reference internal" href="residue.html#f%chfl_residue%free" title="f%chfl_residue%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_residue%free()</span></code></a> is also called on the residue
+returned by this function.</p>
+<p>The residue returned by this function is a pointer that points directly
+inside the topology, and will be invalidated if
+<a class="reference internal" href="#f%chfl_topology%add_residue" title="f%chfl_topology%add_residue"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_topology%add_residue()</span></code></a> is called. Calling any function on an
+invalidated pointer is undefined behavior. Even if the pointer if
+invalidated, it stills needs to be released with
+<a class="reference internal" href="residue.html#f%chfl_residue%free" title="f%chfl_residue%free"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_residue%free()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>type</strong> (<a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue">chfl_residue</a>)</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>index</strong><em> [</em><em>integer</em><em>]</em> :: index of the atom in the topology.</p>
+</dd>
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%residues_linked">
+<em class="property"><span class="pre">function</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">residues_linked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">first</span></em>, <em class="sig-param"><span class="pre">second</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">status</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%residues_linked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the two residues <code class="docutils literal notranslate"><span class="pre">first</span></code> and <code class="docutils literal notranslate"><span class="pre">second</span></code> from the topology are
+linked together, <em>i.e.</em> if there is a bond between one atom in the first
+residue and one atom in the second one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return</dt>
+<dd class="field-odd"><p><strong>logical</strong></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>first</strong><em> [</em><em>type(</em><a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><em>chfl_residue</em></a><em>)</em><em>]</em> :: first residue</p></li>
+<li><p><strong>second</strong><em> [</em><em>type(</em><a class="reference internal" href="residue.html#f%_%chfl_residue" title="f%_%chfl_residue"><em>chfl_residue</em></a><em>)</em><em>]</em> :: second residue</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p><strong>status</strong><em> [</em><em>integer(</em><a class="reference internal" href="misc.html#f%_%chfl_status" title="f%_%chfl_status"><em>chfl_status</em></a><em>)</em><em>]</em> :: status code of the operation. If it
+is not <a class="reference internal" href="misc.html#f%_%CHFL_SUCCESS" title="f%_%CHFL_SUCCESS"><code class="xref f f-var docutils literal notranslate"><span class="pre">CHFL_SUCCESS</span></code></a>, use <a class="reference internal" href="misc.html#f%_%chfl_last_error" title="f%_%chfl_last_error"><code class="xref f f-func docutils literal notranslate"><span class="pre">chfl_last_error()</span></code></a> to learn
+more about the error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object f" id="f%chfl_topology%free">
+<em class="property"><span class="pre">subroutine</span>&#160; </em><span class="sig-prename descclassname"><span class="pre">chfl_topology%</span></span><span class="sig-name descname"><span class="pre">free</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#f%chfl_topology%free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy a topology, and free the associated memory</p>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+  <footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="pull-left">
+        &copy; Copyright Guillaume Fraux and contributors.
+    </p>
+    <p class="text-center">
+        BSD licensed on <a href="https://github.com/chemfiles/chemfiles">Github</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>
