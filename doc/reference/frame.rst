@@ -4,9 +4,9 @@
 
 .. f:type:: chfl_frame
 
-    A :f:type:`chfl_frame` contains data from one simulation step: the current unit
-    cell, the topology, the positions, and the velocities of the particles in
-    the system. If some information is missing (topology or velocity or unit
+    A :f:type:`chfl_frame` contains data from one simulation step: the current
+    unit cell, the topology, the positions, and the velocities of the particles
+    in the system. If some information is missing (topology or velocity or unit
     cell), the corresponding data is filled with a default value.
 
     :field subroutine init: :f:func:`chfl_frame%init`
@@ -33,8 +33,8 @@
     :field function topology: :f:func:`chfl_frame%topology`
     :field subroutine set_topology: :f:func:`chfl_frame%set_topology`
     :field subroutine guess_bonds: :f:func:`chfl_frame%guess_bonds`
-    :field function step: :f:func:`chfl_frame%step`
-    :field subroutine set_step: :f:func:`chfl_frame%set_step`
+    :field function index: :f:func:`chfl_frame%index`
+    :field subroutine set_index: :f:func:`chfl_frame%set_index`
     :field subroutine set: :f:func:`chfl_frame%set`
     :field function get: :f:func:`chfl_frame%get`
     :field function properties_count: :f:func:`chfl_frame%properties_count`
@@ -403,20 +403,20 @@
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
 
-.. f:function:: chfl_frame%step([status])
+.. f:function:: chfl_frame%index([status])
 
-    Get the frame step, *i.e.* the frame number in the trajectory.
+    Get the frame index, *i.e.* the frame number in the trajectory.
 
     :return integer:
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
 
-.. f:subroutine:: chfl_frame%set_step(step, [status])
+.. f:subroutine:: chfl_frame%set_index(index, [status])
 
-    Set the frame step, *i.e.* the frame number in the trajectory to ``step``.
+    Set the frame index, *i.e.* the frame number in the trajectory to ``index``.
 
-    :argument integer step: The new frame step
+    :argument integer index: The new frame index
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.

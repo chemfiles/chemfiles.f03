@@ -114,13 +114,13 @@
 
     The unit cell representation is obtained by aligning the a vector along the
     *x* axis and putting the b vector in the *xy* plane. This make the matrix
-    an upper triangular matrix:
+    a lower triangular matrix, with one row per axis of the cell
 
     .. code-block:: sh
 
-        | a_x b_x c_x |
-        |  0  b_y c_y |
-        |  0   0  c_z |
+        | a_x    0     0  |
+        | b_x   b_y    0  |
+        | c_x   c_y   c_z |
 
     :return real(3, 3):
     :optional integer(chfl_status) status: status code of the operation. If it

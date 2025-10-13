@@ -139,26 +139,26 @@ function c_chfl_frame_set_topology(frame, topology) bind(C, name="chfl_frame_set
     type(c_ptr), value, intent(in) :: topology
 end function
 
-! Function "chfl_frame_step", at frame.h:173
-function c_chfl_frame_step(frame, step) bind(C, name="chfl_frame_step")
+! Function "chfl_frame_index", at frame.h:173
+function c_chfl_frame_index(frame, index) bind(C, name="chfl_frame_index")
     use iso_c_binding
     import chfl_status
 
     implicit none
-    integer(kind=chfl_status) :: c_chfl_frame_step
+    integer(kind=chfl_status) :: c_chfl_frame_index
     type(c_ptr), value, intent(in) :: frame
-    integer(kind=c_int64_t), intent(inout) :: step
+    integer(kind=c_int64_t), intent(inout) :: index
 end function
 
-! Function "chfl_frame_set_step", at frame.h:182
-function c_chfl_frame_set_step(frame, step) bind(C, name="chfl_frame_set_step")
+! Function "chfl_frame_set_index", at frame.h:182
+function c_chfl_frame_set_index(frame, index) bind(C, name="chfl_frame_set_index")
     use iso_c_binding
     import chfl_status
 
     implicit none
-    integer(kind=chfl_status) :: c_chfl_frame_set_step
+    integer(kind=chfl_status) :: c_chfl_frame_set_index
     type(c_ptr), value :: frame
-    integer(kind=c_int64_t), value :: step
+    integer(kind=c_int64_t), value :: index
 end function
 
 ! Function "chfl_frame_guess_bonds", at frame.h:194

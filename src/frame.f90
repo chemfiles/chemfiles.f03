@@ -31,8 +31,8 @@ module chemfiles_frame
         procedure :: set_cell
         procedure :: topology
         procedure :: set_topology
-        procedure :: step
-        procedure :: set_step
+        procedure :: index
+        procedure :: set_index
         procedure :: guess_bonds
         procedure :: distance
         procedure :: angle
@@ -262,27 +262,27 @@ contains
         end if
     end subroutine
 
-    integer(kind=c_int64_t) function step(this, status)
+    integer(kind=c_int64_t) function index(this, status)
         implicit none
         class(chfl_frame), intent(in) :: this
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_frame_step(this%unsafe_const_ptr(), step)
+        status_tmp = c_chfl_frame_index(this%unsafe_const_ptr(), index)
 
         if (present(status)) then
             status = status_tmp
         end if
     end function
 
-    subroutine set_step(this, step, status)
+    subroutine set_index(this, index, status)
         implicit none
         class(chfl_frame), intent(inout) :: this
-        integer(kind=c_int64_t), intent(in) :: step
+        integer(kind=c_int64_t), intent(in) :: index
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_frame_set_step(this%unsafe_ptr(), step)
+        status_tmp = c_chfl_frame_set_index(this%unsafe_ptr(), index)
 
         if (present(status)) then
             status = status_tmp

@@ -11,7 +11,6 @@ module chemfiles_misc
     private
     public :: chfl_last_error, chfl_clear_errors
     public :: chfl_set_warning_callback
-    public :: chfl_add_configuration
     public :: chfl_formats_list, chfl_format_metadata, chfl_guess_format
 
     ! Global pointer to the callback procedure
@@ -59,19 +58,6 @@ contains
         integer(chfl_status) :: status_tmp_
 
         status_tmp_ = c_chfl_clear_errors()
-
-        if (present(status)) then
-            status = status_tmp_
-        end if
-    end subroutine
-
-    subroutine chfl_add_configuration(path, status)
-        implicit none
-        character(len=*), intent(in) :: path
-        integer(chfl_status), optional :: status
-        integer(chfl_status) :: status_tmp_
-
-        status_tmp_ = c_chfl_add_configuration(f_to_c_str(path))
 
         if (present(status)) then
             status = status_tmp_
