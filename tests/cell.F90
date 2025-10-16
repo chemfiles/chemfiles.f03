@@ -71,10 +71,10 @@ contains
 
         call cell%free()
 
-        matrix = reshape([                  &
-            12.0, -15.0, 0.0,               &
-            0.0, 25.980762113533164, 0.0,   &
-            0.0, 0.0, 24.0                  &
+        matrix = reshape([                          &
+             12.0,  0.0,                0.0,        &
+            -15.0, 25.980762113533164,  0.0,        &
+              0.0,  0.0,               24.0         &
         ], shape(matrix))
         call cell%from_matrix(matrix, status=status)
         CHECK(status == CHFL_SUCCESS)
@@ -224,7 +224,26 @@ contains
         CHECK(status == CHFL_SUCCESS)
         do i=1,3
             do j=1,3
-                CHECK(matrix(i, j) - expected(i, j) < 1d-10)
+                CHECK(abs(matrix(i, j) - expected(i, j)) < 1d-10)
+            end do
+        end do
+
+        call cell%set_shape(CHFL_CELL_TRICLINIC, status=status)
+        CHECK(status == CHFL_SUCCESS)
+        call cell%set_angles([80d0, 89d0, 100d0], status=status)
+        CHECK(status == CHFL_SUCCESS)
+
+        expected = reshape([                          &
+             10.0,        0.0,         0.0,           &
+            -3.47296355, 19.69615506,  0.0,           &
+             0.52357219,  5.38212933, 29.50861834     &
+        ], [3, 3])
+        matrix = cell%matrix(status=status)
+
+        CHECK(status == CHFL_SUCCESS)
+        do i=1,3
+            do j=1,3
+                CHECK(abs(matrix(i, j) - expected(i, j)) < 1d-6)
             end do
         end do
 

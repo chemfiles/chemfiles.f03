@@ -12,9 +12,9 @@
     :field subroutine memory_writer: :f:func:`chfl_trajectory%memory_writer`
     :field subroutine memory_buffer: :f:func:`chfl_trajectory%memory_buffer`
     :field function path: :f:func:`chfl_trajectory%path`
-    :field function nsteps: :f:func:`chfl_trajectory%nsteps`
+    :field function size: :f:func:`chfl_trajectory%size`
     :field subroutine read: :f:func:`chfl_trajectory%read`
-    :field subroutine read_step: :f:func:`chfl_trajectory%read_step`
+    :field subroutine read_at: :f:func:`chfl_trajectory%read_at`
     :field subroutine write: :f:func:`chfl_trajectory%write`
     :field subroutine set_topology: :f:func:`chfl_trajectory%set_topology`
     :field subroutine topology_file: :f:func:`chfl_trajectory%topology_file`
@@ -88,9 +88,9 @@
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
 
-.. f:function:: chfl_trajectory%nsteps([status])
+.. f:function:: chfl_trajectory%size([status])
 
-    Get the number of steps (the number of frames) in the trajectory.
+    Get the number of frames in the trajectory.
 
     :return integer:
     :optional integer(chfl_status) status: status code of the operation. If it
@@ -109,15 +109,15 @@
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
         more about the error.
 
-.. f:subroutine:: chfl_trajectory%read_step(step, frame, [status])
+.. f:subroutine:: chfl_trajectory%read_at(index, frame, [status])
 
-    Read a specific ``step`` of the trajectory into a ``frame``. The first
-    trajectory step is the step 0.
+    Read a specific ``index`` of the trajectory into a ``frame``. The first
+    trajectory index is 0.
 
-    If the number of atoms in frame does not correspond to the number of atom
-    in the step, the frame is resized.
+    If the number of atoms in ``frame`` does not correspond to the number of
+    atom at this index, the frame is resized.
 
-    :argument integer step: step to read
+    :argument integer index: index to read
     :argument type(chfl_frame) frame: frame to fill with the data
     :optional integer(chfl_status) status: status code of the operation. If it
         is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn

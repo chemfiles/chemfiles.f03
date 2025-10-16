@@ -8,7 +8,7 @@
 ! =========================================================================== !
 
 interface
-! Function "chfl_version", at types.h:150
+! Function "chfl_version", at types.h:157
 function c_chfl_version() bind(C, name="chfl_version")
     use iso_c_binding
     
@@ -46,17 +46,7 @@ function c_chfl_set_warning_callback(callback) bind(C, name="chfl_set_warning_ca
     type(c_funptr), value :: callback
 end function
 
-! Function "chfl_add_configuration", at misc.h:58
-function c_chfl_add_configuration(path) bind(C, name="chfl_add_configuration")
-    use iso_c_binding
-    import chfl_status
-
-    implicit none
-    integer(kind=chfl_status) :: c_chfl_add_configuration
-    character(len=1, kind=c_char), dimension(*), intent(in) :: path
-end function
-
-! Function "chfl_formats_list", at misc.h:71
+! Function "chfl_formats_list", at misc.h:55
 function c_chfl_formats_list(metadata, count) bind(C, name="chfl_formats_list")
     use iso_c_binding
     import chfl_status
@@ -67,7 +57,7 @@ function c_chfl_formats_list(metadata, count) bind(C, name="chfl_formats_list")
     integer(kind=c_int64_t), intent(inout) :: count
 end function
 
-! Function "chfl_guess_format", at misc.h:93
+! Function "chfl_guess_format", at misc.h:82
 function c_chfl_guess_format(path, format, buffsize) bind(C, name="chfl_guess_format")
     use iso_c_binding
     import chfl_status

@@ -19,7 +19,7 @@ program select
     call frame%init()
     call selection%init("name Zn or name N")
 
-    do step=1,input%nsteps()
+    do step=1,input%size()
         call input%read(frame)
 
         count = 0

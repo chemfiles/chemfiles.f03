@@ -48,9 +48,6 @@ program misc_test
     error = chfl_last_error()
     CHECK(trim(error) == '')
 
-    call chfl_add_configuration("data/config.toml", status=status)
-    CHECK(status == CHFL_SUCCESS)
-
     call chfl_formats_list(metadata, status=status)
     CHECK(status == CHFL_SUCCESS)
 
@@ -65,7 +62,7 @@ program misc_test
     CHECK(metadata(xyz_index)%write .eqv. .true.)
     CHECK(metadata(xyz_index)%memory .eqv. .true.)
     CHECK(metadata(xyz_index)%positions .eqv. .true.)
-    CHECK(metadata(xyz_index)%velocities .eqv. .false.)
+    CHECK(metadata(xyz_index)%velocities .eqv. .true.)
     CHECK(metadata(xyz_index)%unit_cell .eqv. .true.)
     CHECK(metadata(xyz_index)%atoms .eqv. .true.)
     CHECK(metadata(xyz_index)%bonds .eqv. .false.)

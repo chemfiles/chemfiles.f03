@@ -114,33 +114,9 @@ Warnings
 
     :parameter string message: The warning message
 
-Configuration files
--------------------
 
-.. f:subroutine:: chfl_add_configuration(path, [status])
-
-    Read `configuration`_ data from the file at ``path``.
-
-    By default, chemfiles reads configuration from any file named
-    ``.chemfiles.toml`` or ``chemfiles.toml`` in the current directory or any
-    parent directory. This function can be used to add data from another
-    configuration file.
-
-    This function will fail if there is no file at path, or if the file is
-    incorrectly formatted. Data from the new configuration file will overwrite
-    any existing data.
-
-    :argument character(len=\*) path: the new configuration file path
-    :optional integer(chfl_status) status: status code of the operation. If it
-        is not :f:var:`CHFL_SUCCESS`, use :f:func:`chfl_last_error` to learn
-        more about the error.
-
-
-.. _configuration: http://chemfiles.org/chemfiles/latest/configuration.html#configuration
-
-
-List known formats
-------------------
+Listing known formats
+---------------------
 
 .. f:type:: chfl_format_metadata
 

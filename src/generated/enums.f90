@@ -14,7 +14,6 @@ enum, bind(C)
     enumerator :: CHFL_FILE_ERROR = 2
     enumerator :: CHFL_FORMAT_ERROR = 3
     enumerator :: CHFL_SELECTION_ERROR = 4
-    enumerator :: CHFL_CONFIGURATION_ERROR = 5
     enumerator :: CHFL_OUT_OF_BOUNDS = 6
     enumerator :: CHFL_PROPERTY_ERROR = 7
     enumerator :: CHFL_GENERIC_ERROR = 254

@@ -21,12 +21,12 @@ module chemfiles_trajectory
         procedure :: memory_buffer
         procedure :: path
         procedure :: read
-        procedure :: read_step
+        procedure :: read_at
         procedure :: write
         procedure :: set_topology
         procedure :: topology_file
         procedure :: set_cell
-        procedure :: nsteps
+        procedure :: size
         procedure :: close
     end type
 
@@ -123,15 +123,15 @@ contains
         end if
     end subroutine
 
-    subroutine read_step(this, step, frame, status)
+    subroutine read_at(this, index, frame, status)
         implicit none
         class(chfl_trajectory), intent(inout) :: this
-        integer(kind=c_int64_t), intent(in) :: step
+        integer(kind=c_int64_t), intent(in) :: index
         type(chfl_frame) :: frame
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_trajectory_read_step(this%unsafe_ptr(), step, frame%unsafe_ptr())
+        status_tmp = c_chfl_trajectory_read_at(this%unsafe_ptr(), index, frame%unsafe_ptr())
 
         if (present(status)) then
             status = status_tmp
@@ -195,13 +195,13 @@ contains
         end if
     end subroutine
 
-    integer(kind=c_int64_t) function nsteps(this, status)
+    integer(kind=c_int64_t) function size(this, status)
         implicit none
         class(chfl_trajectory), intent(inout) :: this
         integer(chfl_status), intent(out), optional :: status
         integer(chfl_status) :: status_tmp
 
-        status_tmp = c_chfl_trajectory_nsteps(this%unsafe_ptr(), nsteps)
+        status_tmp = c_chfl_trajectory_size(this%unsafe_ptr(), size)
 
         if (present(status)) then
             status = status_tmp

@@ -1,11 +1,8 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.22)
 
-project(chemfilesf03 Fortran CXX)
+project(chemfiles-fortran Fortran C CXX)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-if(${CMAKE_VERSION} VERSION_GREATER 3.0.0)
-    cmake_policy(SET CMP0042 NEW)
-endif()
 
 option(CHFL_FORTRAN_BUILD_TESTS "Build fortran unit tests." OFF)
 
@@ -41,7 +38,7 @@ set(sources
 )
 
 add_library(chemfilesf03 ${sources})
-target_link_libraries(chemfilesf03 chemfiles ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
+target_link_libraries(chemfilesf03 chemfiles)
 set_property(TARGET chemfilesf03 PROPERTY VERSION ${CHEMFILES_VERSION})
 set_property(TARGET chemfilesf03 PROPERTY SOVERSION ${CHEMFILES_VERSION})
 
@@ -61,12 +58,6 @@ function(chfl_fortran_test _file_)
     set(_name_ "fortran-${_name_}")
     add_executable(${_name_} ${_file_})
     target_link_libraries(${_name_} chemfilesf03 ${COVERAGE_LIBRARIES})
-    if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        # ifort needs to link to 'for_main.o'
-        set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE Fortran)
-    else()
-        set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE CXX)
-    endif()
     add_test(NAME ${_name_}
         COMMAND ${_name_}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests
@@ -82,12 +73,6 @@ function(chfl_fortran_example _file_)
     set(_name_ example-f90-${_name_})
     add_executable(${_name_} ${_file_})
     target_link_libraries(${_name_} chemfilesf03 ${COVERAGE_LIBRARIES})
-    if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        # ifort needs to link to 'for_main.o'
-        set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE Fortran)
-    else()
-        set_target_properties(${_name_} PROPERTIES LINKER_LANGUAGE CXX)
-    endif()
 endfunction()
 
 enable_testing()

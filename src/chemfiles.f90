@@ -27,14 +27,14 @@ module chemfiles
     public :: CHFL_PROPERTY_DOUBLE, CHFL_PROPERTY_BOOL, CHFL_PROPERTY_STRING, CHFL_PROPERTY_VECTOR3D
     public :: chfl_status
     public :: CHFL_SUCCESS, CHFL_MEMORY_ERROR, CHFL_FILE_ERROR, CHFL_FORMAT_ERROR
-    public :: CHFL_SELECTION_ERROR, CHFL_CONFIGURATION_ERROR, CHFL_OUT_OF_BOUNDS
-    public :: CHFL_PROPERTY_ERROR, CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
+    public :: CHFL_SELECTION_ERROR, CHFL_OUT_OF_BOUNDS, CHFL_PROPERTY_ERROR
+    public :: CHFL_GENERIC_ERROR, CHFL_CXX_ERROR
     public :: chfl_bond_order
     public :: CHFL_BOND_UNKNOWN, CHFL_BOND_SINGLE, CHFL_BOND_DOUBLE
     public :: CHFL_BOND_TRIPLE, CHFL_BOND_QUADRUPLE, CHFL_BOND_QUINTUPLET
     public :: CHFL_BOND_AMIDE, CHFL_BOND_AROMATIC
     ! Export free functions
-    public :: chfl_version, chfl_set_warning_callback, chfl_add_configuration
+    public :: chfl_version, chfl_set_warning_callback
     public :: chfl_last_error, chfl_clear_errors
     public :: chfl_formats_list, chfl_guess_format
     ! Export others

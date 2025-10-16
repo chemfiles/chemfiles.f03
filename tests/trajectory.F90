@@ -30,7 +30,7 @@ contains
         CHECK(file%path(status=status) == 'data/water.xyz')
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(file%nsteps(status=status) == 100)
+        CHECK(file%size(status=status) == 100)
         CHECK(status == CHFL_SUCCESS)
 
         call frame%init(status=status)
@@ -52,8 +52,8 @@ contains
             CHECK(abs(pos_125(i) - positions(i, 125)) < 1d-6)
         end do
 
-        ! Check reading a specific step
-        call file%read_step(int(41, int64), frame, status=status)
+        ! Check reading a specific index
+        call file%read_at(int(41, int64), frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         pos_1(:) = [0.761277d0, 8.106125d0, 10.622949d0]
@@ -160,7 +160,7 @@ contains
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%read_step(int(10, int64), frame, status=status)
+        call file%read_at(int(10, int64), frame, status=status)
         CHECK(status ==0)
 
         atom = frame%atom(1_int64)
@@ -189,7 +189,7 @@ contains
         call file%topology_file("data/topology.xyz", "", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%read_step(1_int64, frame, status=status)
+        call file%read_at(1_int64, frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         atom = frame%atom(0_int64, status=status)
@@ -203,7 +203,7 @@ contains
         call file%topology_file("data/topology.xyz", "XYZ", status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        call file%read_step(1_int64, frame, status=status)
+        call file%read_at(1_int64, frame, status=status)
         CHECK(status == CHFL_SUCCESS)
 
         atom = frame%atom(0_int64, status=status)

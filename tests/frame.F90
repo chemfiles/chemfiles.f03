@@ -8,7 +8,7 @@ program frame_test
     call test_copy()
     call test_add_atom()
     call test_natoms()
-    call test_step()
+    call test_index()
     call test_positions()
     call test_velocities()
     call test_cell()
@@ -69,7 +69,7 @@ contains
         call frame%free()
     end subroutine
 
-    subroutine test_step()
+    subroutine test_index()
         implicit none
         type(chfl_frame) :: frame
         integer :: status
@@ -77,13 +77,13 @@ contains
         call frame%init(status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(frame%step(status=status) == 0)
+        CHECK(frame%index(status=status) == 0)
         CHECK(status == CHFL_SUCCESS)
 
-        call frame%set_step(42_int64, status=status)
+        call frame%set_index(42_int64, status=status)
         CHECK(status == CHFL_SUCCESS)
 
-        CHECK(frame%step(status=status) == 42)
+        CHECK(frame%index(status=status) == 42)
         CHECK(status == CHFL_SUCCESS)
 
         call frame%free()
